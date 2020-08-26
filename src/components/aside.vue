@@ -1,0 +1,70 @@
+<template>
+  <div class="aside-btn">
+    <button type="button" @click="scrollTop" class="btn">
+      <svg class="svg-btn">
+        <use xlink:href="../images/svg/sprite.svg#arrowTop" />
+      </svg>
+    </button>
+    <router-link to="/contacts" tag="a" class="btn btn--toContacts">Напишите нам, мы онлайн!</router-link>
+  </div>
+</template>
+
+<script>
+export default {
+  methods: {
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+  },
+};
+</script>
+
+<style lang="scss" scoped>
+@import "../scss/_variables.scss";
+
+.aside-btn {
+  position: fixed;
+  top: 400px;
+  right: 0;
+  transform: rotate(-90deg);
+  transform-origin: 80% 50%;
+
+  & .btn {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: $colorBackground;
+    line-height: 40px;
+    text-align: center;
+    text-decoration: none;
+    padding: 2px;
+    box-sizing: border-box;
+    background-color: $colorBrend;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+
+    &--toContacts {
+      width: 240px;
+      border-radius: 8px 31px 0 0;
+      margin-left: 50px;
+    }
+    & .svg-btn {
+      width: 12px;
+      height: 18px;
+      transform: translateY(3px) rotate(90deg);
+    }
+    &:hover,
+    &:focus {
+      box-shadow: 0 0 25px $colorBrend;
+    }
+  }
+}
+</style>
