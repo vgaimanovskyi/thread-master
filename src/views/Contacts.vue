@@ -292,8 +292,8 @@ export default {
 }
 .grid {
   display: flex;
-  margin: 0 -10px;
   min-height: calc(100vh - 110px - 84px - 83px);
+  margin: 0 -10px;
 }
 .col {
   width: 50%;
