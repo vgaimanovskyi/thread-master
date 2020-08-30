@@ -5,11 +5,13 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import scrollTo from './scrollTo'
+import VueCarousel from 'vue-carousel';
 
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
 Vue.use(Vuelidate)
+Vue.use(VueCarousel);
 
 Vue.config.productionTip = false
 

@@ -1,5 +1,6 @@
 <template>
   <div class="page">
+    <Modal v-if="modal" @closeModal="modal = !modal" :product="product" />
     <div class="mainer">
       <ul class="categories">
         <li
@@ -30,11 +31,17 @@
               :src="require('../images/products/' + img.id + '/poster.jpg')"
               :title="img.name"
               :alt="img.name"
+              @click="openModal(img.id)"
             />
           </stack-item>
         </div>
       </stack>
-      <button type="button" class="btn btn--width" @click="morePhotos()">Добавить</button>
+      <button
+        type="button"
+        class="btn btn--width"
+        @click="morePhotos()"
+        :disabled="btnDisabled"
+      >Добавить</button>
     </div>
     <Aside />
     <svg class="svg svg--turtle">
@@ -52,13 +59,17 @@
 <script>
 import { Stack, StackItem } from "vue-stack-grid";
 import Aside from "../components/aside";
+import Modal from "../components/modal";
 
 export default {
-  components: { Stack, StackItem, Aside },
+  components: { Stack, StackItem, Aside, Modal },
   data() {
     return {
       products: [],
       activeCatId: "",
+      modal: false,
+      product: {},
+      btnDisabled: false,
     };
   },
   computed: {
@@ -72,6 +83,7 @@ export default {
       console.log("image is " + result + " for " + image.img.src);
     }, */
     changeCategory(catId) {
+      this.btnDisabled = false;
       this.activeCatId = catId;
       this.$store.commit("productsByCategory", this.activeCatId);
       this.getProducts();
@@ -80,10 +92,16 @@ export default {
       this.products = this.$store.getters.sliceProducts(0);
     },
     morePhotos() {
+      const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(
         this.products.length
       );
       this.products = this.products.concat(newProducts);
+      this.btnDisabled = this.products.length === oldProducts.length;
+    },
+    openModal(mId) {
+      this.product = this.products.find((product) => product.id === mId);
+      this.modal = true;
     },
   },
   created() {
@@ -94,6 +112,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/_variables.scss";
+
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
 }
@@ -126,6 +145,7 @@ export default {
   width: 100%;
   display: block;
   border-radius: 8px;
+  cursor: pointer;
 }
 .btn {
   margin: 0 auto;
@@ -156,7 +176,7 @@ export default {
   }
   &--pineapple {
     right: -28px;
-    bottom: 20%;
+    bottom: 190px;
     stroke: $colorTextMain;
     width: 126px;
     height: 272px;

@@ -17,10 +17,8 @@ export default {
 <style lang="scss">
 @import "./scss/style.scss";
 
-/* #app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-} */
+#app {
+  position: relative;
+  overflow-x: hidden;
+}
 </style>

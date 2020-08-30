@@ -7,9 +7,7 @@
     // font-family: 'Rubik', sans-serif;
 
 body {
-    position: relative;
     background-color: $colorBackground;
-    overflow-x: hidden;
 }
 .mainer {
     max-width: 1260px;
@@ -65,3 +63,6 @@ body {
         cursor: default;
     }
 }
+.VueCarousel-navigation-next {
+    color: white;
+  }
