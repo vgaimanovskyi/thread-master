@@ -29,6 +29,10 @@ const routes = [
     path: '/delivery',
     name: 'Delivery',
     component: () => import('../views/Delivery.vue')
+  },
+  {
+    path: '*',
+    component: Home
   }
 ]
 
