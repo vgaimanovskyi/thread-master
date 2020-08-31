@@ -41,7 +41,7 @@
         class="btn btn--width"
         @click="morePhotos()"
         :disabled="btnDisabled"
-      >Добавить</button>
+      >Смотреть еще</button>
     </div>
     <Aside />
     <svg class="svg svg--turtle">
@@ -93,10 +93,8 @@ export default {
     },
     morePhotos() {
       const oldProducts = this.products;
-      const newProducts = this.$store.getters.sliceProducts(
-        this.products.length
-      );
-      this.products = this.products.concat(newProducts);
+      const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
+      this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
     },
     openModal(mId) {

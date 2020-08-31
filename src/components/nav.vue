@@ -20,11 +20,25 @@
     </ul>
     <ul class="options header--width">
       <li>
-        <select>
-          <option value="ru" selected>Русский</option>
-          <option value="ua">Українська</option>
-          <option value="en">English</option>
-        </select>
+        <div class="filter">
+          <div class="filter__name" @click="filterListOpen = !filterListOpen">
+            {{filterName}}
+            <svg
+              class="filter__svg"
+              :class="{'filter__svg--rotate': filterListOpen}"
+            >
+              <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
+            </svg>
+          </div>
+          <div class="filter__list" v-show="filterListOpen">
+            <input type="radio" value="ru" id="ru" v-model="filterValue" @change="useFilter" />
+            <label for="ru">Русский</label>
+            <input type="radio" value="ua" id="ua" v-model="filterValue" @change="useFilter" />
+            <label for="ua">Українська</label>
+            <input type="radio" value="en" id="en" v-model="filterValue" @change="useFilter" />
+            <label for="en">English</label>
+          </div>
+        </div>
       </li>
       <li>
         <div class="options-icons">
@@ -57,7 +71,37 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      filterName: "Русский",
+      filterValue: "ru",
+      filterListOpen: false,
+    };
+  },
+  methods: {
+    useFilter() {
+      switch (this.filterValue) {
+        case "ru":
+          this.filterName = "Русский";
+          console.log(this.filterValue);
+          break;
+        case "ua":
+          this.filterName = "Українська";
+          console.log(this.filterValue);
+          break;
+        case "en":
+          this.filterName = "English";
+          console.log(this.filterValue);
+          break;
+        default:
+          this.filterName = "Русский";
+          console.log(this.filterValue);
+      }
+      this.filterListOpen = false;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -131,6 +175,52 @@ export default {};
     }
   }
 }
+.filter {
+  position: relative;
+
+  &__name,
+  label {
+    position: relative;
+    display: block;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 35px;
+    color: $colorTextSecondary;
+    padding: 0 30px 0 10px;
+    cursor: pointer;
+  }
+  &__svg {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%) rotateX(180deg);
+    width: 15px;
+    height: 8px;
+    stroke: $colorTextMain;
+    transition-duration: 0.3s;
+
+    &--rotate {
+      transform: translateY(-50%);
+    }
+  }
+  &__list {
+    position: absolute;
+    top: 100%;
+
+    & input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+
+      &:hover + label,
+      &:focus + label,
+      &:checked + label {
+        color: $colorBackground;
+        background-color: $colorBrend;
+      }
+    }
+  }
+}
 .options {
   list-style: none;
   padding: 0;
@@ -145,16 +235,6 @@ export default {};
     &:last-child {
       margin-right: 0;
     }
-  }
-  select,
-  option {
-    font-family: "Open Sans", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
-    color: $colorTextSecondary;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
   }
 }
 .options-icons {
