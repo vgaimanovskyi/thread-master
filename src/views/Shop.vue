@@ -1,38 +1,49 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <div class="filter">
-        <div class="filter__name" @click="filterListOpen = !filterListOpen">
-          {{filterName}}
-          <svg class="filter__svg" :class="{'filter__svg--rotate': filterListOpen}">
-            <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
-          </svg>
-        </div>
-        <div class="filter__list" v-show="filterListOpen">
-          <input type="radio" value="rating" id="rating" v-model="filterValue" @change="useFilter" />
-          <label for="rating">По рейтингу</label>
-          <input type="radio" value="cheap" id="cheap" v-model="filterValue" @change="useFilter" />
-          <label for="cheap">От дешевых к дорогим</label>
-          <input
-            type="radio"
-            value="expensive"
-            id="expensive"
-            v-model="filterValue"
-            @change="useFilter"
-          />
-          <label for="expensive">От дорогих к дешевым</label>
-          <input
-            type="radio"
-            value="popular"
-            id="popular"
-            v-model="filterValue"
-            @change="useFilter"
-          />
-          <label for="popular">Популярные</label>
-          <input type="radio" value="new" id="new" v-model="filterValue" @change="useFilter" />
-          <label for="new">Новинки</label>
-          <input type="radio" value="promo" id="promo" v-model="filterValue" @change="useFilter" />
-          <label for="promo">Акционные</label>
+      <div class="filter-block">
+        <div class="filter">
+          <div class="filter__name" @click="filterListOpen = !filterListOpen">
+            {{filterName}}
+            <svg
+              class="filter__svg"
+              :class="{'filter__svg--rotate': filterListOpen}"
+            >
+              <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
+            </svg>
+          </div>
+          <div class="filter__list" v-show="filterListOpen">
+            <input
+              type="radio"
+              value="rating"
+              id="rating"
+              v-model="filterValue"
+              @change="useFilter"
+            />
+            <label for="rating">По рейтингу</label>
+            <input type="radio" value="cheap" id="cheap" v-model="filterValue" @change="useFilter" />
+            <label for="cheap">От дешевых к дорогим</label>
+            <input
+              type="radio"
+              value="expensive"
+              id="expensive"
+              v-model="filterValue"
+              @change="useFilter"
+            />
+            <label for="expensive">От дорогих к дешевым</label>
+            <input
+              type="radio"
+              value="popular"
+              id="popular"
+              v-model="filterValue"
+              @change="useFilter"
+            />
+            <label for="popular">Популярные</label>
+            <input type="radio" value="new" id="new" v-model="filterValue" @change="useFilter" />
+            <label for="new">Новинки</label>
+            <input type="radio" value="promo" id="promo" v-model="filterValue" @change="useFilter" />
+            <label for="promo">Акционные</label>
+          </div>
         </div>
       </div>
       <div class="row">
@@ -149,6 +160,7 @@ export default {
     },
   },
   created() {
+    this.$store.commit("productsByCategory", "00");
     this.getProducts();
   },
 };
@@ -157,11 +169,18 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/_variables.scss";
 
-.filter {
+.filter-block {
   position: relative;
   width: 213px;
+  height: 35px;
+}
+.filter {
+  position: relative;
+  width: inherit;
   border: 1px solid $colorBrend;
   border-radius: 8px;
+  background-color: $colorBackground;
+  z-index: 2;
   overflow: hidden;
 
   &__name,
