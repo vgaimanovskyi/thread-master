@@ -27,8 +27,8 @@ export default {
 
 .aside-btn {
   position: fixed;
-  top: 400px;
   right: 0;
+  bottom: 400px;
   transform: rotate(-90deg);
   transform-origin: 80% 50%;
 

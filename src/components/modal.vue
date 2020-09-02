@@ -15,6 +15,8 @@
         <carousel
           class="carousel"
           :perPage="1"
+          :loop="true"
+          :adjustableHeight="true"
           :paginationEnabled="false"
           :navigationEnabled="true"
           :autoplay="autoplay"

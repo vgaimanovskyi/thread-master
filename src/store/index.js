@@ -18,7 +18,8 @@ export default new Vuex.Store({
         size: "56,5 x 48 см",
         price: 65,
         discount: 50,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "102",
@@ -32,8 +33,8 @@ export default new Vuex.Store({
         size: "58 x 49,5 см",
         price: 65,
         discount: 0,
-        new: true
-
+        new: true,
+        description: "Lorem ipsum dolor consectetur adipisicing elit. Voluptatem consequatur asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "103",
@@ -47,7 +48,8 @@ export default new Vuex.Store({
         size: "18 x 46 см",
         price: 20,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "105",
@@ -61,7 +63,8 @@ export default new Vuex.Store({
         size: "45 x 15 см",
         price: 15,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "106",
@@ -75,7 +78,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 50,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "107",
@@ -89,7 +93,8 @@ export default new Vuex.Store({
         size: "20 x 20 см",
         price: 20,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "108",
@@ -103,7 +108,8 @@ export default new Vuex.Store({
         size: "35 x 55 см",
         price: 60,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "109",
@@ -117,7 +123,8 @@ export default new Vuex.Store({
         size: "20 x 20 см",
         price: 25,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "110",
@@ -131,7 +138,8 @@ export default new Vuex.Store({
         size: "30 x 30 см",
         price: 30,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "111",
@@ -145,7 +153,8 @@ export default new Vuex.Store({
         size: "20 x 20 см",
         price: 15,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "112",
@@ -159,7 +168,8 @@ export default new Vuex.Store({
         size: "35 x 35 см",
         price: 20,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "113",
@@ -173,7 +183,8 @@ export default new Vuex.Store({
         size: "55 x 55 x 47 см",
         price: 80,
         discount: 0,
-        new: false
+        new: false,
+        description: "Стильный журнальный столик – одно из главных украшений любой гостиной. Столик, выполненный в стиле стринг арт, поможет наиболее выгодно подчеркнуть изысканность вашего вкуса."
       },
       {
         id: "114",
@@ -187,7 +198,8 @@ export default new Vuex.Store({
         size: "55 x 55 x 47 см",
         price: 80,
         discount: 0,
-        new: false
+        new: false,
+        description: "Стильный журнальный столик – одно из главных украшений любой гостиной. Столик, выполненный в стиле стринг арт, поможет наиболее выгодно подчеркнуть изысканность вашего вкуса."
       },
       {
         id: "115",
@@ -201,7 +213,8 @@ export default new Vuex.Store({
         size: "55 x 55 x 47 см",
         price: 80,
         discount: 0,
-        new: false
+        new: false,
+        description: "Стильный журнальный столик – одно из главных украшений любой гостиной. Столик, выполненный в стиле стринг арт, поможет наиболее выгодно подчеркнуть изысканность вашего вкуса."
       },
       {
         id: "116",
@@ -215,7 +228,8 @@ export default new Vuex.Store({
         size: "55 x 55 x 47 см",
         price: 80,
         discount: 0,
-        new: false
+        new: false,
+        description: "Стильный журнальный столик – одно из главных украшений любой гостиной. Столик, выполненный в стиле стринг арт, поможет наиболее выгодно подчеркнуть изысканность вашего вкуса."
       },
       {
         id: "117",
@@ -229,7 +243,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 50,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "118",
@@ -243,7 +258,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 50,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "119",
@@ -257,7 +273,8 @@ export default new Vuex.Store({
         size: "40 x 10 см",
         price: 25,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "120",
@@ -271,7 +288,8 @@ export default new Vuex.Store({
         size: "20 x 20 см",
         price: 15,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "121",
@@ -285,7 +303,8 @@ export default new Vuex.Store({
         size: "40 x 60 см",
         price: 100,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "122",
@@ -299,7 +318,8 @@ export default new Vuex.Store({
         size: "45 x 15 см",
         price: 15,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "123",
@@ -313,7 +333,8 @@ export default new Vuex.Store({
         size: "55 x 55 см",
         price: 120,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "124",
@@ -327,7 +348,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 60,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "125",
@@ -341,7 +363,8 @@ export default new Vuex.Store({
         size: "50 x 30 см",
         price: 40,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "126",
@@ -355,7 +378,8 @@ export default new Vuex.Store({
         size: "",
         price: 0,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "127",
@@ -369,7 +393,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 40,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "128",
@@ -383,7 +408,8 @@ export default new Vuex.Store({
         size: "50 x 30 см",
         price: 40,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "129",
@@ -397,7 +423,8 @@ export default new Vuex.Store({
         size: "20 x 20 см",
         price: 15,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
       {
         id: "130",
@@ -411,7 +438,8 @@ export default new Vuex.Store({
         size: "50 x 50 см",
         price: 60,
         discount: 0,
-        new: false
+        new: false,
+        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       }
     ],
     categories: [
@@ -441,15 +469,22 @@ export default new Vuex.Store({
       }
     ],
     byCat: [],
+    product: {}
   },
   mutations: {
     productsByCategory(state, payload) {
       state.byCat = state.products.filter(product => product.catId.find(catId => catId === payload));
     },
+    productById(state, payload) {
+      state.product = state.products.find(product => product.id === payload);
+    }
   },
   getters: {
     sliceProducts: state => start => {
       return state.byCat.slice(start, start + 9);
+    },
+    getProductById(state) {
+      return state.product;
     }
   },
   actions: {

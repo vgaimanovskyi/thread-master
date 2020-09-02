@@ -48,7 +48,7 @@
       </div>
       <div class="row">
         <div class="col" v-for="product in products" :key="product.id">
-          <div class="img-container">
+          <router-link tag="div" :to="'/product/' + product.id" class="img-container">
             <div class="tag tag--discount" v-if="product.discount > 0">-{{product.discount}}%</div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
             <img
@@ -56,7 +56,7 @@
               :src="require('../images/products/' + product.id + '/poster.jpg')"
               :alt="product.name"
             />
-          </div>
+          </router-link>
           <h3 class="name">
             <span>{{product.name}}</span>
           </h3>
@@ -83,11 +83,11 @@
     <svg class="svg svg--turtle">
       <use xlink:href="../images/svg/sprite.svg#turtle" />
     </svg>
-    <svg class="svg svg--pineapple">
-      <use xlink:href="../images/svg/sprite.svg#pineapple" />
+    <svg class="svg svg--whale">
+      <use xlink:href="../images/svg/sprite.svg#whale" />
     </svg>
-    <svg class="svg svg--bgheart">
-      <use xlink:href="../images/svg/sprite.svg#bgheart" />
+    <svg class="svg svg--faces">
+      <use xlink:href="../images/svg/sprite.svg#faces" />
     </svg>
   </div>
 </template>
@@ -232,11 +232,11 @@ export default {
 
   .col {
     max-width: 330px;
+    flex-grow: 1;
     padding: 0 10px;
     margin-bottom: 50px;
 
     &.empty {
-      flex-grow: 1;
       padding: 0;
     }
   }
@@ -250,7 +250,12 @@ export default {
   overflow: hidden;
   margin-bottom: 25px;
   border-radius: 8px;
+  transition-duration: 0.3s;
+  cursor: pointer;
 
+  &:hover {
+    transform: scale(1.05);
+  }
   .img {
     display: block;
     width: 100%;
@@ -321,8 +326,51 @@ export default {
   font-size: 18px;
   color: $colorTextSecondary;
   margin-left: 8px;
+  vertical-align: bottom;
 }
 .btn {
   margin: 9px auto 0 auto;
+}
+.svg {
+  position: absolute;
+  z-index: -1;
+
+  &--faces {
+    top: 62px;
+    right: 8px;
+    stroke: $colorTextMain;
+    width: 189px;
+    height: 660px;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 220;
+    animation: svgShow 15s linear 0.5s infinite alternate;
+  }
+  &--whale {
+    top: 580px;
+    left: -115px;
+    transform: rotate(60deg);
+    stroke: $colorTextMain;
+    width: 436px;
+    height: 159px;
+    stroke-dasharray: 360;
+    stroke-dashoffset: 370;
+    animation: svgShow 10s linear 2s infinite alternate;
+  }
+
+  &--turtle {
+    left: 34px;
+    bottom: 81px;
+    stroke: $colorTextMain;
+    width: 379px;
+    height: 198px;
+    stroke-dasharray: 600;
+    stroke-dashoffset: 620;
+    animation: svgShow 15s linear 4s infinite alternate;
+  }
+}
+@keyframes svgShow {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 </style>
