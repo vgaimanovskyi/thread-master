@@ -1,6 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
+      <!-- <photoModal v-if="true" @closeModal="modal = !modal" :img="resizeImg" /> -->
       <router-link tag="a" to="/shop" title="Назад">
         <span class="link-back"></span>
       </router-link>
@@ -145,6 +146,7 @@
 </template>
 
 <script>
+/* import photoModal from "../components/photo"; */
 import Aside from "../components/aside";
 import { Carousel, Slide } from "vue-carousel";
 
@@ -156,6 +158,8 @@ export default {
       counter: 0,
       accordionTabDesc: true,
       accordionTabParams: false,
+      modal: false,
+      resizeImg: "",
     };
   },
   computed: {
@@ -168,7 +172,8 @@ export default {
   },
   methods: {
     resizePhoto(idx) {
-      console.log(this.product.urlGallery[idx]);
+      this.resizeImg = this.product.urlGallery[idx];
+      this.modal = true;
     },
     addToFavourites(prodId) {
       console.log(prodId);
