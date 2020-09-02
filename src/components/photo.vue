@@ -2,14 +2,12 @@
   <div class="modal">
     <div class="mainer">
       <div class="slide-block">
-        <div class="btn-conteiner">
-          <svg class="svg-btn" title="Закрыть" @click="closeModal">
+        <div class="btn-conteiner" title="Закрыть">
+          <svg class="svg-btn" @click="closeModal">
             <use xlink:href="../images/svg/sprite.svg#remove" />
           </svg>
         </div>
-        <div class="img-block">
-          <img class="img-block__photo" :src="require('../images/products/' + imgPath)" />
-        </div>
+        <img class="img" :src="require('../images/products/' + prodId + imgPath)" />
       </div>
     </div>
   </div>
@@ -17,8 +15,8 @@
 
 <script>
 export default {
-  name: "modal",
-  props: ["imgPath"],
+  name: "photo",
+  props: ["prodId", "imgPath"],
   methods: {
     closeModal() {
       this.$emit("closeModal");
@@ -30,9 +28,18 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/_variables.scss";
 
+.modal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 9999;
+}
 .slide-block {
   position: relative;
-  height: 561px;
+  margin: 10px 0;
 
   .btn-conteiner {
     position: absolute;
@@ -47,28 +54,22 @@ export default {
       display: inline-block;
       width: 18px;
       height: 18px;
-      fill: $colorTextMain;
+      stroke: $colorTextMain;
       padding: 20px;
       transition-duration: 0.3s;
       cursor: pointer;
 
       &:hover,
       &:focus {
-        fill: $colorImportant;
+        stroke: $colorImportant;
         box-shadow: inset 0 0 10px $colorImportant;
       }
     }
   }
 }
-.img-block {
-  height: 100%;
-  display: flex;
-  align-items: center;
-
-  &__photo {
-    display: block;
-    width: 100%;
-    border-radius: 8px;
-  }
+.img {
+  display: block;
+  width: 100%;
+  border-radius: 8px;
 }
 </style>

@@ -261,6 +261,8 @@ export default {
   &--favourite {
     width: 21px;
     height: 19px;
+    fill: none;
+    stroke: $colorTextSecondary;
   }
   &--search {
     width: 19px;

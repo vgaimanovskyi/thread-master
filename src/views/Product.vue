@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <!-- <photoModal v-if="true" @closeModal="modal = !modal" :img="resizeImg" /> -->
+      <Photo v-if="modal" @closeModal="modal = !modal" :prodId="id" :imgPath="resizeImg" />
       <router-link tag="a" to="/shop" title="Назад">
         <span class="link-back"></span>
       </router-link>
@@ -94,8 +94,8 @@
                 class="btn btn--width"
                 @click="addToBasket(product.id)"
               >Добавить в корзину</button>
-              <button type="button" class="btn" @click="addToFavourites(product.id)">
-                <svg class="svg-btn">
+              <button type="button" class="btn" @click="toggleFavourites(product.id)">
+                <svg class="svg-btn" :class="{'favourite': isFavourite > -1}">
                   <use xlink:href="../images/svg/sprite.svg#heart" />
                 </svg>
               </button>
@@ -142,16 +142,25 @@
       </carousel>
     </div>
     <Aside />
+    <svg class="svg svg--bird">
+      <use xlink:href="../images/svg/sprite.svg#bird" />
+    </svg>
+    <svg class="svg svg--whale">
+      <use xlink:href="../images/svg/sprite.svg#whale" />
+    </svg>
+    <svg class="svg svg--pineapple">
+      <use xlink:href="../images/svg/sprite.svg#pineapple" />
+    </svg>
   </div>
 </template>
 
 <script>
-/* import photoModal from "../components/photo"; */
+import Photo from "../components/photo";
 import Aside from "../components/aside";
 import { Carousel, Slide } from "vue-carousel";
 
 export default {
-  components: { Aside, Carousel, Slide },
+  components: { Photo, Aside, Carousel, Slide },
   data() {
     return {
       id: this.$route.params["id"],
@@ -160,6 +169,7 @@ export default {
       accordionTabParams: false,
       modal: false,
       resizeImg: "",
+      favouriteList: [],
     };
   },
   computed: {
@@ -169,20 +179,34 @@ export default {
     similarProducts() {
       return this.$store.getters.sliceProducts(0);
     },
+    isFavourite() {
+      return this.favouriteList.indexOf(this.id);
+    },
   },
   methods: {
     resizePhoto(idx) {
       this.resizeImg = this.product.urlGallery[idx];
       this.modal = true;
     },
-    addToFavourites(prodId) {
-      console.log(prodId);
+    toggleFavourites(prodId) {
+      if (this.isFavourite > -1) {
+        this.favouriteList.splice(this.isFavourite, 1);
+        localStorage.setItem("favList", JSON.stringify(this.favouriteList));
+      } else {
+        if (this.favouriteList) {
+          this.favouriteList.push(prodId);
+          localStorage.setItem("favList", JSON.stringify(this.favouriteList));
+        } else {
+          localStorage.setItem("favList", JSON.stringify([prodId]));
+        }
+      }
     },
   },
   created() {
     this.$store.commit("productById", this.id);
     const catId = this.product.catId[1];
     this.$store.commit("productsByCategory", catId);
+    this.favouriteList = JSON.parse(localStorage.getItem("favList")) || [];
   },
   watch: {
     $route(toR) {
@@ -359,6 +383,7 @@ export default {
       &:disabled {
         border-color: $colorTextSecondary;
         color: $colorTextSecondary;
+        cursor: default;
       }
     }
     &__btn,
@@ -379,7 +404,12 @@ export default {
     .svg-btn {
       width: 18px;
       height: 16px;
-      fill: $colorBackground;
+      stroke: $colorBackground;
+      fill: none;
+
+      &.favourite {
+        fill: $colorBackground;
+      }
     }
     &--width {
       margin-left: 30px;
@@ -517,6 +547,49 @@ export default {
   }
   &:hover {
     animation: linkBack 1s linear infinite;
+  }
+}
+.svg {
+  position: absolute;
+  z-index: -1;
+
+  &--bird {
+    top: 160px;
+    right: -5px;
+    stroke: $colorTextMain;
+    width: 178px;
+    height: 152px;
+    transform: rotate(25deg);
+    stroke-dasharray: 160;
+    stroke-dashoffset: 170;
+    animation: svgShow 10s linear 2s infinite alternate;
+  }
+  &--whale {
+    top: 50%;
+    left: 50%;
+    transform: scaleX(-1) translate(-40%, -85%);
+    stroke: $colorTextMain;
+    width: 436px;
+    height: 159px;
+    stroke-dasharray: 360;
+    stroke-dashoffset: 370;
+    animation: svgShow 10s linear 4s infinite alternate;
+  }
+
+  &--pineapple {
+    left: 111px;
+    bottom: 30px;
+    stroke: $colorTextMain;
+    width: 126px;
+    height: 272px;
+    stroke-dasharray: 450;
+    stroke-dashoffset: 460;
+    animation: svgShow 10s linear 6s infinite alternate;
+  }
+}
+@keyframes svgShow {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 @keyframes linkBack {
