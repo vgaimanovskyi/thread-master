@@ -19,6 +19,6 @@ export default {
 
 #app {
   position: relative;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 </style>

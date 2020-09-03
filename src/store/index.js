@@ -469,6 +469,7 @@ export default new Vuex.Store({
       }
     ],
     byCat: [],
+    favList: [],
     product: {}
   },
   mutations: {
@@ -477,6 +478,19 @@ export default new Vuex.Store({
     },
     productById(state, payload) {
       state.product = state.products.find(product => product.id === payload);
+    },
+    MY_FAVOURITES(state, payload) {
+      state.favList = payload || [];
+      console.log(state.favList)
+    }
+  },
+  actions: {
+    getMyFavourites({ commit }) {
+      commit("MY_FAVOURITES", JSON.parse(localStorage.getItem("favList")))
+    },
+    toggleMyFavourite({ commit }, payload) {
+      commit("MY_FAVOURITES", payload);
+      localStorage.setItem("favList", JSON.stringify(payload));
     }
   },
   getters: {
@@ -485,9 +499,10 @@ export default new Vuex.Store({
     },
     getProductById(state) {
       return state.product;
+    },
+    getFavProducts(state) {
+      return state.products.filter(product => state.favList.find(favId => favId === product.id))
     }
-  },
-  actions: {
   },
   modules: {
   }

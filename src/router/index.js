@@ -1,11 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Gallery from '../views/Gallery.vue'
-import Shop from '../views/Shop.vue'
-import Product from '../views/Product.vue'
-import Contacts from '../views/Contacts.vue'
-import Delivery from '../views/Delivery.vue'
 
 Vue.use(VueRouter)
 
@@ -18,32 +13,32 @@ const routes = [
   {
     path: '/gallery',
     name: 'Gallery',
-    // component: () => import('../views/Gallery.vue'),
-    component: Gallery
+    component: () => import('../views/Gallery.vue'),
   },
   {
     path: '/shop',
     name: 'Shop',
-    // component: () => import('../views/Shop.vue'),
-    component: Shop,
+    component: () => import('../views/Shop.vue'),
   },
   {
     path: '/product/:id',
     name: 'Product',
-    // component: () => import('../views/Product.vue'),
-    component: Product
+    component: () => import('../views/Product.vue'),
+  },
+  {
+    path: '/favourites',
+    name: 'Favourites',
+    component: () => import('../views/Favourites.vue'),
   },
   {
     path: '/contacts',
     name: 'Contacts',
-    // component: () => import('../views/Contacts.vue'),
-    component: Contacts
+    component: () => import('../views/Contacts.vue'),
   },
   {
     path: '/delivery',
     name: 'Delivery',
-    // component: () => import('../views/Delivery.vue'),
-    component: Delivery
+    component: () => import('../views/Delivery.vue'),
   },
   {
     path: '*',

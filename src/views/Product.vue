@@ -169,7 +169,6 @@ export default {
       accordionTabParams: false,
       modal: false,
       resizeImg: "",
-      favouriteList: [],
     };
   },
   computed: {
@@ -178,6 +177,9 @@ export default {
     },
     similarProducts() {
       return this.$store.getters.sliceProducts(0);
+    },
+    favouriteList() {
+      return this.$store.state.favList;
     },
     isFavourite() {
       return this.favouriteList.indexOf(this.id);
@@ -191,13 +193,13 @@ export default {
     toggleFavourites(prodId) {
       if (this.isFavourite > -1) {
         this.favouriteList.splice(this.isFavourite, 1);
-        localStorage.setItem("favList", JSON.stringify(this.favouriteList));
+        this.$store.dispatch("toggleMyFavourite", this.favouriteList);
       } else {
         if (this.favouriteList) {
           this.favouriteList.push(prodId);
-          localStorage.setItem("favList", JSON.stringify(this.favouriteList));
+          this.$store.dispatch("toggleMyFavourite", this.favouriteList);
         } else {
-          localStorage.setItem("favList", JSON.stringify([prodId]));
+          this.$store.dispatch("toggleMyFavourite", [prodId]);
         }
       }
     },
@@ -206,7 +208,6 @@ export default {
     this.$store.commit("productById", this.id);
     const catId = this.product.catId[1];
     this.$store.commit("productsByCategory", catId);
-    this.favouriteList = JSON.parse(localStorage.getItem("favList")) || [];
   },
   watch: {
     $route(toR) {

@@ -41,12 +41,12 @@
         </div>
       </li>
       <li>
-        <div class="options-icons">
+        <router-link to="/favourites" tag="div" class="options-icons" exact active-class="active">
           <svg class="svg svg--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
-          <span class="options-icons__number">2</span>
-        </div>
+          <span class="options-icons__number" v-if="this.favouriteList.length">{{this.favouriteList.length}}</span>
+        </router-link>
       </li>
       <li>
         <div class="search">
@@ -79,6 +79,11 @@ export default {
       filterListOpen: false,
     };
   },
+  computed: {
+    favouriteList() {
+      return this.$store.state.favList;
+    },
+  },
   methods: {
     useFilter() {
       switch (this.filterValue) {
@@ -100,6 +105,9 @@ export default {
       }
       this.filterListOpen = false;
     },
+  },
+  created() {
+    this.$store.dispatch("getMyFavourites");
   },
 };
 </script>
@@ -190,6 +198,9 @@ export default {
     padding: 0 30px 0 10px;
     cursor: pointer;
   }
+  &__name {
+    line-height: 24px;
+  }
   &__svg {
     position: absolute;
     top: 50%;
@@ -254,14 +265,21 @@ export default {
     height: 14px;
     border-radius: 50%;
   }
+  &.active {
+    & .svg--favourite {
+      fill: $colorBrend;
+      stroke: $colorBrend;
+    }
+  }
 }
 .svg {
   fill: $colorTextSecondary;
+  transition-duration: 0.3s;
 
   &--favourite {
     width: 21px;
     height: 19px;
-    fill: none;
+    fill: transparent;
     stroke: $colorTextSecondary;
   }
   &--search {

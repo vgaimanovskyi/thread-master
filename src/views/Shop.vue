@@ -356,7 +356,6 @@ export default {
     stroke-dashoffset: 370;
     animation: svgShow 10s linear 2s infinite alternate;
   }
-
   &--turtle {
     left: 34px;
     bottom: 81px;
