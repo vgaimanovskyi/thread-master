@@ -25,16 +25,18 @@
               v-if="product.discount > 0"
             >{{product.price}} $</s>
           </div>
-          <button
-            type="button"
-            class="btn btn--width"
-            @click="addToBasket(product.id)"
-          >Добавить в корзину</button>
-          <button type="button" class="btn" @click="removeFromFavourites(product.id)">
-            <svg class="svg-btn favourite">
-              <use xlink:href="../images/svg/sprite.svg#heart" />
-            </svg>
-          </button>
+          <div class="btn-container">
+            <button
+              type="button"
+              class="btn btn--width"
+              @click="addToBasket(product.id)"
+            >Добавить в корзину</button>
+            <button type="button" class="btn" @click="removeFromFavourites(product.id)">
+              <svg class="svg-btn favourite">
+                <use xlink:href="../images/svg/sprite.svg#heart" />
+              </svg>
+            </button>
+          </div>
         </div>
         <div class="col empty"></div>
         <div class="col empty"></div>
@@ -187,11 +189,16 @@ export default {
   margin-left: 8px;
   vertical-align: bottom;
 }
+.btn-container {
+  margin-top: 25px;
+}
 .btn {
   display: inline-block;
-  margin-top: 25px;
+  vertical-align: middle;
 
   .svg-btn {
+    display: block;
+    margin: 0 auto;
     width: 18px;
     height: 16px;
     stroke: $colorBackground;

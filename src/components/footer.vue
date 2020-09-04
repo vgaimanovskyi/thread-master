@@ -4,28 +4,31 @@
     <span class="tirer"></span>
     <ul class="social">
       <li>
-        <a href="https://www.pinterest.com" target="_blank">
+        <a href="https://pin.it/72NlAVF" target="_blank">
           <svg class="svg">
             <use xlink:href="../images/svg/sprite.svg#pinterest" />
           </svg>
         </a>
       </li>
       <li>
-        <a href="https://www.youtube.com" target="_blank">
+        <a
+          href="https://www.youtube.com/channel/UCZqgj7rBbaKMP1ZgxJCr-TQ?view_as=subscriber"
+          target="_blank"
+        >
           <svg class="svg">
             <use xlink:href="../images/svg/sprite.svg#youtube" />
           </svg>
         </a>
       </li>
       <li>
-        <a href="https://www.instagram.com" target="_blank">
+        <a href="http://instagram.com/stringart.workshop" target="_blank">
           <svg class="svg">
             <use xlink:href="../images/svg/sprite.svg#instagram" />
           </svg>
         </a>
       </li>
       <li>
-        <a href="https://www.facebook.com" target="_blank">
+        <a href="https://www.facebook.com/stringart.workshop2017" target="_blank">
           <svg class="svg">
             <use xlink:href="../images/svg/sprite.svg#facebook" />
           </svg>

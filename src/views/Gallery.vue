@@ -146,7 +146,7 @@ export default {
   cursor: pointer;
 }
 .btn {
-  margin: 0 auto;
+  margin: 0 auto 70px auto;
 }
 .svg {
   position: absolute;

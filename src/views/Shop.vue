@@ -264,6 +264,7 @@ export default {
   .tag {
     position: absolute;
     top: 15px;
+    left: 0;
     min-width: 68px;
     font-family: "Montserrat", sans-serif;
     font-size: 11px;
@@ -275,11 +276,9 @@ export default {
     box-sizing: border-box;
 
     &--discount {
-      left: 0;
       background-color: $colorImportant;
     }
     &--new {
-      right: 0;
       background-color: #eb00ff;
     }
   }
@@ -313,7 +312,7 @@ export default {
   font-size: 15px;
   line-height: 24px;
   color: $colorTextSecondary;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .price {
   font-family: "Montserrat", sans-serif;
@@ -329,7 +328,7 @@ export default {
   vertical-align: bottom;
 }
 .btn {
-  margin: 9px auto 0 auto;
+  margin: 9px auto 70px auto;
 }
 .svg {
   position: absolute;

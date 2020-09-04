@@ -45,7 +45,10 @@
           <svg class="svg svg--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
-          <span class="options-icons__number" v-if="this.favouriteList.length">{{this.favouriteList.length}}</span>
+          <span
+            class="options-icons__number"
+            v-if="this.favouriteList.length"
+          >{{this.favouriteList.length}}</span>
         </router-link>
       </li>
       <li>
@@ -273,6 +276,7 @@ export default {
   }
 }
 .svg {
+  display: block;
   fill: $colorTextSecondary;
   transition-duration: 0.3s;
 
@@ -319,6 +323,7 @@ export default {
   }
   &__btn {
     padding: 0;
+    vertical-align: middle;
     background-color: transparent;
     border: none;
   }

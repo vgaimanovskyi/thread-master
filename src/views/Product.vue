@@ -203,6 +203,12 @@ export default {
         }
       }
     },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
   },
   created() {
     this.$store.commit("productById", this.id);
@@ -213,6 +219,7 @@ export default {
     $route(toR) {
       this.id = toR.params["id"];
       this.$store.commit("productById", this.id);
+      this.scrollTop();
     },
   },
 };
@@ -403,6 +410,8 @@ export default {
     margin-left: 21px;
 
     .svg-btn {
+      display: block;
+      margin: 0 auto;
       width: 18px;
       height: 16px;
       stroke: $colorBackground;
@@ -458,6 +467,7 @@ export default {
     .tag {
       position: absolute;
       top: 15px;
+      left: 0;
       min-width: 68px;
       font-family: "Montserrat", sans-serif;
       font-size: 11px;
@@ -469,11 +479,9 @@ export default {
       box-sizing: border-box;
 
       &--discount {
-        left: 0;
         background-color: $colorImportant;
       }
       &--new {
-        right: 0;
         background-color: #eb00ff;
       }
     }
