@@ -291,7 +291,7 @@ export default {
   font-weight: 500;
   line-height: 29px;
   color: $colorTextSecondary;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
 

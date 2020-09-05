@@ -92,7 +92,8 @@
               <button
                 type="button"
                 class="btn btn--width"
-                @click="addToBasket(product.id)"
+                :disabled="counter === 0"
+                @click="addToCart"
               >Добавить в корзину</button>
               <button type="button" class="btn" @click="toggleFavourites(product.id)">
                 <svg class="svg-btn" :class="{'favourite': isFavourite > -1}">
@@ -179,7 +180,7 @@ export default {
       return this.$store.getters.sliceProducts(0);
     },
     favouriteList() {
-      return this.$store.state.favList;
+      return this.$store.getters.getFavList;
     },
     isFavourite() {
       return this.favouriteList.indexOf(this.id);
@@ -203,6 +204,18 @@ export default {
         }
       }
     },
+    addToCart() {
+      const price =
+        this.product.price - (this.product.price * this.product.discount) / 100;
+      const cart = {
+        id: this.product.id,
+        name: this.product.name,
+        urlPotser: this.product.urlPotser,
+        price: price,
+        count: this.counter,
+      };
+      this.$store.dispatch("addToCart", cart);
+    },
     scrollTop() {
       window.scrollTo({
         top: 0,
@@ -214,6 +227,7 @@ export default {
     this.$store.commit("productById", this.id);
     const catId = this.product.catId[1];
     this.$store.commit("productsByCategory", catId);
+    this.scrollTop();
   },
   watch: {
     $route(toR) {
@@ -376,7 +390,7 @@ export default {
 
     &__btn {
       width: 19px;
-      line-height: 17px;
+      line-height: 16px;
       background-color: transparent;
       border: 1px solid $colorTextMain;
       padding: 0;
@@ -494,7 +508,7 @@ export default {
     font-weight: 500;
     line-height: 29px;
     color: $colorTextSecondary;
-    margin-bottom: 5px;
+    margin-bottom: 2px;
     white-space: nowrap;
     overflow: hidden;
 
@@ -515,7 +529,7 @@ export default {
     font-size: 15px;
     line-height: 24px;
     color: $colorTextSecondary;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   .price {
     font-family: "Montserrat", sans-serif;

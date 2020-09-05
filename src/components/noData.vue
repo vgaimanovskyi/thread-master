@@ -1,13 +1,13 @@
 <template>
   <div class="modal">
     <div class="modal-body">
-      <router-link to="/shop" tag="a" class="btn-remove">
+      <button type="button" class="btn-remove" @click="closeModal">
         <svg class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
-      </router-link>
+      </button>
       <div class="text">{{text}}</div>
-      <router-link to="/shop" tag="a" class="btn btn--width">Вернуться в магазин</router-link>
+      <button type="button" class="btn btn--width" @click="toShop">Вернуться в магазин</button>
       <svg class="svg svg--deer">
         <use xlink:href="../images/svg/sprite.svg#deer" />
       </svg>
@@ -21,6 +21,17 @@
 <script>
 export default {
   props: ["text"],
+  methods: {
+    closeModal() {
+      this.$emit("closeModal");
+    },
+    toShop() {
+      if (this.$route.path !== "/shop") {
+        this.$router.push("/shop");
+      }
+      this.closeModal();
+    },
+  },
 };
 </script>
 
@@ -28,12 +39,13 @@ export default {
 @import "../scss/_variables.scss";
 
 .modal {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
 .modal-body {
   position: absolute;
@@ -61,9 +73,13 @@ export default {
   .btn-remove {
     display: block;
     position: absolute;
+    border: none;
+    padding: 0;
+    background-color: transparent;
     top: 15px;
     right: 15px;
     outline: none;
+    cursor: pointer;
 
     & .svg-remove {
       width: 18px;
@@ -108,9 +124,9 @@ export default {
   background-color: $colorBackground;
   margin: 0 auto 10px auto;
 
-  &:hover,
-  &:focus {
-    box-shadow: 0 0 25px $colorBackground;
+  &:not(:disabled):hover,
+  &:not(:disabled):focus {
+    box-shadow: 0 0 15px $colorBackground;
   }
 }
 @keyframes svgShow {

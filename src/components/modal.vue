@@ -35,7 +35,7 @@
                 </svg>
                 <svg class="svg-btn" title="включить автопрокрутку" @click="autoplay = !autoplay">
                   <use v-if="!autoplay" xlink:href="../images/svg/sprite.svg#play" />
-                  <use v-else xlink:href="../images/svg/sprite.svg#stop" />
+                  <use v-else xlink:href="../images/svg/sprite.svg#pause" />
                 </svg>
               </div>
               <div class="btn-conteiner btn-conteiner--remove" title="закрыть" @click="closeModal">
@@ -145,6 +145,7 @@ export default {
       width: 18px;
       height: 18px;
       stroke: $colorTextMain;
+      fill: $colorTextMain;
       padding: 20px;
       transition-duration: 0.3s;
       cursor: pointer;
@@ -152,6 +153,7 @@ export default {
       &:hover,
       &:focus {
         stroke: $colorBrend;
+        fill: $colorBrend;
         box-shadow: inset 0 0 10px $colorBrend;
       }
       &--share {

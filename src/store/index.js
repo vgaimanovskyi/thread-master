@@ -470,6 +470,7 @@ export default new Vuex.Store({
     ],
     byCat: [],
     favList: [],
+    cartList: [],
     product: {}
   },
   mutations: {
@@ -481,7 +482,20 @@ export default new Vuex.Store({
     },
     MY_FAVOURITES(state, payload) {
       state.favList = payload || [];
-      console.log(state.favList)
+      console.log("my favourites:", state.favList)
+    },
+    ADD_TO_MY_CART(state, payload) {
+      const findIndex = state.cartList.findIndex(product => product.id === payload.id);
+      console.log(findIndex)
+      if (findIndex === -1) {
+        state.cartList.push(payload);
+      } else {
+        state.cartList[findIndex].count += payload.count;
+      }
+    },
+    REMOVE_FROM_MY_CART(state, payload) {
+      const findIndex = state.cartList.findIndex(product => product.id === payload);
+      state.cartList.splice(findIndex, 1);
     }
   },
   actions: {
@@ -491,6 +505,12 @@ export default new Vuex.Store({
     toggleMyFavourite({ commit }, payload) {
       commit("MY_FAVOURITES", payload);
       localStorage.setItem("favList", JSON.stringify(payload));
+    },
+    addToCart({ commit }, payload) {
+      commit("ADD_TO_MY_CART", payload);
+    },
+    removeFromCart({ commit }, payload) {
+      commit("REMOVE_FROM_MY_CART", payload);
     }
   },
   getters: {
@@ -500,8 +520,14 @@ export default new Vuex.Store({
     getProductById(state) {
       return state.product;
     },
+    getFavList(state) {
+      return state.favList;
+    },
     getFavProducts(state) {
       return state.products.filter(product => state.favList.find(favId => favId === product.id))
+    },
+    getCartList(state) {
+      return state.cartList;
     }
   },
   modules: {

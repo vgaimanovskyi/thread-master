@@ -41,15 +41,12 @@
         </div>
       </li>
       <li>
-        <router-link to="/favourites" tag="div" class="options-icons" exact active-class="active">
+        <button type="button" class="options-icons" @click="favModalOpen">
           <svg class="svg svg--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
-          <span
-            class="options-icons__number"
-            v-if="this.favouriteList.length"
-          >{{this.favouriteList.length}}</span>
-        </router-link>
+          <span class="options-icons__number" v-if="favouriteList.length">{{favouriteList.length}}</span>
+        </button>
       </li>
       <li>
         <div class="search">
@@ -62,29 +59,50 @@
         </div>
       </li>
       <li>
-        <div class="options-icons">
-          <svg class="svg svg--basket">
-            <use xlink:href="../images/svg/sprite.svg#basket" />
+        <button type="button" class="options-icons" @click="cartModalOpen">
+          <svg class="svg svg--cart">
+            <use xlink:href="../images/svg/sprite.svg#cart" />
           </svg>
-          <span class="options-icons__number">15</span>
-        </div>
+          <span class="options-icons__number" v-if="cartList.length">{{cartList.length}}</span>
+        </button>
       </li>
     </ul>
+    <noData
+      v-if="noFavData"
+      @closeModal="noFavData = false"
+      :text="'В данный момент в избранном ничего нет'"
+    />
+    <noData
+      v-if="noCartData"
+      @closeModal="noCartData = false"
+      :text="'Ваша корзина на данный момент пуста'"
+    />
+    <Cart v-if="cart" @closeModal="cart = false" />
   </header>
 </template>
 
 <script>
+import noData from "../components/noData";
+import Cart from "../components/cart";
+
 export default {
+  components: { noData, Cart },
   data() {
     return {
       filterName: "Русский",
       filterValue: "ru",
       filterListOpen: false,
+      noCartData: false,
+      noFavData: false,
+      cart: false,
     };
   },
   computed: {
     favouriteList() {
-      return this.$store.state.favList;
+      return this.$store.getters.getFavList;
+    },
+    cartList() {
+      return this.$store.getters.getCartList;
     },
   },
   methods: {
@@ -108,9 +126,26 @@ export default {
       }
       this.filterListOpen = false;
     },
+    cartModalOpen() {
+      if (this.cartList.length) {
+        this.cart = true;
+      } else {
+        this.noCartData = true;
+      }
+    },
+    favModalOpen() {
+      if (this.favouriteList.length) {
+        if (this.$route.path !== "/favourites") {
+          this.$router.push("/favourites");
+        }
+      } else {
+        this.noFavData = true;
+      }
+    },
   },
   created() {
     this.$store.dispatch("getMyFavourites");
+    console.log("cart", this.cartList);
   },
 };
 </script>
@@ -252,6 +287,11 @@ export default {
   }
 }
 .options-icons {
+  display: block;
+  outline: none;
+  border: none;
+  padding: 0;
+  background-color: transparent;
   position: relative;
   cursor: pointer;
 
@@ -267,12 +307,6 @@ export default {
     width: 14px;
     height: 14px;
     border-radius: 50%;
-  }
-  &.active {
-    & .svg--favourite {
-      fill: $colorBrend;
-      stroke: $colorBrend;
-    }
   }
 }
 .svg {
@@ -291,7 +325,7 @@ export default {
     height: 19px;
     transition-duration: 0.3s;
   }
-  &--basket {
+  &--cart {
     width: 18px;
     height: 19px;
     fill: none;

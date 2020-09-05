@@ -1,7 +1,6 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <noData v-if="!this.favouriteList.length" :text="'В данный момент в избранном ничего нет'" />
       <h1 class="page__caption">Избранные товары</h1>
       <div class="row">
         <div class="col" v-for="product in favProducts" :key="product.id">
@@ -29,7 +28,7 @@
             <button
               type="button"
               class="btn btn--width"
-              @click="addToBasket(product.id)"
+              @click="addToCart(product.id)"
             >Добавить в корзину</button>
             <button type="button" class="btn" @click="removeFromFavourites(product.id)">
               <svg class="svg-btn favourite">
@@ -54,16 +53,15 @@
 
 <script>
 import Aside from "../components/aside";
-import noData from "../components/noData";
 
 export default {
-  components: { noData, Aside },
+  components: { Aside },
   computed: {
     favProducts() {
       return this.$store.getters.getFavProducts;
     },
     favouriteList() {
-      return this.$store.state.favList;
+      return this.$store.getters.getFavList;
     },
   },
   methods: {
@@ -125,6 +123,7 @@ export default {
   .tag {
     position: absolute;
     top: 15px;
+    left: 0;
     min-width: 68px;
     font-family: "Montserrat", sans-serif;
     font-size: 11px;
@@ -136,11 +135,9 @@ export default {
     box-sizing: border-box;
 
     &--discount {
-      left: 0;
       background-color: $colorImportant;
     }
     &--new {
-      right: 0;
       background-color: #eb00ff;
     }
   }
@@ -153,7 +150,7 @@ export default {
   font-weight: 500;
   line-height: 29px;
   color: $colorTextSecondary;
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
 
@@ -174,7 +171,7 @@ export default {
   font-size: 15px;
   line-height: 24px;
   color: $colorTextSecondary;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .price {
   font-family: "Montserrat", sans-serif;
