@@ -165,7 +165,7 @@ export default {
   data() {
     return {
       id: this.$route.params["id"],
-      counter: 0,
+      counter: 1,
       accordionTabDesc: true,
       accordionTabParams: false,
       modal: false,
@@ -215,6 +215,7 @@ export default {
         count: this.counter,
       };
       this.$store.dispatch("addToCart", cart);
+      this.counter = 1;
     },
     scrollTop() {
       window.scrollTo({

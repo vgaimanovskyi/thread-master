@@ -40,8 +40,8 @@ export default new Vuex.Store({
         id: "103",
         name: 'Панно "King & Queen"',
         urlPotser: "../images/products/103/poster.jpg",
-        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg", "/img/4.jpg"],
-        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/shop/3.jpg", "/shop/4.jpg"],
+        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg", "/img/4.jpg", "/img/5.jpg", "/img/6.jpg"],
+        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/shop/3.jpg", "/shop/4.jpg", "/shop/5.jpg", "/shop/6.jpg"],
         catId: ["00", "02"],
         available: true,
         material: "основа ЛДСП, гвозди, нейлоновая нить, крепление на стену",
@@ -55,8 +55,8 @@ export default new Vuex.Store({
         id: "105",
         name: 'Фоторамка "I love you"',
         urlPotser: "../images/products/105/poster.jpg",
-        urlGallery: ["/img/1.jpg", "/img/2.jpg"],
-        urlShop: ["/shop/1.jpg", "/shop/2.jpg"],
+        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"],
+        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/img/3.jpg"],
         catId: ["00", "04"],
         available: true,
         material: "основа дерево, гвозди, нейлоновая нить, крепление на стену, 2 прищепки-сердечка",
@@ -70,8 +70,8 @@ export default new Vuex.Store({
         id: "106",
         name: 'Панно "Вихрь"',
         urlPotser: "../images/products/106/poster.jpg",
-        urlGallery: ["/img/1.jpg", "/img/2.jpg"],
-        urlShop: ["/shop/1.jpg", "/shop/2.jpg"],
+        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg"],
+        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/img/3.jpg"],
         catId: ["00", "01", "02"],
         available: false,
         material: "основа фанера, гвозди, люминесцентная нить, крепление на стену",
@@ -85,8 +85,8 @@ export default new Vuex.Store({
         id: "107",
         name: 'Панно "Ом"',
         urlPotser: "../images/products/107/poster.jpg",
-        urlGallery: ["/img/1.jpg", "/img/2.jpg"],
-        urlShop: ["/shop/1.jpg", "/shop/2.jpg"],
+        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg", "/img/4.jpg"],
+        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/img/3.jpg", "/img/4.jpg"],
         catId: ["00", "02"],
         available: false,
         material: "основа фанера, покрытая морилкой, гвозди, нейлоновая нить, крепление на стену",
@@ -100,8 +100,8 @@ export default new Vuex.Store({
         id: "108",
         name: 'Панно "YES"',
         urlPotser: "../images/products/108/poster.jpg",
-        urlGallery: ["/img/1.jpg", "/img/2.jpg"],
-        urlShop: ["/shop/1.jpg", "/shop/2.jpg"],
+        urlGallery: ["/img/1.jpg", "/img/2.jpg", "/img/3.jpg", "/img/4.jpg", "/img/5.jpg"],
+        urlShop: ["/shop/1.jpg", "/shop/2.jpg", "/shop/3.jpg", "/shop/4.jpg", "/shop/5.jpg"],
         catId: ["00", "02"],
         available: true,
         material: "основа ЛДСП, гвозди, нейлоновая нить, крепление на стену",
@@ -471,6 +471,7 @@ export default new Vuex.Store({
     byCat: [],
     favList: [],
     cartList: [],
+    order: {},
     product: {}
   },
   mutations: {
@@ -482,11 +483,9 @@ export default new Vuex.Store({
     },
     MY_FAVOURITES(state, payload) {
       state.favList = payload || [];
-      console.log("my favourites:", state.favList)
     },
     ADD_TO_MY_CART(state, payload) {
       const findIndex = state.cartList.findIndex(product => product.id === payload.id);
-      console.log(findIndex)
       if (findIndex === -1) {
         state.cartList.push(payload);
       } else {
@@ -496,6 +495,13 @@ export default new Vuex.Store({
     REMOVE_FROM_MY_CART(state, payload) {
       const findIndex = state.cartList.findIndex(product => product.id === payload);
       state.cartList.splice(findIndex, 1);
+    },
+    CLEAR_MY_CART(state) {
+      state.cartList = [];
+    },
+    SEND_NEW_ORDER(state, payload) {
+      state.order = payload;
+      console.log(state.order);
     }
   },
   actions: {
@@ -511,6 +517,10 @@ export default new Vuex.Store({
     },
     removeFromCart({ commit }, payload) {
       commit("REMOVE_FROM_MY_CART", payload);
+    },
+    sendOrder({ commit }, payload) {
+      commit("CLEAR_MY_CART");
+      commit("SEND_NEW_ORDER", payload);
     }
   },
   getters: {

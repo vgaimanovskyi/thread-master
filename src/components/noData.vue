@@ -128,6 +128,9 @@ export default {
   &:not(:disabled):focus {
     box-shadow: 0 0 15px $colorBackground;
   }
+  &:active {
+    background-color: lighten($colorBackground, 5);
+  }
 }
 @keyframes svgShow {
   to {

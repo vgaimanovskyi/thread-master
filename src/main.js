@@ -13,7 +13,8 @@ import 'firebase/firestore'
 Vue.use(Vuelidate)
 Vue.use(VueCarousel);
 
-Vue.config.productionTip = false
+Vue.config.devtools = true;
+Vue.config.productionTip = false;
 
 firebase.initializeApp({
   apiKey: "AIzaSyC8Cd8xpvEKXh8vjvMtpTB0fdcP7wzBRGc",

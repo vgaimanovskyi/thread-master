@@ -110,19 +110,15 @@ export default {
       switch (this.filterValue) {
         case "ru":
           this.filterName = "Русский";
-          console.log(this.filterValue);
           break;
         case "ua":
           this.filterName = "Українська";
-          console.log(this.filterValue);
           break;
         case "en":
           this.filterName = "English";
-          console.log(this.filterValue);
           break;
         default:
           this.filterName = "Русский";
-          console.log(this.filterValue);
       }
       this.filterListOpen = false;
     },
@@ -145,7 +141,8 @@ export default {
   },
   created() {
     this.$store.dispatch("getMyFavourites");
-    console.log("cart", this.cartList);
+    // console.log("cart", this.cartList);
+    // console.log("fav", this.favouriteList);
   },
 };
 </script>

@@ -39,6 +39,7 @@
       <button
         type="button"
         class="btn btn--width"
+        ref="morePhotosBtn"
         @click="morePhotos()"
         :disabled="btnDisabled"
       >Смотреть еще</button>
@@ -92,10 +93,20 @@ export default {
       this.products = this.$store.getters.sliceProducts(0);
     },
     morePhotos() {
+      const height = this.$refs["morePhotosBtn"].offsetTop;
       const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
+      this.scrollFix(height);
+    },
+    scrollFix(height) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: height - 100,
+          behavior: "smooth",
+        });
+      }, 1000);
     },
     openModal(mId) {
       this.product = this.products.find((product) => product.id === mId);

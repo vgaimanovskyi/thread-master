@@ -264,7 +264,7 @@ export default {
     },
     yourname: {
       required,
-      alpha: (val) => /^[а-яё,і,ї,є,a-z]*$/i.test(val),
+      alpha: (val) => /^[а-яё,і,ї,є,a-z,',-]*$/i.test(val),
       maxLength: maxLength(40),
     },
     tel: {

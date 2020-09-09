@@ -70,9 +70,19 @@ export default {
       this.favouriteList.splice(index, 1);
       this.$store.dispatch("toggleMyFavourite", this.favouriteList);
     },
-  },
-  created() {
-    console.log(this.favouriteList);
+    addToCart(prodId) {
+      const product = this.favProducts.find((product) => product.id === prodId);
+      const price = product.price - (product.price * product.discount) / 100;
+      const cart = {
+        id: product.id,
+        name: product.name,
+        urlPotser: product.urlPotser,
+        price: price,
+        count: 1,
+      };
+      this.$store.dispatch("addToCart", cart);
+      this.removeFromFavourites(prodId);
+    },
   },
 };
 </script>

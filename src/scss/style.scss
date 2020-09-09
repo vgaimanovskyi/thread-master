@@ -55,6 +55,9 @@ body {
     &:not(:disabled):focus {
         box-shadow: 0 0 20px $colorBrend;
     }
+    &:active {
+        background-color: darken($colorBrend, 10);
+    }
     &:disabled {
         background-color: darken($colorBrend, 20);
         cursor: default;

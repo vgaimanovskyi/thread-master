@@ -75,6 +75,7 @@
       <button
         type="button"
         class="btn btn--width"
+        ref="moreProductsBtn"
         @click="moreProducts()"
         :disabled="btnDisabled"
       >Смотреть еще</button>
@@ -109,7 +110,6 @@ export default {
   methods: {
     getProducts() {
       this.products = this.$store.getters.sliceProducts(0);
-      console.log(this.products.length);
     },
     useFilter() {
       switch (this.filterValue) {
@@ -152,11 +152,21 @@ export default {
       this.filterListOpen = false;
     },
     moreProducts() {
+      const height = this.$refs["moreProductsBtn"].offsetTop;
       const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
       this.useFilter();
+      this.scrollFix(height);
+    },
+    scrollFix(height) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: height - 100,
+          behavior: "smooth",
+        });
+      }, 500);
     },
   },
   created() {

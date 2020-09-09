@@ -93,7 +93,7 @@ export default {
       this.closeModal();
     },
     removeFromCart(prodId) {
-      console.log(this.cartList);
+      // console.log(this.cartList);
       this.$store.dispatch("removeFromCart", prodId);
     },
   },
@@ -270,16 +270,6 @@ export default {
   font-weight: 500;
   color: $colorBackground;
 }
-/* .text {
-    font-family: "Montserrat", sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 29px;
-    color: $colorBackground;
-    text-align: center;
-    max-width: 400px;
-    margin: 30px auto;
-  } */
 .total {
   display: flex;
   align-items: flex-end;
@@ -323,14 +313,20 @@ export default {
 }
 .btn {
   margin: 50px;
+  line-height: 1;
 
+  &:active {
+    background-color: lighten($colorBackground, 5);
+  }
   &--transparent {
-    line-height: 1;
     border: 1px solid $colorBackground;
 
     &:not(:disabled):hover,
     &:not(:disabled):focus {
       box-shadow: 0 0 20px $colorBackground;
+    }
+    &:active {
+      background-color: darken($colorBrend, 10);
     }
     &:disabled {
       background-color: darken($colorBackground, 20);

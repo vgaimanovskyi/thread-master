@@ -65,6 +65,9 @@ export default {
     &:focus {
       box-shadow: 0 0 25px $colorBrend;
     }
+    &:active {
+      background-color: darken($colorBrend, 10);
+    }
   }
 }
 </style>
