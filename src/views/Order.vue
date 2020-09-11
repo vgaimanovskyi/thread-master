@@ -35,6 +35,7 @@
                   type="text"
                   name="yourName"
                   id="yourName"
+                  autocomplete="off"
                   v-model.lazy="yourName"
                   @blur="$v.yourName.$touch()"
                   :class="{'invalid': $v.yourName.$error, 'dirty': $v.yourName.$dirty}"
@@ -55,6 +56,7 @@
                   type="text"
                   name="yourLastName"
                   id="yourLastName"
+                  autocomplete="off"
                   v-model.lazy="yourLastName"
                   @blur="$v.yourLastName.$touch()"
                   :class="{'invalid': $v.yourLastName.$error, 'dirty': $v.yourLastName.$dirty}"
@@ -67,7 +69,7 @@
                     v-if="!$v.tel.required && $v.tel.$error"
                   >это поле обязательное</span>
                   <span
-                    v-if="!$v.tel.minLength || !$v.tel.maxLength || !$v.tel.numeric"
+                    v-if="!$v.tel.minLength || !$v.tel.maxLength"
                     class="error-alert"
                   >введите верный номер</span>
                 </div>
@@ -75,8 +77,10 @@
                   type="tel"
                   name="tel"
                   id="tel"
-                  v-model.lazy="tel"
-                  @focus="tel=380"
+                  autocomplete="off"
+                  v-model="tel"
+                  v-mask="'+38(0##)-##-##-###'"
+                  @focus="tel"
                   @blur="$v.tel.$touch()"
                   :class="{'invalid': $v.tel.$error, 'dirty': $v.tel.$dirty}"
                 />
@@ -96,6 +100,7 @@
                   type="email"
                   name="email"
                   id="email"
+                  autocomplete="off"
                   v-model.lazy="email"
                   @blur="$v.email.$touch()"
                   :class="{'invalid': $v.email.$error, 'dirty': $v.email.$dirty}"
@@ -141,7 +146,7 @@
                     autocomplete="off"
                     v-model="city"
                     @blur="$v.city.$touch()"
-                    @change="getCity"
+                    @input="getCity"
                     @focus="focusCity"
                     :class="{'invalid': $v.city.$error || ($v.city.$dirty && !citiesArr.length), 'dirty': $v.city.$dirty}"
                   />
@@ -361,13 +366,13 @@
                   v-if="deliveryValue === 'warehouse'"
                   type="submit"
                   class="btn btn--width"
-                  :disabled="$v.city.$invalid || $v.warehouse.$invalid || !payName.length"
+                  :disabled="$v.city.$invalid || $v.warehouse.$invalid || !payName.length || !cartList.length"
                 >Оформить заказ</button>
                 <button
                   v-else
                   type="submit"
                   class="btn btn--width"
-                  :disabled="$v.city.$invalid || $v.street.$invalid || $v.house.$invalid || !payName.length"
+                  :disabled="$v.city.$invalid || $v.street.$invalid || $v.house.$invalid || !payName.length || !cartList.length"
                 >Оформить заказ</button>
               </form>
             </div>
@@ -420,12 +425,12 @@
               <span class="total__name">Общая стоимость товаров</span>
               <span class="total__amount">{{amount}} $</span>
             </div>
-            <div class="total">
+            <!-- <div class="total">
               <span class="total__name total__name--weight">Стоимость доставки</span>
               <span class="total__amount">{{count * 1.5}}$</span>
-            </div>
+            </div>-->
             <div class="notice">
-              *Доставка осуществляется за счет покупателя согласно тарифов компании "Новая Почта".
+              Доставка осуществляется за счет покупателя согласно тарифов компании "Новая Почта".
               Доставка оплачивается при получении заказа.
             </div>
           </div>
@@ -444,9 +449,7 @@ import {
   email,
   maxLength,
   minLength,
-  numeric,
 } from "vuelidate/lib/validators";
-import $ from "jquery";
 
 export default {
   name: "Order",
@@ -496,21 +499,11 @@ export default {
         0
       );
     },
-    count() {
-      return this.cartList.reduce((total, item) => total + item.count, 0);
-    },
   },
   methods: {
     writeCustomerData() {
       this.customerFormOpen = false;
       this.deliveryFormOpen = true;
-      /* const customerData = {
-        name: this.yourName,
-        lastName: this.yourLastName,
-        email: this.email,
-        tel: this.tel,
-      };
-      console.log(customerData); */
     },
     writeDeliveryData() {
       this.deliveryFormOpen = false;
@@ -534,13 +527,13 @@ export default {
         productsData: this.cartList,
         cartData: {
           productsAmount: this.amount,
-          deliveryAmount: this.count * 1.5,
+          // deliveryAmount: this.count * 1.5,
         },
       };
       this.$store.dispatch("sendOrder", orderData);
       this.$router.push("/shop");
     },
-    getCity() {
+    async getCity() {
       const data = {
         modelName: "Address",
         calledMethod: "searchSettlements",
@@ -550,26 +543,19 @@ export default {
         },
         apiKey: "0d0432fee6e7afe32b4e8965268f382f",
       };
-      const settings = {
-        async: true,
+      const that = this;
+      await fetch("https://api.novaposhta.ua/v2.0/json/", {
         crossDomain: true,
-        url: "https://api.novaposhta.ua/v2.0/json/",
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         processData: false,
-        data: JSON.stringify(data),
-      };
-      const that = this;
-      $.ajax(settings).done(function (response) {
-        // console.log(response);
-        if (response.data.length) {
-          return (that.citiesArr = response.data[0].Addresses);
-        } else {
-          return [];
-        }
-      });
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => (that.citiesArr = result.data[0].Addresses))
+        .catch((error) => console.log(error));
     },
     checkCity(index) {
       this.checkedCity = this.citiesArr[index];
@@ -613,8 +599,7 @@ export default {
       }
       this.deliveryListOpen = false;
     },
-    getWarehouse() {
-      // console.log(this.checkedCity.Ref);
+    async getWarehouse() {
       const data = {
         modelName: "AddressGeneral",
         calledMethod: "getWarehouses",
@@ -623,22 +608,23 @@ export default {
         },
         apiKey: "0d0432fee6e7afe32b4e8965268f382f",
       };
-      const settings = {
-        async: true,
+      const that = this;
+      await fetch("https://api.novaposhta.ua/v2.0/json/", {
         crossDomain: true,
-        url: "https://api.novaposhta.ua/v2.0/json/",
         method: "POST",
         headers: {
           "content-type": "application/json",
         },
         processData: false,
-        data: JSON.stringify(data),
-      };
-      const that = this;
-      $.ajax(settings).done(function (response) {
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((result) => (that.warehousesArr = result.data))
+        .catch((error) => console.log(error));
+      console.log(this.warehousesArr);
+      /*  $.ajax(settings).done(function (response) {
         that.warehousesArr = response.data;
-      });
-      // console.log(this.warehousesArr);
+      }); */
     },
     warehouseFilter() {
       return this.warehousesArr.filter(
@@ -684,9 +670,8 @@ export default {
     },
     tel: {
       required,
-      maxLength: maxLength(12),
-      minLength: minLength(12),
-      numeric,
+      maxLength: maxLength(18),
+      minLength: minLength(18),
     },
     email: {
       required,

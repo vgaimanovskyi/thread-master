@@ -12,6 +12,7 @@
     "firebase": "^7.19.0",
     "jquery": "^3.5.1",
     "register-service-worker": "^1.7.1",
+    "v-mask": "^2.2.3",
     "vue": "^2.6.11",
     "vue-carousel": "^0.18.0",
     "vue-images-loaded": "^1.1.2",

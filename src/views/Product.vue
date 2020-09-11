@@ -143,6 +143,7 @@
       </carousel>
     </div>
     <Aside />
+    <Cart v-if="cart" @closeModal="cart = false" />
     <svg class="svg svg--bird">
       <use xlink:href="../images/svg/sprite.svg#bird" />
     </svg>
@@ -158,10 +159,11 @@
 <script>
 import Photo from "../components/photo";
 import Aside from "../components/aside";
+import Cart from "../components/cart";
 import { Carousel, Slide } from "vue-carousel";
 
 export default {
-  components: { Photo, Aside, Carousel, Slide },
+  components: { Photo, Aside, Cart, Carousel, Slide },
   data() {
     return {
       id: this.$route.params["id"],
@@ -170,6 +172,7 @@ export default {
       accordionTabParams: false,
       modal: false,
       resizeImg: "",
+      cart: false,
     };
   },
   computed: {
@@ -215,6 +218,7 @@ export default {
         count: this.counter,
       };
       this.$store.dispatch("addToCart", cart);
+      this.cart = true;
       this.counter = 1;
     },
     scrollTop() {

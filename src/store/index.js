@@ -476,6 +476,10 @@ export default new Vuex.Store({
   },
   mutations: {
     productsByCategory(state, payload) {
+      for (let i = state.products.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [state.products[i], state.products[j]] = [state.products[j], state.products[i]];
+      }
       state.byCat = state.products.filter(product => product.catId.find(catId => catId === payload));
     },
     productById(state, payload) {

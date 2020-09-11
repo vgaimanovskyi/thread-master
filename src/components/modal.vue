@@ -85,6 +85,15 @@ export default {
           console.log("Something went wrong", err);
         });
     },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        // behavior: "smooth",
+      });
+    },
+  },
+  created() {
+    this.scrollTop();
   },
 };
 </script>
