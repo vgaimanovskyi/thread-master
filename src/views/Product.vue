@@ -229,15 +229,15 @@ export default {
     },
   },
   created() {
-    this.$store.commit("productById", this.id);
+    this.$store.dispatch("getProductById", this.id);
     const catId = this.product.catId[1];
-    this.$store.commit("productsByCategory", catId);
+    this.$store.dispatch("getProductsByCategory", catId);
     this.scrollTop();
   },
   watch: {
     $route(toR) {
       this.id = toR.params["id"];
-      this.$store.commit("productById", this.id);
+      this.$store.dispatch("getProductById", this.id);
       this.scrollTop();
     },
   },

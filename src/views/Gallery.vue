@@ -1,6 +1,12 @@
 <template>
-  <div class="page">
-    <Modal v-if="modal" @closeModal="modal = !modal" :product="product" />
+  <div class="page" :style="{'height': modalHeight, 'overflow-y': 'hidden'}">
+    <Modal
+      v-if="modal"
+      :product="product"
+      @closeModal="modal = !modal"
+      @modalHeight="changeHeight($event)"
+    />
+    <Video v-if="video" :product="product" @closeModal="video = !video" />
     <div class="mainer">
       <ul class="categories">
         <li
@@ -26,7 +32,18 @@
             v-for="img in products"
             :key="img.id"
           >
+            <div class="video-block" v-if="img.catId[1] === '09'">
+              <div class="video-block__btn" @click="openVideo(img.id)"></div>
+              <img
+                class="gallery-img"
+                :src="'https://img.youtube.com/vi/'+ img.video + '/mqdefault.jpg'"
+                :title="img.name"
+                :alt="img.name"
+                @click="openVideo(img.id)"
+              />
+            </div>
             <img
+              v-else
               class="gallery-img"
               :src="require('../images/products/' + img.id + '/poster.jpg')"
               :title="img.name"
@@ -39,7 +56,6 @@
       <button
         type="button"
         class="btn btn--width"
-        ref="morePhotosBtn"
         @click="morePhotos()"
         :disabled="btnDisabled"
       >Смотреть еще</button>
@@ -61,16 +77,19 @@
 import { Stack, StackItem } from "vue-stack-grid";
 import Aside from "../components/aside";
 import Modal from "../components/modal";
+import Video from "../components/video";
 
 export default {
-  components: { Stack, StackItem, Aside, Modal },
+  components: { Stack, StackItem, Aside, Modal, Video },
   data() {
     return {
       products: [],
       activeCatId: "",
       modal: false,
+      video: false,
       product: {},
       btnDisabled: false,
+      modalHeight: "auto",
     };
   },
   computed: {
@@ -79,38 +98,36 @@ export default {
     },
   },
   methods: {
-    /* imageProgress(instance, image) {
-      const result = image.isLoaded ? "loaded" : "broken";
-      console.log("image is " + result + " for " + image.img.src);
-    }, */
     changeCategory(catId) {
       this.btnDisabled = false;
       this.activeCatId = catId;
-      this.$store.commit("productsByCategory", this.activeCatId);
+      this.$store.dispatch("getProductsByCategory", this.activeCatId);
       this.getProducts();
     },
     getProducts() {
       this.products = this.$store.getters.sliceProducts(0);
     },
     morePhotos() {
-      const height = this.$refs["morePhotosBtn"].offsetTop;
+      // const height = this.$refs["morePhotosBtn"].offsetTop;
       const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
-      this.scrollFix(height);
-    },
-    scrollFix(height) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: height - 100,
-          behavior: "smooth",
-        });
-      }, 1000);
     },
     openModal(mId) {
       this.product = this.products.find((product) => product.id === mId);
       this.modal = true;
+    },
+    openVideo(mId) {
+      this.product = this.products.find((product) => product.id === mId);
+      this.video = true;
+    },
+    changeHeight(heigth) {
+      if (heigth === "auto") {
+        this.modalHeight = heigth;
+      } else {
+        this.modalHeight = heigth + "px";
+      }
     },
   },
   created() {
@@ -156,6 +173,38 @@ export default {
   border-radius: 8px;
   cursor: pointer;
 }
+.video-block {
+  position: relative;
+
+  &__btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-image: linear-gradient(#ff0000, #900606);
+    width: 85px;
+    height: 55px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    &:before {
+      content: "";
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+    }
+  }
+  &:hover {
+    .video-block__btn {
+      animation: youtubeBtn 0.7s linear infinite;
+    }
+  }
+}
 .btn {
   margin: 0 auto 70px auto;
 }
@@ -197,6 +246,23 @@ export default {
 @keyframes svgShow {
   to {
     stroke-dashoffset: 0;
+  }
+}
+@keyframes youtubeBtn {
+  0% {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(15deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(0);
+  }
+  75% {
+    transform: translate(-50%, -50%) rotate(-15deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(0);
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
-  <div class="modal">
+  <div class="modal" @click.self="closeModal">
     <div class="mainer">
-      <div class="modal-body">
+      <div class="modal-body" ref="modal">
         <h2 class="name">{{product.name}}</h2>
         <div class="parameters">
           <b>Размер:</b>
@@ -70,9 +70,15 @@ export default {
       autoplay: false,
     };
   },
+  computed: {
+    modalHeight() {
+      return this.$refs["modal"].clientHeight;
+    },
+  },
   methods: {
     closeModal() {
       this.$emit("closeModal");
+      this.$emit("modalHeight", "auto");
     },
     sharePhoto(ref) {
       const link = this.$refs[ref][0].currentSrc;
@@ -93,6 +99,9 @@ export default {
     },
   },
   created() {
+    setTimeout(() => {
+      this.$emit("modalHeight", this.modalHeight);
+    }, 1000);
     this.scrollTop();
   },
 };
@@ -112,7 +121,7 @@ export default {
 }
 .modal-body {
   max-width: 1145px;
-  margin: 95px auto 0 auto;
+  margin: 95px auto;
 }
 .name {
   font-family: "Montserrat", sans-serif;

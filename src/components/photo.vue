@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div class="modal" @click.self="closeModal">
     <div class="mainer">
       <div class="slide-block">
         <div class="btn-conteiner" title="Закрыть">
@@ -21,6 +21,14 @@ export default {
     closeModal() {
       this.$emit("closeModal");
     },
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+      });
+    },
+  },
+  created() {
+    this.scrollTop();
   },
 };
 </script>
@@ -36,10 +44,11 @@ export default {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.9);
   z-index: 9999;
+  display: flex;
+  align-items: center;
 }
 .slide-block {
   position: relative;
-  margin: 10px 0;
 
   .btn-conteiner {
     position: absolute;

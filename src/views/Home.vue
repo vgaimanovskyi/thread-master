@@ -114,7 +114,7 @@ export default {
     stroke: $colorTextMain;
     stroke-dasharray: 450;
     stroke-dashoffset: 500;
-    animation: svgShow 5s linear 2s infinite alternate;
+    animation: svgShow 10s linear 2s infinite alternate;
   }
   &--fox {
     right: -17px;
@@ -124,16 +124,17 @@ export default {
     stroke: $colorTextMain;
     stroke-dasharray: 90;
     stroke-dashoffset: 100;
-    animation: svgShow 5s linear 4s infinite alternate;
+    animation: svgShow 10s linear 4s infinite alternate;
   }
   &--mountains {
     left: 0;
     bottom: 0;
     width: 609px;
     height: 171px;
-    fill: $colorTextMain;
-    transform: rotateX(90deg);
-    animation: mountShow 0.5s linear 1s forwards;
+    stroke: $colorTextMain;
+    stroke-dasharray: 350;
+    stroke-dashoffset: 360;
+    animation: svgShow 15s linear 4s infinite alternate;
   }
 }
 @keyframes svgShow {
@@ -152,11 +153,6 @@ export default {
   }
   100% {
     transform: scale(1);
-  }
-}
-@keyframes mountShow {
-  to {
-    transform: rotateX(0);
   }
 }
 </style>

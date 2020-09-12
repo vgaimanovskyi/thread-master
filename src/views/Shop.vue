@@ -19,6 +19,7 @@
               id="rating"
               v-model="filterValue"
               @change="useFilter"
+              disabled
             />
             <label for="rating">По рейтингу</label>
             <input type="radio" value="cheap" id="cheap" v-model="filterValue" @change="useFilter" />
@@ -37,6 +38,7 @@
               id="popular"
               v-model="filterValue"
               @change="useFilter"
+              disabled
             />
             <label for="popular">Популярные</label>
             <input type="radio" value="new" id="new" v-model="filterValue" @change="useFilter" />
@@ -75,7 +77,6 @@
       <button
         type="button"
         class="btn btn--width"
-        ref="moreProductsBtn"
         @click="moreProducts()"
         :disabled="btnDisabled"
       >Смотреть еще</button>
@@ -152,25 +153,15 @@ export default {
       this.filterListOpen = false;
     },
     moreProducts() {
-      const height = this.$refs["moreProductsBtn"].offsetTop;
       const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
       this.useFilter();
-      this.scrollFix(height);
-    },
-    scrollFix(height) {
-      setTimeout(() => {
-        window.scrollTo({
-          top: height - 100,
-          behavior: "smooth",
-        });
-      }, 500);
     },
   },
   created() {
-    this.$store.commit("productsByCategory", "00");
+    this.$store.dispatch("getProductsByCategory", "00");
     this.getProducts();
   },
 };
@@ -230,6 +221,11 @@ export default {
       &:checked + label {
         color: $colorBackground;
         background-color: $colorBrend;
+      }
+      &:disabled + label {
+        background-color: $colorTextSecondary;
+        color: $colorBackground;
+        cursor: default;
       }
     }
   }

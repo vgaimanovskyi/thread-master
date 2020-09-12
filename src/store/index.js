@@ -440,7 +440,189 @@ export default new Vuex.Store({
         discount: 0,
         new: false,
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
-      }
+      },
+    ],
+    videos: [
+      {
+        id: "901",
+        video: "LU8O_f4b0KM",
+        name: "String art Erotic Girl 2",
+        catId: ["00", "09"],
+      },
+      {
+        id: "902",
+        video: "it-jd2gpvlk",
+        name: "String art Neon Girl",
+        catId: ["00", "09"],
+      },
+      {
+        id: "903",
+        video: "Ec3VWZjbjSg",
+        name: "String art Love",
+        catId: ["00", "09"],
+      },
+      {
+        id: "904",
+        video: "281K4VhzV90",
+        name: "String art Erotic girl (ultraviolet threads)",
+        catId: ["00", "09"],
+      },
+      {
+        id: "905",
+        video: "tnK1W19nmvg",
+        name: "String art Tornado DIY",
+        catId: ["00", "09"],
+      },
+      {
+        id: "906",
+        video: "_1mbD9e4ukY",
+        name: "String Art Handmade Table",
+        catId: ["00", "09"],
+      },
+      {
+        id: "907",
+        video: "txEd6LV5RD8",
+        name: "String art Sexy Girl",
+        catId: ["00", "09"],
+      },
+      {
+        id: "908",
+        video: "E8OPy2k0-to",
+        name: "String art Lady in hat",
+        catId: ["00", "09"],
+      },
+      {
+        id: "909",
+        video: "ZGwju6ISG-A",
+        name: "String art Two elements Tutorial",
+        catId: ["00", "09"],
+      },
+      {
+        id: "910",
+        video: "lWDniDw2RBM",
+        name: "Redesign. How to make string art abstract!?",
+        catId: ["00", "09"],
+      },
+      {
+        id: "911",
+        video: "upqshU_712U",
+        name: "String Art King",
+        catId: ["00", "09"],
+      },
+      {
+        id: "912",
+        video: "JJp2Cg4i5uQ",
+        name: "String art Queen Heart",
+        catId: ["00", "09"],
+      },
+      {
+        id: "913",
+        video: "GDLlFQfuldA",
+        name: "String art panno baby feet",
+        catId: ["00", "09"],
+      },
+      {
+        id: "914",
+        video: "XEglkn6Se7g",
+        name: "String art Love",
+        catId: ["00", "09"],
+      },
+      {
+        id: "915",
+        video: "c10iGlbLdh0",
+        name: "String art Panda",
+        catId: ["00", "09"],
+      },
+      {
+        id: "916",
+        video: "xdlIJTinKGk",
+        name: "String art Stranger",
+        catId: ["00", "09"],
+      },
+      {
+        id: "917",
+        video: "Ttt1-Jl29iI",
+        name: "Stringart heart",
+        catId: ["00", "09"],
+      },
+      {
+        id: "918",
+        video: "IIgRXF5ZJ54",
+        name: "Stringart Always Say YES",
+        catId: ["00", "09"],
+      },
+      {
+        id: "919",
+        video: "u0ZniTy_XvE",
+        name: "Stringart abstract",
+        catId: ["00", "09"],
+      },
+      {
+        id: "920",
+        video: "jB0yGGmSCW0",
+        name: "string art Inspiration",
+        catId: ["00", "09"],
+      },
+      {
+        id: "921",
+        video: "o5m9hrrwScI",
+        name: "String art Flower Lotos",
+        catId: ["00", "09"],
+      },
+      {
+        id: "922",
+        video: "bTYLSQqYu14",
+        name: "DIY STRING ART WORKSHOP",
+        catId: ["00", "09"],
+      },
+      {
+        id: "923",
+        video: "opt6PCGP-bY",
+        name: "how to make STRING ART Wall decor",
+        catId: ["00", "09"],
+      },
+      {
+        id: "924",
+        video: "QpoVzRdPYLQ",
+        name: "Из чего это сделано: Ручка- сделай сам.",
+        catId: ["00", "09"],
+      },
+      {
+        id: "925",
+        video: "1lZa2Mi2KsA",
+        name: "STRING ART Sweet Dream",
+        catId: ["00", "09"],
+      },
+      {
+        id: "926",
+        video: "iQDQpgBTy0o",
+        name: "STRING ART Paradise flower",
+        catId: ["00", "09"],
+      },
+      {
+        id: "927",
+        video: "NBd7mgAxuNI",
+        name: "STRING ART Tranquillity",
+        catId: ["00", "09"],
+      },
+      {
+        id: "928",
+        video: "fers-ipiSrA",
+        name: "STRING ART Magic eye",
+        catId: ["00", "09"],
+      },
+      {
+        id: "929",
+        video: "9xOMUvz6LpM",
+        name: "String art INFINITY LOVE",
+        catId: ["00", "09"],
+      },
+      {
+        id: "930",
+        video: "gCUzzVgsolc",
+        name: "How to make string art DIY 'Dreamcatcher'",
+        catId: ["00", "09"],
+      },
     ],
     categories: [
       {
@@ -463,26 +645,34 @@ export default new Vuex.Store({
         id: "04",
         name: "фоторамки"
       },
-      {
+      /* {
         id: "05",
         name: "разное"
+      }, */
+      {
+        id: "09",
+        name: "видео"
       }
     ],
     byCat: [],
     favList: [],
     cartList: [],
     order: {},
-    product: {}
+    product: {},
+    search: []
   },
   mutations: {
-    productsByCategory(state, payload) {
-      for (let i = state.products.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [state.products[i], state.products[j]] = [state.products[j], state.products[i]];
-      }
+    PRODUCTS_BY_CATEGORY(state, payload) {
       state.byCat = state.products.filter(product => product.catId.find(catId => catId === payload));
+      if (payload === "09") {
+        state.byCat = state.byCat.concat(state.videos);
+      }
+      for (let i = state.byCat.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [state.byCat[i], state.byCat[j]] = [state.byCat[j], state.byCat[i]];
+      }
     },
-    productById(state, payload) {
+    PRODUCT_BY_ID(state, payload) {
       state.product = state.products.find(product => product.id === payload);
     },
     MY_FAVOURITES(state, payload) {
@@ -506,9 +696,19 @@ export default new Vuex.Store({
     SEND_NEW_ORDER(state, payload) {
       state.order = payload;
       console.log(state.order);
+    },
+    SEARCH_IN_PRODUCTS(state, payload) {
+      state.search = state.products.filter(product => product.name.toLowerCase().indexOf(payload) > -1);
+      console.log(state.search)
     }
   },
   actions: {
+    getProductsByCategory({ commit }, payload) {
+      commit("PRODUCTS_BY_CATEGORY", payload.toLowerCase())
+    },
+    getProductById({ commit }, payload) {
+      commit("PRODUCT_BY_ID", payload)
+    },
     getMyFavourites({ commit }) {
       commit("MY_FAVOURITES", JSON.parse(localStorage.getItem("favList")))
     },
@@ -525,6 +725,9 @@ export default new Vuex.Store({
     sendOrder({ commit }, payload) {
       commit("CLEAR_MY_CART");
       commit("SEND_NEW_ORDER", payload);
+    },
+    useSearch({ commit }, payload) {
+      commit("SEARCH_IN_PRODUCTS", payload);
     }
   },
   getters: {
@@ -542,6 +745,9 @@ export default new Vuex.Store({
     },
     getCartList(state) {
       return state.cartList;
+    },
+    getSearchResults(state) {
+      return state.search;
     }
   },
   modules: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal">
+  <div class="modal" @click.self="closeModal">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="closeModal">
         <svg class="svg-remove">

@@ -49,14 +49,20 @@
         </button>
       </li>
       <li>
-        <div class="search">
-          <input type="search" class="search__input" placeholder="Поиск" />
-          <button type="button" class="search__btn">
+        <form class="search" @submit.prevent="useSearch">
+          <input
+            type="search"
+            class="search__input"
+            placeholder="Поиск"
+            minlength="3"
+            v-model="search"
+          />
+          <button type="submit" class="search__btn">
             <svg class="svg svg--search">
               <use xlink:href="../images/svg/sprite.svg#search" />
             </svg>
           </button>
-        </div>
+        </form>
       </li>
       <li>
         <button type="button" class="options-icons" @click="cartModalOpen">
@@ -95,6 +101,7 @@ export default {
       noCartData: false,
       noFavData: false,
       cart: false,
+      search: "",
     };
   },
   computed: {
@@ -121,6 +128,16 @@ export default {
           this.filterName = "Русский";
       }
       this.filterListOpen = false;
+    },
+    useSearch() {
+      console.log(this.search);
+      if (this.search.length >= 3) {
+        this.$store.dispatch("useSearch", this.search);
+
+        if (this.$route.path !== "/search") {
+          this.$router.push("/search");
+        }
+      }
     },
     cartModalOpen() {
       if (this.cartList.length) {
@@ -357,6 +374,7 @@ export default {
     vertical-align: middle;
     background-color: transparent;
     border: none;
+    outline: none;
   }
 }
 .search:hover,

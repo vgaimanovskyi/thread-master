@@ -20,5 +20,6 @@ export default {
 #app {
   position: relative;
   overflow: hidden;
+  overflow-anchor: none;
 }
 </style>
