@@ -6,10 +6,11 @@ import router from './router'
 import store from './store'
 import scrollTo from './scrollTo'
 import VueCarousel from 'vue-carousel';
-import VueMask from 'v-mask'
+import VueMask from 'v-mask';
 
-import firebase from 'firebase/app'
-import 'firebase/firestore'
+import firebase from 'firebase/app';
+import 'firebase/database';
+import 'firebase/storage';
 
 
 Vue.use(Vuelidate);
@@ -30,11 +31,12 @@ firebase.initializeApp({
   appId: "1:351973733556:web:8b22c8303ca8d9a03a93e1",
   measurementId: "G-BCF66P2GP6"
 });
-export const db = firebase.firestore();
+export const db = firebase.database();
+export const fs = firebase.storage();
 
 new Vue({
   router,
   store,
   scrollTo,
-  render: h => h(App)
+  render: h => h(App),
 }).$mount('#app')

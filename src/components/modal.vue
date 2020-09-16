@@ -11,7 +11,6 @@
           <b>Материал:</b>
           {{product.material}}
         </div>
-
         <carousel
           class="carousel"
           :perPage="1"
@@ -20,8 +19,9 @@
           :paginationEnabled="false"
           :navigationEnabled="true"
           :autoplay="autoplay"
-          :navigationPrevLabel="`<span style='font-size: 100px; color: #fff; line-height: 20px;'>&#8249;</span>`"
-          :navigationNextLabel="`<span style='font-size: 100px; color: #fff; line-height: 20px;'>&#8250;</span>`"
+          :navigationClickTargetSize="11"
+          :navigationPrevLabel="prevBtn"
+          :navigationNextLabel="nextBtn"
         >
           <slide v-for="(img, index) in product.urlGallery" :key="index">
             <div class="slide-block">
@@ -60,6 +60,8 @@
 
 <script>
 import { Carousel, Slide } from "vue-carousel";
+import btnNext from "../images/svg/btnNext.svg";
+import btnPrev from "../images/svg/btnPrev.svg";
 
 export default {
   name: "modal",
@@ -73,6 +75,12 @@ export default {
   computed: {
     modalHeight() {
       return this.$refs["modal"].clientHeight;
+    },
+    nextBtn() {
+      return `<img src="${btnNext}"/>`;
+    },
+    prevBtn() {
+      return `<img src="${btnPrev}"/>`;
     },
   },
   methods: {

@@ -79,8 +79,8 @@
                   id="tel"
                   autocomplete="off"
                   v-model="tel"
-                  v-mask="'+38(0##)-##-##-###'"
-                  @focus="tel"
+                  v-mask="'+38(###)-##-##-###'"
+                  @focus="tel=0"
                   @blur="$v.tel.$touch()"
                   :class="{'invalid': $v.tel.$error, 'dirty': $v.tel.$dirty}"
                 />
@@ -425,10 +425,6 @@
               <span class="total__name">Общая стоимость товаров</span>
               <span class="total__amount">{{amount}} $</span>
             </div>
-            <!-- <div class="total">
-              <span class="total__name total__name--weight">Стоимость доставки</span>
-              <span class="total__amount">{{count * 1.5}}$</span>
-            </div>-->
             <div class="notice">
               Доставка осуществляется за счет покупателя согласно тарифов компании "Новая Почта".
               Доставка оплачивается при получении заказа.
@@ -527,11 +523,13 @@ export default {
         productsData: this.cartList,
         cartData: {
           productsAmount: this.amount,
-          // deliveryAmount: this.count * 1.5,
+          date: new Date().toJSON(),
         },
       };
-      this.$store.dispatch("sendOrder", orderData);
-      this.$router.push("/shop");
+      this.$store
+        .dispatch("sendOrder", orderData)
+        .then(() => this.$router.push("/shop"))
+        .catch(() => {});
     },
     async getCity() {
       const data = {

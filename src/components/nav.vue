@@ -158,8 +158,6 @@ export default {
   },
   created() {
     this.$store.dispatch("getMyFavourites");
-    // console.log("cart", this.cartList);
-    // console.log("fav", this.favouriteList);
   },
 };
 </script>

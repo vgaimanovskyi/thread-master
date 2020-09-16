@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="!loading">
     <div class="mainer">
       <h1 class="page__caption">Избранные товары</h1>
       <div class="row">
@@ -49,19 +49,26 @@
       <use xlink:href="../images/svg/sprite.svg#faces" />
     </svg>
   </div>
+  <div v-else class="page">
+    <Loader />
+  </div>
 </template>
 
 <script>
 import Aside from "../components/aside";
+import Loader from "../components/loader";
 
 export default {
-  components: { Aside },
+  components: { Aside, Loader },
   computed: {
     favProducts() {
       return this.$store.getters.getFavProducts;
     },
     favouriteList() {
       return this.$store.getters.getFavList;
+    },
+    loading() {
+      return this.$store.getters.getLoading;
     },
   },
   methods: {
@@ -83,6 +90,12 @@ export default {
       this.$store.dispatch("addToCart", cart);
       this.removeFromFavourites(prodId);
     },
+  },
+  async created() {
+    if (this.$store.getters.noProducts) {
+      await this.$store.dispatch("fetchAllProducts");
+      console.log("fetch");
+    }
   },
 };
 </script>

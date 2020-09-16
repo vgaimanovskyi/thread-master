@@ -1,5 +1,5 @@
 <template>
-  <div class="page" :style="{'height': modalHeight, 'overflow-y': 'hidden'}">
+  <div class="page" :style="{'height': modalHeight, 'overflow-y': 'hidden'}" v-if="!loading">
     <Modal
       v-if="modal"
       :product="product"
@@ -71,6 +71,9 @@
       <use xlink:href="../images/svg/sprite.svg#bgheart" />
     </svg>
   </div>
+  <div v-else class="page">
+    <Loader />
+  </div>
 </template>
 
 <script>
@@ -78,9 +81,10 @@ import { Stack, StackItem } from "vue-stack-grid";
 import Aside from "../components/aside";
 import Modal from "../components/modal";
 import Video from "../components/video";
+import Loader from "../components/loader";
 
 export default {
-  components: { Stack, StackItem, Aside, Modal, Video },
+  components: { Stack, StackItem, Aside, Modal, Video, Loader },
   data() {
     return {
       products: [],
@@ -95,6 +99,9 @@ export default {
   computed: {
     categories() {
       return this.$store.state.categories;
+    },
+    loading() {
+      return this.$store.getters.getLoading;
     },
   },
   methods: {
@@ -130,7 +137,11 @@ export default {
       }
     },
   },
-  created() {
+  async created() {
+    if (this.$store.getters.noProducts) {
+      await this.$store.dispatch("fetchAllProducts");
+      console.log("fetch");
+    }
     this.changeCategory(this.categories[0].id);
   },
 };

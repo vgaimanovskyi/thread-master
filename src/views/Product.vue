@@ -113,8 +113,8 @@
         :paginationEnabled="false"
         :navigationEnabled="true"
         :navigationClickTargetSize="0"
-        :navigationPrevLabel="`<span style='font-size: 100px; color: #fff; line-height: 20px;'>&#8249;</span>`"
-        :navigationNextLabel="`<span style='font-size: 100px; color: #fff; line-height: 20px;'>&#8250;</span>`"
+        :navigationPrevLabel="prevBtn"
+        :navigationNextLabel="nextBtn"
       >
         <slide v-for="simProd in similarProducts" :key="simProd.id">
           <div class="similar-slide">
@@ -157,6 +157,8 @@
 </template>
 
 <script>
+import btnNext from "../images/svg/btnNext.svg";
+import btnPrev from "../images/svg/btnPrev.svg";
 import Photo from "../components/photo";
 import Aside from "../components/aside";
 import Cart from "../components/cart";
@@ -187,6 +189,12 @@ export default {
     },
     isFavourite() {
       return this.favouriteList.indexOf(this.id);
+    },
+    nextBtn() {
+      return `<img src="${btnNext}"/>`;
+    },
+    prevBtn() {
+      return `<img src="${btnPrev}"/>`;
     },
   },
   methods: {

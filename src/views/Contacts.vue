@@ -66,7 +66,7 @@
                 v-if="!$v.tel.required && $v.tel.$error"
               >это поле обязательное</span>
               <span
-                v-if="!$v.tel.minLength || !$v.tel.maxLength || !$v.tel.numeric"
+                v-if="!$v.tel.minLength || !$v.tel.maxLength"
                 class="error-alert"
               >введите верный номер</span>
             </div>
@@ -74,8 +74,10 @@
               type="tel"
               name="tel"
               id="tel"
-              v-model.lazy="tel"
-              @focus="tel=380"
+              autocomplete="off"
+              v-model="tel"
+              v-mask="'+38(###)-##-##-###'"
+              @focus="tel=0"
               @blur="$v.tel.$touch()"
               :class="{'invalid': $v.tel.$error, 'dirty': $v.tel.$dirty}"
             />
@@ -113,21 +115,31 @@
               Я соглашаюсь на обработку
               <u>персональных данных</u>
             </div>
-            <button
-              type="submit"
-              class="btn btn--width"
-              :disabled="!checkbox || $v.$invalid"
-            >Отправить заявку</button>
-            <button type="button" class="btn" @click="modalOpen = true" disabled>
-              <svg class="svg-btn">
-                <use xlink:href="../images/svg/sprite.svg#clip" />
-              </svg>
-            </button>
+            <div v-if="!loading">
+              <button
+                type="submit"
+                class="btn btn--width"
+                :disabled="!checkbox || $v.$invalid || fileError"
+              >Отправить заявку</button>
+              <button
+                type="button"
+                class="btn"
+                @click="modalOpen = true"
+                :disabled="!checkbox || $v.$invalid"
+              >
+                <svg class="svg-btn">
+                  <use xlink:href="../images/svg/sprite.svg#clip" />
+                </svg>
+              </button>
+            </div>
+            <div v-else class="col">
+              <Loader />
+            </div>
           </form>
         </div>
       </div>
     </div>
-    <div class="modal" v-if="modalOpen" @click="modalOpen = false">
+    <div class="modal" v-if="modalOpen" @click.self="modalOpen = false">
       <div class="modal-body">
         <button type="button" class="btn-remove" @click="modalOpen = false">
           <svg class="svg-remove">
@@ -144,7 +156,7 @@
           />
           <div
             class="modal-body__file-label"
-            :class="{'error': inputError, 'valid': inputValid}"
+            :class="{'error': fileError, 'valid': fileValid}"
           >{{inputText}}</div>
           <span class="btn btn--width modal-body__file-btn">Выбрать файл</span>
         </label>
@@ -174,12 +186,12 @@ import {
   email,
   maxLength,
   minLength,
-  numeric,
 } from "vuelidate/lib/validators";
-// import { db } from "../main";
+import Loader from "../components/loader";
 
 export default {
   name: "Contacts",
+  components: { Loader },
   data() {
     return {
       email: "",
@@ -187,42 +199,60 @@ export default {
       tel: "",
       comment: "",
       checkbox: true,
-      file: "",
+      file: null,
+      fileScr: "",
       modalOpen: false,
       inputText: "Перетащите файл для загрузки или",
-      inputError: false,
-      inputValid: false,
+      fileError: false,
+      fileValid: false,
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.getLoading;
+    },
   },
   methods: {
     fileUpload(event) {
-      this.file = event.target.files[0];
-      const fileName = this.file.name;
-      let fileSize = this.file.size;
-      const fileType = this.file.type;
+      if (window.FileReader) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.fileSrc = reader.result;
+        };
+        reader.readAsDataURL(file);
+        this.file = file;
 
-      if (this.validFileType(fileType)) {
-        if (fileSize < 1024) {
-          fileSize += "bytes";
-          this.inputText = fileName + " " + fileSize;
-          this.inputValid = true;
-        } else if (fileSize > 1024 && fileSize < 1048576) {
-          fileSize = (fileSize / 1024).toFixed(1) + "KB";
-          this.inputText = fileName + " " + fileSize;
-          this.inputValid = true;
-        } else if (fileSize > 1048576 && fileSize < 10485760) {
-          fileSize = (fileSize / 1048576).toFixed(1) + "MB";
-          this.inputText = fileName + " " + fileSize;
-          this.inputValid = true;
+        const fileName = file.name;
+        let fileSize = file.size;
+        const fileType = file.type;
+        if (this.validFileType(fileType)) {
+          this.fileError = false;
+
+          if (fileSize < 1024) {
+            fileSize += "bytes";
+            this.inputText = fileName + " " + fileSize;
+            this.fileValid = true;
+          } else if (fileSize >= 1024 && fileSize < 1048576) {
+            fileSize = (fileSize / 1024).toFixed(1) + "KB";
+            this.inputText = fileName + " " + fileSize;
+            this.fileValid = true;
+          } else if (fileSize >= 1048576 && fileSize <= 5242880) {
+            fileSize = (fileSize / 1048576).toFixed(1) + "MB";
+            this.inputText = fileName + " " + fileSize;
+            this.fileValid = true;
+          } else {
+            this.file = "";
+            this.fileError = true;
+            this.fileValid = false;
+            this.inputText = "Максимальный размер файла 5 МВ";
+          }
         } else {
           this.file = "";
-          this.inputError = true;
-          this.inputText = "Максимальный размер файла 10 МВ";
+          this.fileError = true;
+          this.fileValid = false;
+          this.inputText = "Неправельный формат файла!";
         }
-      } else {
-        this.file = "";
-        this.inputError = true;
-        this.inputText = "Неправельный формат файла!";
       }
     },
     validFileType(file) {
@@ -234,26 +264,20 @@ export default {
       ];
       return !!fileTypes.find((type) => type === file);
     },
-    async addToDb() {
+    addToDb() {
       const review = {
         email: this.email,
         yourname: this.yourname,
         tel: this.tel,
         comment: this.comment,
         checkbox: this.checkbox,
-        /* file: this.file, */
+        file: this.file,
         date: new Date().toJSON(),
       };
-      /* await db
-        .collection("reviews")
-        .add(review)
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
-        })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        }); */
-      console.log(review);
+      this.$store
+        .dispatch("createReview", review)
+        .then(() => this.$router.push("/contscts"))
+        .catch(() => {});
     },
   },
   validations: {
@@ -264,14 +288,13 @@ export default {
     },
     yourname: {
       required,
-      alpha: (val) => /^[а-яё,і,ї,є,a-z,',-]*$/i.test(val),
+      alpha: (val) => /^[а-яё,і,ї,є,a-z,',-,\s]*$/i.test(val),
       maxLength: maxLength(40),
     },
     tel: {
       required,
-      maxLength: maxLength(12),
-      minLength: minLength(12),
-      numeric,
+      maxLength: maxLength(18),
+      minLength: minLength(18),
     },
     comment: {
       required,

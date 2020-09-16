@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-if="!loading">
     <div class="mainer">
       <div class="filter-block">
         <div class="filter">
@@ -92,13 +92,17 @@
       <use xlink:href="../images/svg/sprite.svg#faces" />
     </svg>
   </div>
+  <div v-else class="page">
+    <Loader />
+  </div>
 </template>
 
 <script>
 import Aside from "../components/aside";
+import Loader from "../components/loader";
 
 export default {
-  components: { Aside },
+  components: { Aside, Loader },
   data() {
     return {
       products: [],
@@ -107,6 +111,11 @@ export default {
       filterListOpen: false,
       btnDisabled: false,
     };
+  },
+  computed: {
+    loading() {
+      return this.$store.getters.getLoading;
+    },
   },
   methods: {
     getProducts() {
@@ -160,7 +169,11 @@ export default {
       this.useFilter();
     },
   },
-  created() {
+  async created() {
+    if (this.$store.getters.noProducts) {
+      await this.$store.dispatch("fetchAllProducts");
+      console.log("fetch");
+    }
     this.$store.dispatch("getProductsByCategory", "00");
     this.getProducts();
   },
@@ -170,6 +183,9 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/_variables.scss";
 
+.page {
+  min-height: calc(100vh - 110px - 84px - 83px);
+}
 .filter-block {
   position: relative;
   width: 213px;

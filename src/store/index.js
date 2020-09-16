@@ -1,11 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { db } from "../main";
+import loader from "./modules/loader"
+import reviews from "./modules/reviews"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    products: [
+    oldProducts: [
       {
         id: "101",
         name: 'Панно "Lady in hat"',
@@ -442,6 +445,7 @@ export default new Vuex.Store({
         description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem consequatur laboriosam architecto voluptatum asperiores blanditiis qui. Beatae fugit quis delectus!"
       },
     ],
+    products: [],
     videos: [
       {
         id: "901",
@@ -662,6 +666,9 @@ export default new Vuex.Store({
     search: []
   },
   mutations: {
+    ALL_PRODUCTS(state, payload) {
+      state.products = payload;
+    },
     PRODUCTS_BY_CATEGORY(state, payload) {
       state.byCat = state.products.filter(product => product.catId.find(catId => catId === payload));
       if (payload === "09") {
@@ -693,18 +700,50 @@ export default new Vuex.Store({
     CLEAR_MY_CART(state) {
       state.cartList = [];
     },
-    SEND_NEW_ORDER(state, payload) {
-      state.order = payload;
-      console.log(state.order);
-    },
+    /*     SEND_NEW_ORDER(state, payload) {
+          state.order = payload;
+          console.log(state.order);
+        }, */
     SEARCH_IN_PRODUCTS(state, payload) {
       state.search = state.products.filter(product => product.name.toLowerCase().indexOf(payload) > -1);
-      console.log(state.search)
     }
   },
   actions: {
+    async fetchAllProducts({ commit }) {
+      let result = [];
+      commit("CLEAR_ERROR");
+      commit("SET_LOADING", true);
+      try {
+        const fbVal = await db.ref("products").once("value");
+        const products = fbVal.val();
+        Object.keys(products).forEach(key => {
+          const product = products[key];
+          result.push({
+            id: key,
+            name: product.name,
+            urlPotser: product.urlPotser,
+            urlGallery: product.urlGallery,
+            urlShop: product.urlShop,
+            catId: product.catId,
+            available: product.available,
+            material: product.material,
+            size: product.size,
+            price: product.price,
+            discount: product.discount,
+            new: product.new,
+            description: product.description
+          })
+        })
+        commit("ALL_PRODUCTS", result);
+        commit("SET_LOADING", false);
+      } catch (error) {
+        commit("SET_ERROR", error.message);
+        commit("SET_LOADING", false);
+        throw error
+      }
+    },
     getProductsByCategory({ commit }, payload) {
-      commit("PRODUCTS_BY_CATEGORY", payload.toLowerCase())
+      commit("PRODUCTS_BY_CATEGORY", payload)
     },
     getProductById({ commit }, payload) {
       commit("PRODUCT_BY_ID", payload)
@@ -722,15 +761,30 @@ export default new Vuex.Store({
     removeFromCart({ commit }, payload) {
       commit("REMOVE_FROM_MY_CART", payload);
     },
-    sendOrder({ commit }, payload) {
-      commit("CLEAR_MY_CART");
-      commit("SEND_NEW_ORDER", payload);
+    async sendOrder({ commit }, payload) {
+      commit("CLEAR_ERROR");
+      commit("SET_LOADING", true);
+      try {
+        await db.ref("orders").push(payload);
+        commit("SET_LOADING", false);
+        commit("CLEAR_MY_CART");
+        console.log(payload)
+      } catch (error) {
+        commit("SET_ERROR", error.message);
+        commit("SET_LOADING", false);
+        throw error
+      }
+      /* ;
+      commit("SEND_NEW_ORDER", payload); */
     },
     useSearch({ commit }, payload) {
-      commit("SEARCH_IN_PRODUCTS", payload);
+      commit("SEARCH_IN_PRODUCTS", payload.toLowerCase());
     }
   },
   getters: {
+    noProducts(state) {
+      return state.products.length === 0;
+    },
     sliceProducts: state => start => {
       return state.byCat.slice(start, start + 9);
     },
@@ -751,5 +805,6 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    loader, reviews
   }
 })
