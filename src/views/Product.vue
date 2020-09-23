@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <Photo v-if="modal" @closeModal="modal = !modal" :prodId="id" :imgPath="resizeImg" />
+      <Photo v-if="modal" @closeModal="modal = !modal" :resizePath="resizePath" />
       <router-link tag="a" to="/shop" title="Назад">
         <span class="link-back"></span>
       </router-link>
@@ -24,11 +24,7 @@
                   </svg>
                 </div>
                 <div class="img-block">
-                  <img
-                    class="img-block__photo"
-                    :ref="`${product.id}`-`${index+1}`"
-                    :src="require('../images/products/' + product.id + img)"
-                  />
+                  <img class="img-block__photo" :alt="product.name" :src="img" />
                 </div>
               </div>
             </slide>
@@ -121,11 +117,7 @@
             <router-link tag="div" :to="'/product/' + simProd.id" class="img-container">
               <div class="tag tag--discount" v-if="simProd.discount > 0">-{{simProd.discount}}%</div>
               <div class="tag tag--new" v-if="simProd.new">Новинка</div>
-              <img
-                class="img"
-                :src="require('../images/products/' + simProd.id + '/poster.jpg')"
-                :alt="simProd.name"
-              />
+              <img class="img" :src="simProd.urlPoster" :alt="simProd.name" />
             </router-link>
             <h3 class="name">
               <span>{{simProd.name}}</span>
@@ -173,7 +165,7 @@ export default {
       accordionTabDesc: true,
       accordionTabParams: false,
       modal: false,
-      resizeImg: "",
+      resizePath: "",
       cart: false,
     };
   },
@@ -199,7 +191,7 @@ export default {
   },
   methods: {
     resizePhoto(idx) {
-      this.resizeImg = this.product.urlGallery[idx];
+      this.resizePath = this.product.urlGallery[idx];
       this.modal = true;
     },
     toggleFavourites(prodId) {
@@ -221,7 +213,7 @@ export default {
       const cart = {
         id: this.product.id,
         name: this.product.name,
-        urlPotser: this.product.urlPotser,
+        urlPoster: this.product.urlPoster,
         price: price,
         count: this.counter,
       };

@@ -388,11 +388,7 @@
               <ul class="cart">
                 <li class="cart__item" v-for="item in cartList" :key="item.id">
                   <div class="photo-block">
-                    <img
-                      class="photo"
-                      :src="require('../images/products/' + item.id + '/poster.jpg')"
-                      :alt="item.name"
-                    />
+                    <img class="photo" :src="item.urlPoster" :alt="item.name" />
                   </div>
                   <div class="controls">
                     <h3 class="name">{{item.name}}</h3>
@@ -524,6 +520,7 @@ export default {
         cartData: {
           productsAmount: this.amount,
           date: new Date().toJSON(),
+          done: false,
         },
       };
       this.$store
@@ -620,9 +617,6 @@ export default {
         .then((result) => (that.warehousesArr = result.data))
         .catch((error) => console.log(error));
       console.log(this.warehousesArr);
-      /*  $.ajax(settings).done(function (response) {
-        that.warehousesArr = response.data;
-      }); */
     },
     warehouseFilter() {
       return this.warehousesArr.filter(

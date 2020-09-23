@@ -29,7 +29,7 @@
                 <svg
                   class="svg-btn svg-btn--share"
                   title="копировать в буфер"
-                  @click="sharePhoto(`${product.id}`-`${index+1}`)"
+                  @click="sharePhoto(img)"
                 >
                   <use xlink:href="../images/svg/sprite.svg#share" />
                 </svg>
@@ -44,11 +44,7 @@
                 </svg>
               </div>
               <div class="img-block">
-                <img
-                  class="img-block__photo"
-                  :ref="`${product.id}`-`${index+1}`"
-                  :src="require('../images/products/' + product.id + img)"
-                />
+                <img class="img-block__photo" :ref="`${product.id}`-`${index+1}`" :src="img" />
               </div>
             </div>
           </slide>
@@ -88,12 +84,11 @@ export default {
       this.$emit("closeModal");
       this.$emit("modalHeight", "auto");
     },
-    sharePhoto(ref) {
-      const link = this.$refs[ref][0].currentSrc;
+    sharePhoto(link) {
       navigator.clipboard
         .writeText(link)
         .then(() => {
-          console.log(link);
+          window.open(link, "_blank");
         })
         .catch((err) => {
           console.log("Something went wrong", err);

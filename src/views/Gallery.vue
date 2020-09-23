@@ -37,7 +37,6 @@
               <img
                 class="gallery-img"
                 :src="'https://img.youtube.com/vi/'+ img.video + '/mqdefault.jpg'"
-                :title="img.name"
                 :alt="img.name"
                 @click="openVideo(img.id)"
               />
@@ -45,8 +44,7 @@
             <img
               v-else
               class="gallery-img"
-              :src="require('../images/products/' + img.id + '/poster.jpg')"
-              :title="img.name"
+              :src="img.urlPoster"
               :alt="img.name"
               @click="openModal(img.id)"
             />
@@ -98,7 +96,7 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.state.categories;
+      return this.$store.getters.getCategories;
     },
     loading() {
       return this.$store.getters.getLoading;
@@ -108,6 +106,9 @@ export default {
     changeCategory(catId) {
       this.btnDisabled = false;
       this.activeCatId = catId;
+      if (catId === "09") {
+        this.$store.dispatch("fetchAllVideos");
+      }
       this.$store.dispatch("getProductsByCategory", this.activeCatId);
       this.getProducts();
     },
@@ -115,7 +116,6 @@ export default {
       this.products = this.$store.getters.sliceProducts(0);
     },
     morePhotos() {
-      // const height = this.$refs["morePhotosBtn"].offsetTop;
       const oldProducts = this.products;
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);

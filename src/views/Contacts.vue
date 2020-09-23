@@ -200,7 +200,7 @@ export default {
       comment: "",
       checkbox: true,
       file: null,
-      fileScr: "",
+      fileSrc: "",
       modalOpen: false,
       inputText: "Перетащите файл для загрузки или",
       fileError: false,
@@ -242,13 +242,13 @@ export default {
             this.inputText = fileName + " " + fileSize;
             this.fileValid = true;
           } else {
-            this.file = "";
+            this.file = null;
             this.fileError = true;
             this.fileValid = false;
             this.inputText = "Максимальный размер файла 5 МВ";
           }
         } else {
-          this.file = "";
+          this.file = null;
           this.fileError = true;
           this.fileValid = false;
           this.inputText = "Неправельный формат файла!";
@@ -264,7 +264,7 @@ export default {
       ];
       return !!fileTypes.find((type) => type === file);
     },
-    addToDb() {
+    async addToDb() {
       const review = {
         email: this.email,
         yourname: this.yourname,
@@ -273,10 +273,11 @@ export default {
         checkbox: this.checkbox,
         file: this.file,
         date: new Date().toJSON(),
+        done: false,
       };
-      this.$store
+      await this.$store
         .dispatch("createReview", review)
-        .then(() => this.$router.push("/contscts"))
+        .then(() => this.$router.push("/contacts"))
         .catch(() => {});
     },
   },

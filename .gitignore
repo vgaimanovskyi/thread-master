@@ -1,7 +1,8 @@
 .DS_Store
 node_modules
 # /dist
-
+/src/images/products
+/src/images/svg/originals
 
 # local env files
 .env.local

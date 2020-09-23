@@ -53,11 +53,7 @@
           <router-link tag="div" :to="'/product/' + product.id" class="img-container">
             <div class="tag tag--discount" v-if="product.discount > 0">-{{product.discount}}%</div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
-            <img
-              class="img"
-              :src="require('../images/products/' + product.id + '/poster.jpg')"
-              :alt="product.name"
-            />
+            <img class="img" :src="product.urlPoster" :alt="product.name" />
           </router-link>
           <h3 class="name">
             <span>{{product.name}}</span>
@@ -172,7 +168,6 @@ export default {
   async created() {
     if (this.$store.getters.noProducts) {
       await this.$store.dispatch("fetchAllProducts");
-      console.log("fetch");
     }
     this.$store.dispatch("getProductsByCategory", "00");
     this.getProducts();

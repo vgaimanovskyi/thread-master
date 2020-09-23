@@ -7,7 +7,7 @@
             <use xlink:href="../images/svg/sprite.svg#remove" />
           </svg>
         </div>
-        <img class="img" :src="require('../images/products/' + prodId + imgPath)" />
+        <img class="img" :src="resizePath" />
       </div>
     </div>
   </div>
@@ -16,7 +16,7 @@
 <script>
 export default {
   name: "photo",
-  props: ["prodId", "imgPath"],
+  props: ["resizePath"],
   methods: {
     closeModal() {
       this.$emit("closeModal");
