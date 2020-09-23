@@ -1,5 +1,9 @@
 <template>
-  <div class="page" :style="{'height': modalHeight, 'overflow-y': 'hidden'}" v-if="!loading">
+  <div
+    class="page"
+    :style="{ height: modalHeight, 'overflow-y': 'hidden' }"
+    v-if="!loading"
+  >
     <Modal
       v-if="modal"
       :product="product"
@@ -11,11 +15,13 @@
       <ul class="categories">
         <li
           class="categories__block"
-          :class="{'categories__block--active': activeCatId === category.id}"
+          :class="{ 'categories__block--active': activeCatId === category.id }"
           v-for="category in categories"
           :key="category.id"
           @click="changeCategory(category.id)"
-        >{{category.name}}</li>
+        >
+          {{ category.name }}
+        </li>
       </ul>
       <stack
         class="stack"
@@ -36,7 +42,9 @@
               <div class="video-block__btn" @click="openVideo(img.id)"></div>
               <img
                 class="gallery-img"
-                :src="'https://img.youtube.com/vi/'+ img.video + '/mqdefault.jpg'"
+                :src="
+                  'https://img.youtube.com/vi/' + img.video + '/mqdefault.jpg'
+                "
                 :alt="img.name"
                 @click="openVideo(img.id)"
               />
@@ -56,7 +64,9 @@
         class="btn btn--width"
         @click="morePhotos()"
         :disabled="btnDisabled"
-      >Смотреть еще</button>
+      >
+        Смотреть еще
+      </button>
     </div>
     <Aside />
     <svg class="svg svg--turtle">
@@ -103,11 +113,11 @@ export default {
     },
   },
   methods: {
-    changeCategory(catId) {
+    async changeCategory(catId) {
       this.btnDisabled = false;
       this.activeCatId = catId;
       if (catId === "09") {
-        this.$store.dispatch("fetchAllVideos");
+        await this.$store.dispatch("fetchAllVideos");
       }
       this.$store.dispatch("getProductsByCategory", this.activeCatId);
       this.getProducts();
