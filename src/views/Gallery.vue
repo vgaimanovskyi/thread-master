@@ -116,9 +116,6 @@ export default {
     async changeCategory(catId) {
       this.btnDisabled = false;
       this.activeCatId = catId;
-      if (catId === "09") {
-        await this.$store.dispatch("fetchAllVideos");
-      }
       this.$store.dispatch("getProductsByCategory", this.activeCatId);
       this.getProducts();
     },
@@ -152,6 +149,7 @@ export default {
       await this.$store.dispatch("fetchAllProducts");
       console.log("fetch");
     }
+    await this.$store.dispatch("fetchAllVideos");
     this.changeCategory(this.categories[0].id);
   },
 };
