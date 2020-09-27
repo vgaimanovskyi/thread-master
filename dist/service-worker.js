@@ -14,10 +14,10 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/thread-master/precache-manifest.8972593d53ab0b27faeca69d434ca054.js"
+  "/thread-master/precache-manifest.01a2ce1764633729e58fb22db6bc5538.js"
 );
 
-workbox.core.setCacheNameDetails({prefix: "vlad"});
+workbox.core.setCacheNameDetails({prefix: "thread-master"});
 
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
