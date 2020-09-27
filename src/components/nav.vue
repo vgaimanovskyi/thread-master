@@ -21,21 +21,39 @@
     <ul class="options header--width">
       <li>
         <div class="filter">
-          <div class="filter__name" @click="filterListOpen = !filterListOpen">
-            {{filterName}}
+          <div class="filter__name">
+            {{ filterName }}
             <svg
               class="filter__svg"
-              :class="{'filter__svg--rotate': filterListOpen}"
+              :class="{ 'filter__svg--rotate': filterListOpen }"
             >
               <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
             </svg>
           </div>
           <div class="filter__list" v-show="filterListOpen">
-            <input type="radio" value="ru" id="ru" v-model="filterValue" @change="useFilter" />
+            <input
+              type="radio"
+              value="ru"
+              id="ru"
+              v-model="filterValue"
+              @change="useFilter"
+            />
             <label for="ru">Русский</label>
-            <input type="radio" value="ua" id="ua" v-model="filterValue" @change="useFilter" />
+            <input
+              type="radio"
+              value="ua"
+              id="ua"
+              v-model="filterValue"
+              @change="useFilter"
+            />
             <label for="ua">Українська</label>
-            <input type="radio" value="en" id="en" v-model="filterValue" @change="useFilter" />
+            <input
+              type="radio"
+              value="en"
+              id="en"
+              v-model="filterValue"
+              @change="useFilter"
+            />
             <label for="en">English</label>
           </div>
         </div>
@@ -45,7 +63,9 @@
           <svg class="svg svg--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
-          <span class="options-icons__number" v-if="favouriteList.length">{{favouriteList.length}}</span>
+          <span class="options-icons__number" v-if="favouriteList.length">{{
+            favouriteList.length
+          }}</span>
         </button>
       </li>
       <li>
@@ -69,7 +89,9 @@
           <svg class="svg svg--cart">
             <use xlink:href="../images/svg/sprite.svg#cart" />
           </svg>
-          <span class="options-icons__number" v-if="cartList.length">{{cartList.length}}</span>
+          <span class="options-icons__number" v-if="cartList.length">{{
+            cartList.length
+          }}</span>
         </button>
       </li>
     </ul>
@@ -155,9 +177,6 @@ export default {
         this.noFavData = true;
       }
     },
-  },
-  created() {
-    this.$store.dispatch("getMyFavourites");
   },
 };
 </script>
@@ -250,6 +269,7 @@ export default {
   }
   &__name {
     line-height: 24px;
+    cursor: default;
   }
   &__svg {
     position: absolute;

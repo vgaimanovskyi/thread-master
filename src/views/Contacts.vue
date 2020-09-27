@@ -5,8 +5,8 @@
         <div class="col">
           <h1 class="page__caption">Мои контакты</h1>
           <p>
-            Если у Вас есть вопросы или предложения по
-            улучшению нашего сервиса, напишите мне.
+            Если у Вас есть вопросы или предложения по улучшению нашего сервиса,
+            напишите мне.
           </p>
           <table>
             <tr>
@@ -19,18 +19,23 @@
             </tr>
           </table>
         </div>
-        <div class="col">
+        <div class="col" v-if="success">
+          <h1 class="page__caption">Ваш отзыв успешно доставлен!</h1>
+        </div>
+        <div class="col" v-else>
           <h1 class="page__caption">Форма обратной связи</h1>
-          <form class="contact-form" @submit.prevent="addToDb">
+          <form ref="form" class="contact-form" @submit.prevent="addToDb" autocomplete="off">
             <div class="error-block">
               <span
                 v-if="!$v.email.required && $v.email.$error"
                 class="error-alert"
-              >это поле обязательное</span>
+                >это поле обязательное</span
+              >
               <span
                 v-if="!$v.email.email || !$v.email.maxLength"
                 class="error-alert"
-              >введите верный e-mail</span>
+                >введите верный e-mail</span
+              >
             </div>
             <input
               type="email"
@@ -38,18 +43,20 @@
               id="email"
               v-model.lazy="email"
               @blur="$v.email.$touch()"
-              :class="{'invalid': $v.email.$error, 'dirty': $v.email.$dirty}"
+              :class="{ invalid: $v.email.$error, dirty: $v.email.$dirty }"
             />
             <label for="email" class="placeholder-label">Ваш E-mail*</label>
             <div class="error-block">
               <span
                 class="error-alert"
                 v-if="!$v.yourname.required && $v.yourname.$error"
-              >это поле обязательное</span>
+                >это поле обязательное</span
+              >
               <span
                 v-if="!$v.yourname.alpha || !$v.yourname.maxLength"
                 class="error-alert"
-              >введите верное имя</span>
+                >введите верное имя</span
+              >
             </div>
             <input
               type="text"
@@ -57,49 +64,53 @@
               id="yourname"
               v-model.lazy="yourname"
               @blur="$v.yourname.$touch()"
-              :class="{'invalid': $v.yourname.$error, 'dirty': $v.yourname.$dirty}"
+              :class="{
+                invalid: $v.yourname.$error,
+                dirty: $v.yourname.$dirty,
+              }"
             />
             <label for="yourname" class="placeholder-label">Ваше имя*</label>
             <div class="error-block">
-              <span
-                class="error-alert"
-                v-if="!$v.tel.required && $v.tel.$error"
-              >это поле обязательное</span>
+              <span class="error-alert" v-if="!$v.tel.required && $v.tel.$error"
+                >это поле обязательное</span
+              >
               <span
                 v-if="!$v.tel.minLength || !$v.tel.maxLength"
                 class="error-alert"
-              >введите верный номер</span>
+                >введите верный номер</span
+              >
             </div>
             <input
               type="tel"
               name="tel"
               id="tel"
-              autocomplete="off"
               v-model="tel"
               v-mask="'+38(###)-##-##-###'"
-              @focus="tel=0"
+              @focus="tel = 0"
               @blur="$v.tel.$touch()"
-              :class="{'invalid': $v.tel.$error, 'dirty': $v.tel.$dirty}"
+              :class="{ invalid: $v.tel.$error, dirty: $v.tel.$dirty }"
             />
             <label for="tel" class="placeholder-label">Ваш телефон*</label>
             <div class="error-block">
               <span
                 v-if="!$v.comment.required && $v.comment.$error"
                 class="error-alert"
-              >это поле обязательное</span>
-              <span
-                v-if="!$v.comment.maxLength"
-                class="error-alert"
-              >количество символов {{comment.length}}/2000</span>
+                >это поле обязательное</span
+              >
+              <span v-if="!$v.comment.maxLength" class="error-alert"
+                >количество символов {{ comment.length }}/2000</span
+              >
             </div>
             <textarea
               name="comment"
               id="comment"
               v-model="comment"
               @blur="$v.comment.$touch()"
-              :class="{'invalid': $v.comment.$error, 'dirty': $v.comment.$dirty}"
+              :class="{ invalid: $v.comment.$error, dirty: $v.comment.$dirty }"
             ></textarea>
-            <label for="comment" class="placeholder-label">Напишите свой вопрос или предложение*</label>
+            <label for="comment" class="placeholder-label"
+              >Напишите свой вопрос или предложение*</label
+            >
 
             <div class="form-block">* - поле, обязательное для ввода</div>
             <div class="form-block">
@@ -109,7 +120,7 @@
                 id="checkbox"
                 class="custom-checkbox"
                 v-model="checkbox"
-                :class="{'invalid': !checkbox}"
+                :class="{ invalid: !checkbox }"
               />
               <label for="checkbox"></label>
               Я соглашаюсь на обработку
@@ -120,7 +131,9 @@
                 type="submit"
                 class="btn btn--width"
                 :disabled="!checkbox || $v.$invalid || fileError"
-              >Отправить заявку</button>
+              >
+                Отправить заявку
+              </button>
               <button
                 type="button"
                 class="btn"
@@ -148,6 +161,7 @@
         </button>
         <label>
           <input
+            ref="uploadFila"
             type="file"
             id="upload-file"
             name="upload-file"
@@ -156,10 +170,20 @@
           />
           <div
             class="modal-body__file-label"
-            :class="{'error': fileError, 'valid': fileValid}"
-          >{{inputText}}</div>
-          <span class="btn btn--width modal-body__file-btn">Выбрать файл</span>
+            :class="{ error: fileError, valid: fileValid }"
+          >
+            {{ inputText }}
+          </div>
         </label>
+        <button
+          class="btn btn--width modal-body__file-btn"
+          @click="triggerUpload"
+        >
+          Выбрать файл
+        </button>
+        <button class="btn btn--width modal-body__file-btn" @click="clearFile">
+          Очистить
+        </button>
         <svg class="svg svg--whale">
           <use xlink:href="../images/svg/sprite.svg#whale" />
         </svg>
@@ -192,8 +216,12 @@ import Loader from "../components/loader";
 export default {
   name: "Contacts",
   components: { Loader },
+  metaInfo: {
+    title: "Контакты",
+  },
   data() {
     return {
+      success: false,
       email: "",
       yourname: "",
       tel: "",
@@ -202,7 +230,7 @@ export default {
       file: null,
       fileSrc: "",
       modalOpen: false,
-      inputText: "Перетащите файл для загрузки или",
+      inputText: "Выберите файл размером до 2 МВ",
       fileError: false,
       fileValid: false,
     };
@@ -213,6 +241,16 @@ export default {
     },
   },
   methods: {
+    triggerUpload() {
+      this.$refs["uploadFila"].click();
+    },
+    clearFile() {
+      this.file = null;
+      this.fileSrc = "";
+      this.inputText = "Выберите файл размером до 2 МВ";
+      this.fileError = false;
+      this.fileValid = false;
+    },
     fileUpload(event) {
       if (window.FileReader) {
         const file = event.target.files[0];
@@ -237,7 +275,7 @@ export default {
             fileSize = (fileSize / 1024).toFixed(1) + "KB";
             this.inputText = fileName + " " + fileSize;
             this.fileValid = true;
-          } else if (fileSize >= 1048576 && fileSize <= 5242880) {
+          } else if (fileSize >= 1048576 && fileSize <= 2097152) {
             fileSize = (fileSize / 1048576).toFixed(1) + "MB";
             this.inputText = fileName + " " + fileSize;
             this.fileValid = true;
@@ -245,7 +283,7 @@ export default {
             this.file = null;
             this.fileError = true;
             this.fileValid = false;
-            this.inputText = "Максимальный размер файла 5 МВ";
+            this.inputText = "Максимальный размер файла 2 МВ";
           }
         } else {
           this.file = null;
@@ -277,7 +315,10 @@ export default {
       };
       await this.$store
         .dispatch("createReview", review)
-        .then(() => this.$router.push("/contacts"))
+        .then(() => {
+          this.$refs.form.reset();
+          this.success = true;
+        })
         .catch(() => {});
     },
   },
@@ -506,9 +547,10 @@ table {
     }
   }
   &__file-btn {
+    display: inline-block;
     color: $colorBrend;
     background-color: $colorBackground;
-    margin: 0 auto;
+    margin: 0 20px;
   }
   input[type="file"] {
     z-index: -1;

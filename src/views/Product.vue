@@ -158,6 +158,9 @@ import { Carousel, Slide } from "vue-carousel";
 
 export default {
   components: { Photo, Aside, Cart, Carousel, Slide },
+  metaInfo: {
+    title: "Товар",
+  },
   data() {
     return {
       id: this.$route.params["id"],

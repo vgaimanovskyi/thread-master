@@ -4,10 +4,10 @@
       <div class="filter-block">
         <div class="filter">
           <div class="filter__name" @click="filterListOpen = !filterListOpen">
-            {{filterName}}
+            {{ filterName }}
             <svg
               class="filter__svg"
-              :class="{'filter__svg--rotate': filterListOpen}"
+              :class="{ 'filter__svg--rotate': filterListOpen }"
             >
               <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
             </svg>
@@ -15,14 +15,11 @@
           <div class="filter__list" v-show="filterListOpen">
             <input
               type="radio"
-              value="rating"
-              id="rating"
+              value="cheap"
+              id="cheap"
               v-model="filterValue"
               @change="useFilter"
-              disabled
             />
-            <label for="rating">По рейтингу</label>
-            <input type="radio" value="cheap" id="cheap" v-model="filterValue" @change="useFilter" />
             <label for="cheap">От дешевых к дорогим</label>
             <input
               type="radio"
@@ -34,37 +31,45 @@
             <label for="expensive">От дорогих к дешевым</label>
             <input
               type="radio"
-              value="popular"
-              id="popular"
+              value="new"
+              id="new"
               v-model="filterValue"
               @change="useFilter"
-              disabled
             />
-            <label for="popular">Популярные</label>
-            <input type="radio" value="new" id="new" v-model="filterValue" @change="useFilter" />
             <label for="new">Новинки</label>
-            <input type="radio" value="promo" id="promo" v-model="filterValue" @change="useFilter" />
+            <input
+              type="radio"
+              value="promo"
+              id="promo"
+              v-model="filterValue"
+              @change="useFilter"
+            />
             <label for="promo">Акционные</label>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col" v-for="product in products" :key="product.id">
-          <router-link tag="div" :to="'/product/' + product.id" class="img-container">
-            <div class="tag tag--discount" v-if="product.discount > 0">-{{product.discount}}%</div>
+          <router-link
+            tag="div"
+            :to="'/product/' + product.id"
+            class="img-container"
+          >
+            <div class="tag tag--discount" v-if="product.discount > 0">
+              -{{ product.discount }}%
+            </div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
             <img class="img" :src="product.urlPoster" :alt="product.name" />
           </router-link>
           <h3 class="name">
-            <span>{{product.name}}</span>
+            <span>{{ product.name }}</span>
           </h3>
-          <div class="size">Размер: {{product.size}}</div>
+          <div class="size">Размер: {{ product.size }}</div>
           <div class="price">
-            {{product.price - (product.price*product.discount/100)}} $
-            <s
-              class="old-price"
-              v-if="product.discount > 0"
-            >{{product.price}} $</s>
+            {{ product.price - (product.price * product.discount) / 100 }} $
+            <s class="old-price" v-if="product.discount > 0"
+              >{{ product.price }} $</s
+            >
           </div>
         </div>
         <div class="col empty"></div>
@@ -75,7 +80,9 @@
         class="btn btn--width"
         @click="moreProducts()"
         :disabled="btnDisabled"
-      >Смотреть еще</button>
+      >
+        Смотреть еще
+      </button>
     </div>
     <Aside />
     <svg class="svg svg--turtle">
@@ -99,6 +106,9 @@ import Loader from "../components/loader";
 
 export default {
   components: { Aside, Loader },
+  metaInfo: {
+    title: "Магазин",
+  },
   data() {
     return {
       products: [],
@@ -112,20 +122,16 @@ export default {
     loading() {
       return this.$store.getters.getLoading;
     },
+    allProducts() {
+      return this.$store.getters.getAllProducts;
+    },
   },
   methods: {
-    getProducts() {
-      this.products = this.$store.getters.sliceProducts(0);
-    },
     useFilter() {
       switch (this.filterValue) {
-        case "rating":
-          this.filterName = "По рейтингу";
-          alert("rating нет данных");
-          break;
         case "cheap":
           this.filterName = "От дешевых к дорогим";
-          this.products.sort(function (a, b) {
+          this.allProducts.sort(function (a, b) {
             const A = a.price - (a.price * a.discount) / 100;
             const B = b.price - (b.price * b.discount) / 100;
             return A - B;
@@ -133,45 +139,49 @@ export default {
           break;
         case "expensive":
           this.filterName = "От дорогих к дешевым";
-          this.products.sort(function (a, b) {
+          this.allProducts.sort(function (a, b) {
             const A = a.price - (a.price * a.discount) / 100;
             const B = b.price - (b.price * b.discount) / 100;
             return B - A;
           });
           break;
-        case "popular":
-          this.filterName = "Популярные";
-          alert("popular нет данных");
-          break;
         case "new":
           this.filterName = "Новинки";
-          this.products.sort((a, b) => b.new - a.new);
+          this.allProducts.sort((a, b) => b.new - a.new);
           break;
         case "promo":
           this.filterName = "Акционные";
-          this.products.sort((a, b) => b.discount - a.discount);
+          this.allProducts.sort((a, b) => b.discount - a.discount);
           break;
         default:
           this.filterName = "Фильтр";
-          this.products.sort((a, b) => a.id - b.id);
+          this.allProducts.sort((a, b) => a.id - b.id);
       }
       this.filterListOpen = false;
+      this.btnDisabled = false;
     },
     moreProducts() {
       const oldProducts = this.products;
-      const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
+      const newProducts = this.allProducts.slice(
+        oldProducts.length,
+        oldProducts.length + 9
+      );
       this.products = oldProducts.concat(newProducts);
-      this.btnDisabled = this.products.length === oldProducts.length;
-      this.useFilter();
+      this.btnDisabled = this.products.length === this.allProducts.length;
     },
   },
-  async created() {
-    if (this.$store.getters.noProducts) {
-      await this.$store.dispatch("fetchAllProducts");
-    }
-    this.$store.dispatch("getProductsByCategory", "00");
-    this.getProducts();
+  created() {
+    this.products = this.allProducts.slice(0, 9);
   },
+  watch: {
+    allProducts: function () {
+      this.products = this.allProducts.slice(0, 9);
+    },
+  },
+  /* created() {
+    this.useFilter();
+    console.log("use filter");
+  }, */
 };
 </script>
 

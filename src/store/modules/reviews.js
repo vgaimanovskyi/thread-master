@@ -22,11 +22,13 @@ export default {
             }
             try {
                 const review = await db.ref("reviews").push(newReview);
-                const fileExt = file.name.slice(file.name.lastIndexOf("."));
-                const fileRef = fs.ref(`reviews/${review.key}${fileExt}`);
-                await fileRef.put(file);
-                const fileSrc = await fileRef.getDownloadURL();
-                await db.ref("reviews").child(review.key).update({ fileUrl: fileSrc })
+                if (file !== null) {
+                    const fileExt = file.name.slice(file.name.lastIndexOf("."));
+                    const fileRef = fs.ref(`reviews/${review.key}${fileExt}`);
+                    await fileRef.put(file);
+                    const fileSrc = await fileRef.getDownloadURL();
+                    await db.ref("reviews").child(review.key).update({ fileUrl: fileSrc })
+                }
                 commit("SET_LOADING", false);
             } catch (error) {
                 commit("SET_ERROR", error.message);

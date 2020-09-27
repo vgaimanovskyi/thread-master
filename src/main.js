@@ -1,12 +1,13 @@
-import Vue from 'vue'
-import Vuelidate from 'vuelidate'
-import App from './App.vue'
-import './registerServiceWorker'
-import router from './router'
-import store from './store'
-import scrollTo from './scrollTo'
+import Vue from 'vue';
+import Vuelidate from 'vuelidate';
+import App from './App.vue';
+import './registerServiceWorker';
+import router from './router';
+import store from './store';
+import scrollTo from './scrollTo';
 import VueCarousel from 'vue-carousel';
 import VueMask from 'v-mask';
+import VueMeta from 'vue-meta';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -16,6 +17,7 @@ import 'firebase/storage';
 Vue.use(Vuelidate);
 Vue.use(VueCarousel);
 Vue.use(VueMask);
+Vue.use(VueMeta);
 
 
 Vue.config.devtools = true;

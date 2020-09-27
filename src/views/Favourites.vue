@@ -4,33 +4,40 @@
       <h1 class="page__caption">Избранные товары</h1>
       <div class="row">
         <div class="col" v-for="product in favProducts" :key="product.id">
-          <router-link tag="div" :to="'/product/' + product.id" class="img-container">
-            <div class="tag tag--discount" v-if="product.discount > 0">-{{product.discount}}%</div>
+          <router-link
+            tag="div"
+            :to="'/product/' + product.id"
+            class="img-container"
+          >
+            <div class="tag tag--discount" v-if="product.discount > 0">
+              -{{ product.discount }}%
+            </div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
-            <img
-              class="img"
-              :src="require('../images/products/' + product.id + '/poster.jpg')"
-              :alt="product.name"
-            />
+            <img class="img" :src="product.urlPoster" :alt="product.name" />
           </router-link>
           <h3 class="name">
-            <span>{{product.name}}</span>
+            <span>{{ product.name }}</span>
           </h3>
-          <div class="size">Размер: {{product.size}}</div>
+          <div class="size">Размер: {{ product.size }}</div>
           <div class="price">
-            {{product.price - (product.price*product.discount/100)}} $
-            <s
-              class="old-price"
-              v-if="product.discount > 0"
-            >{{product.price}} $</s>
+            {{ product.price - (product.price * product.discount) / 100 }} $
+            <s class="old-price" v-if="product.discount > 0"
+              >{{ product.price }} $</s
+            >
           </div>
           <div class="btn-container">
             <button
               type="button"
               class="btn btn--width"
               @click="addToCart(product.id)"
-            >Добавить в корзину</button>
-            <button type="button" class="btn" @click="removeFromFavourites(product.id)">
+            >
+              Добавить в корзину
+            </button>
+            <button
+              type="button"
+              class="btn"
+              @click="removeFromFavourites(product.id)"
+            >
               <svg class="svg-btn favourite">
                 <use xlink:href="../images/svg/sprite.svg#heart" />
               </svg>
@@ -60,6 +67,9 @@ import Loader from "../components/loader";
 
 export default {
   components: { Aside, Loader },
+  metaInfo: {
+    title: "Избранное",
+  },
   computed: {
     favProducts() {
       return this.$store.getters.getFavProducts;
@@ -83,19 +93,13 @@ export default {
       const cart = {
         id: product.id,
         name: product.name,
-        urlPotser: product.urlPotser,
+        urlPoster: product.urlPoster,
         price: price,
         count: 1,
       };
       this.$store.dispatch("addToCart", cart);
       this.removeFromFavourites(prodId);
     },
-  },
-  async created() {
-    if (this.$store.getters.noProducts) {
-      await this.$store.dispatch("fetchAllProducts");
-      console.log("fetch");
-    }
   },
 };
 </script>

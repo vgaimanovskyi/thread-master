@@ -41,6 +41,9 @@ import Aside from "../components/aside";
 
 export default {
   components: { Aside },
+  metaInfo: {
+    title: "Поиск",
+  },
   computed: {
     searchResults() {
       return this.$store.getters.getSearchResults;

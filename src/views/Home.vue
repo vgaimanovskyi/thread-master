@@ -8,22 +8,28 @@
             <br />Тут ты сможешь ознакомиться с моим творчеством!
           </h2>
           <p class="hello-text__description">
-            Мои картины имеют уникальную технику создания, стринг арт (от англ. string art — «искусство нитей»).
-            Это набирающий популярность вид изобразительного искусства в котором используются гвозди и нити.
+            Мои картины имеют уникальную технику создания, стринг арт (от англ.
+            string art — «искусство нитей»). Это набирающий популярность вид
+            изобразительного искусства в котором используются гвозди и нити.
           </p>
           <p class="hello-text__description">
             Наслаждайтесь, вдохновляйтесь, вдумывайтесь глядя на эти работы.
             Интересного просмотра!
           </p>
           <p class="hello-text__description">
-            Приглашаю вас посетить мой магазин. В магазине можно приобрести картины в Чернигове напрямую по самым выгодным ценам.
-            Или заказать индивидуально картину по своему желанию.
+            Приглашаю вас посетить мой магазин. В магазине можно приобрести
+            картины в Чернигове напрямую по самым выгодным ценам. Или заказать
+            индивидуально картину по своему желанию.
           </p>
-          <router-link to="/shop" tag="a" class="btn btn--width">Перейти в магазин</router-link>
+          <router-link to="/shop" tag="a" class="btn btn--width"
+            >Перейти в магазин</router-link
+          >
         </div>
       </div>
       <div class="col">
-        <img src="../images/logo.png" alt="String Art logo" class="logo-img" />
+        <svg class="logo-svg">
+          <use xlink:href="../images/svg/sprite.svg#logo" />
+        </svg>
       </div>
     </div>
     <svg class="svg svg--face">
@@ -41,6 +47,9 @@
 <script>
 export default {
   name: "Home",
+  metaInfo: {
+    title: "Thread Master",
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -58,11 +67,14 @@ export default {
   display: flex;
   align-items: center;
 }
-.logo-img {
+.logo-svg {
   display: block;
   width: 100%;
+  height: 100%;
   transform: scale(0);
-  animation: logoShow 0.5s linear 1s forwards;
+  stroke-dasharray: 100;
+  animation: logoShow 0.5s linear 1s forwards,
+    logoAnimate 30s linear 1s infinite;
 }
 .hello-text {
   padding-right: 15px;
@@ -137,6 +149,19 @@ export default {
     animation: svgShow 15s linear 4s infinite alternate;
   }
 }
+@keyframes logoShow {
+  90% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes logoAnimate {
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
 @keyframes svgShow {
   to {
     stroke-dashoffset: 0;
@@ -145,14 +170,6 @@ export default {
 @keyframes textShow {
   to {
     transform: translateX(0);
-  }
-}
-@keyframes logoShow {
-  90% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 </style>

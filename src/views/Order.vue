@@ -1,429 +1,573 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <h1 class="page__caption">Оформление товара</h1>
-      <div class="row">
-        <div class="col col--width">
-          <h4 class="title">Данные покупателя</h4>
-          <div class="customer-content">
-            <div class="customer-content__col">
-              <h4 class="caption">
-                <div class="icon" :class="{'icon--active': !customerFormOpen}">
-                  <svg class="svg-icon">
-                    <use xlink:href="../images/svg/sprite.svg#yes" v-if="!customerFormOpen" />
-                    <use xlink:href="../images/svg/sprite.svg#pen" v-else />
-                  </svg>
-                </div>Личные данные
-              </h4>
-              <form
-                class="contact-form"
-                @submit.prevent="writeCustomerData"
-                v-if="customerFormOpen"
-              >
-                <!-- имя -->
-                <div class="error-block">
-                  <span
-                    class="error-alert"
-                    v-if="!$v.yourName.required && $v.yourName.$error"
-                  >это поле обязательное</span>
-                  <span
-                    v-if="!$v.yourName.alpha || !$v.yourName.maxLength"
-                    class="error-alert"
-                  >введите верное имя</span>
-                </div>
-                <input
-                  type="text"
-                  name="yourName"
-                  id="yourName"
-                  autocomplete="off"
-                  v-model.lazy="yourName"
-                  @blur="$v.yourName.$touch()"
-                  :class="{'invalid': $v.yourName.$error, 'dirty': $v.yourName.$dirty}"
-                />
-                <label for="yourName" class="placeholder-label">Ваше имя*</label>
-                <!-- фамилия -->
-                <div class="error-block">
-                  <span
-                    class="error-alert"
-                    v-if="!$v.yourLastName.required && $v.yourLastName.$error"
-                  >это поле обязательное</span>
-                  <span
-                    v-if="!$v.yourLastName.alpha || !$v.yourLastName.maxLength"
-                    class="error-alert"
-                  >введите верное имя</span>
-                </div>
-                <input
-                  type="text"
-                  name="yourLastName"
-                  id="yourLastName"
-                  autocomplete="off"
-                  v-model.lazy="yourLastName"
-                  @blur="$v.yourLastName.$touch()"
-                  :class="{'invalid': $v.yourLastName.$error, 'dirty': $v.yourLastName.$dirty}"
-                />
-                <label for="yourLastName" class="placeholder-label">Ваша фамилия*</label>
-                <!-- телефон -->
-                <div class="error-block">
-                  <span
-                    class="error-alert"
-                    v-if="!$v.tel.required && $v.tel.$error"
-                  >это поле обязательное</span>
-                  <span
-                    v-if="!$v.tel.minLength || !$v.tel.maxLength"
-                    class="error-alert"
-                  >введите верный номер</span>
-                </div>
-                <input
-                  type="tel"
-                  name="tel"
-                  id="tel"
-                  autocomplete="off"
-                  v-model="tel"
-                  v-mask="'+38(###)-##-##-###'"
-                  @focus="tel=0"
-                  @blur="$v.tel.$touch()"
-                  :class="{'invalid': $v.tel.$error, 'dirty': $v.tel.$dirty}"
-                />
-                <label for="tel" class="placeholder-label">Ваш телефон*</label>
-                <!-- E-mail -->
-                <div class="error-block">
-                  <span
-                    v-if="!$v.email.required && $v.email.$error"
-                    class="error-alert"
-                  >это поле обязательное</span>
-                  <span
-                    v-if="!$v.email.email || !$v.email.maxLength"
-                    class="error-alert"
-                  >введите верный e-mail</span>
-                </div>
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  autocomplete="off"
-                  v-model.lazy="email"
-                  @blur="$v.email.$touch()"
-                  :class="{'invalid': $v.email.$error, 'dirty': $v.email.$dirty}"
-                />
-                <label for="email" class="placeholder-label">Ваш E-mail*</label>
-                <button
-                  type="submit"
-                  class="btn btn--width"
-                  :disabled="$v.yourName.$invalid || $v.yourLastName.$invalid || $v.tel.$invalid || $v.email.$invalid"
-                >Продолжить</button>
-              </form>
-            </div>
-            <div class="customer-content__col">
-              <h4 class="caption">
-                <div class="icon" :class="{'icon--active': false}">
-                  <svg class="svg-icon" v-if="deliveryFormOpen">
-                    <use xlink:href="../images/svg/sprite.svg#pen" />
-                  </svg>
-                  <span class="text-icon" v-else>2</span>
-                </div>Доставка и Оплата
-              </h4>
-              <form
-                class="contact-form"
-                @submit.prevent="writeDeliveryData"
-                v-if="deliveryFormOpen"
-              >
-                <!-- город -->
-                <div class="error-block">
-                  <span
-                    class="error-alert"
-                    v-if="!$v.city.required && $v.city.$error"
-                  >это поле обязательное</span>
-                  <span
-                    v-if="$v.city.$dirty && !citiesArr.length && !$v.city.$error"
-                    class="error-alert"
-                  >введите верный адресс</span>
-                </div>
-                <div class="filter">
-                  <input
-                    type="text"
-                    name="city"
-                    id="city"
-                    autocomplete="off"
-                    v-model="city"
-                    @blur="$v.city.$touch()"
-                    @input="getCity"
-                    @focus="focusCity"
-                    :class="{'invalid': $v.city.$error || ($v.city.$dirty && !citiesArr.length), 'dirty': $v.city.$dirty}"
-                  />
-                  <label for="city" class="placeholder-label">Город*</label>
-                  <div class="filter__list" v-show="cityListOpen">
-                    <label v-for="(item, index) in citiesArr" :key="index" :title="item.Present">
-                      <input
-                        type="radio"
-                        :value="index"
-                        v-model="checkedCityIndex"
-                        @click="checkCity(index)"
-                      />
-                      {{item.Present}}
-                    </label>
-                  </div>
-                </div>
-                <!-- способ доставки -->
-                <div class="error-block">
-                  <span
-                    v-if="deliveryListOpen && !deliveryName.length"
-                    class="error-alert"
-                  >выберите доставку</span>
-                </div>
-                <div class="filter">
+      <div v-if="orderDone">
+        <h1 class="page__caption">
+          Ваш заказ принят. <br />
+          В ближайшее время наш менеджер с Вами свяжется.
+        </h1>
+        <button type="button" class="btn btn--width btn--center" @click="leavePage">Продолжить</button>
+      </div>
+      <div v-else>
+        <h1 class="page__caption">Оформление товара</h1>
+        <div class="row">
+          <div class="col col--width">
+            <h4 class="title">Данные покупателя</h4>
+            <div class="customer-content">
+              <div class="customer-content__col">
+                <h4 class="caption">
                   <div
-                    class="filter-name"
-                    :class="{'dirty': deliveryListOpen || deliveryName.length}"
-                    @click="deliveryListOpen = !deliveryListOpen"
-                  >{{deliveryName}}</div>
-                  <label class="placeholder-label" @click="deliveryListOpen = true">Способ доставки*</label>
-                  <div class="filter__list" v-show="deliveryListOpen">
-                    <label v-if="checkedCity.Warehouses">
-                      <input
-                        type="radio"
-                        value="warehouse"
-                        v-model="deliveryValue"
-                        @change="deliveryChecked"
-                        @click="deliveryListOpen = false"
+                    class="icon"
+                    :class="{ 'icon--active': !customerFormOpen }"
+                  >
+                    <svg class="svg-icon">
+                      <use
+                        xlink:href="../images/svg/sprite.svg#yes"
+                        v-if="!customerFormOpen"
                       />
-                      Доставка в отделение (Новая Почта)
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="deliveryboy"
-                        v-model="deliveryValue"
-                        @change="deliveryChecked"
-                        @click="deliveryListOpen = false"
-                      />
-                      Доставка курьером (Новая Почта)
-                    </label>
+                      <use xlink:href="../images/svg/sprite.svg#pen" v-else />
+                    </svg>
                   </div>
-                </div>
-                <!-- отделение -->
-                <div v-if="deliveryValue === 'warehouse'">
+                  Личные данные
+                </h4>
+                <form
+                  ref="customerForm"
+                  class="contact-form"
+                  @submit.prevent="writeCustomerData"
+                  v-if="customerFormOpen"
+                >
+                  <!-- имя -->
                   <div class="error-block">
                     <span
                       class="error-alert"
-                      v-if="!$v.warehouse.required && $v.warehouse.$error"
-                    >это поле обязательное</span>
+                      v-if="!$v.yourName.required && $v.yourName.$error"
+                      >это поле обязательное</span
+                    >
                     <span
-                      v-if="!$v.warehouse.uniq && $v.warehouse.$error"
+                      v-if="!$v.yourName.alpha || !$v.yourName.maxLength"
                       class="error-alert"
-                    >введите верный адресс</span>
+                      >введите верное имя</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    name="yourName"
+                    id="yourName"
+                    autocomplete="off"
+                    v-model.lazy="yourName"
+                    @blur="$v.yourName.$touch()"
+                    :class="{
+                      invalid: $v.yourName.$error,
+                      dirty: $v.yourName.$dirty,
+                    }"
+                  />
+                  <label for="yourName" class="placeholder-label"
+                    >Ваше имя*</label
+                  >
+                  <!-- фамилия -->
+                  <div class="error-block">
+                    <span
+                      class="error-alert"
+                      v-if="!$v.yourLastName.required && $v.yourLastName.$error"
+                      >это поле обязательное</span
+                    >
+                    <span
+                      v-if="
+                        !$v.yourLastName.alpha || !$v.yourLastName.maxLength
+                      "
+                      class="error-alert"
+                      >введите верное имя</span
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    name="yourLastName"
+                    id="yourLastName"
+                    autocomplete="off"
+                    v-model.lazy="yourLastName"
+                    @blur="$v.yourLastName.$touch()"
+                    :class="{
+                      invalid: $v.yourLastName.$error,
+                      dirty: $v.yourLastName.$dirty,
+                    }"
+                  />
+                  <label for="yourLastName" class="placeholder-label"
+                    >Ваша фамилия*</label
+                  >
+                  <!-- телефон -->
+                  <div class="error-block">
+                    <span
+                      class="error-alert"
+                      v-if="!$v.tel.required && $v.tel.$error"
+                      >это поле обязательное</span
+                    >
+                    <span
+                      v-if="!$v.tel.minLength || !$v.tel.maxLength"
+                      class="error-alert"
+                      >введите верный номер</span
+                    >
+                  </div>
+                  <input
+                    type="tel"
+                    name="tel"
+                    id="tel"
+                    autocomplete="off"
+                    v-model="tel"
+                    v-mask="'+38(###)-##-##-###'"
+                    @focus="tel = 0"
+                    @blur="$v.tel.$touch()"
+                    :class="{ invalid: $v.tel.$error, dirty: $v.tel.$dirty }"
+                  />
+                  <label for="tel" class="placeholder-label"
+                    >Ваш телефон*</label
+                  >
+                  <!-- E-mail -->
+                  <div class="error-block">
+                    <span
+                      v-if="!$v.email.required && $v.email.$error"
+                      class="error-alert"
+                      >это поле обязательное</span
+                    >
+                    <span
+                      v-if="!$v.email.email || !$v.email.maxLength"
+                      class="error-alert"
+                      >введите верный e-mail</span
+                    >
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    id="email"
+                    autocomplete="off"
+                    v-model.lazy="email"
+                    @blur="$v.email.$touch()"
+                    :class="{
+                      invalid: $v.email.$error,
+                      dirty: $v.email.$dirty,
+                    }"
+                  />
+                  <label for="email" class="placeholder-label"
+                    >Ваш E-mail*</label
+                  >
+                  <button
+                    type="submit"
+                    class="btn btn--width"
+                    :disabled="
+                      $v.yourName.$invalid ||
+                      $v.yourLastName.$invalid ||
+                      $v.tel.$invalid ||
+                      $v.email.$invalid
+                    "
+                  >
+                    Продолжить
+                  </button>
+                </form>
+              </div>
+              <div class="customer-content__col">
+                <h4 class="caption">
+                  <div class="icon" :class="{ 'icon--active': false }">
+                    <svg class="svg-icon" v-if="deliveryFormOpen">
+                      <use xlink:href="../images/svg/sprite.svg#pen" />
+                    </svg>
+                    <span class="text-icon" v-else>2</span>
+                  </div>
+                  Доставка и Оплата
+                </h4>
+                <form
+                  ref="deliveryForm"
+                  class="contact-form"
+                  @submit.prevent="writeDeliveryData"
+                  v-if="deliveryFormOpen"
+                >
+                  <!-- город -->
+                  <div class="error-block">
+                    <span
+                      class="error-alert"
+                      v-if="!$v.city.required && $v.city.$error"
+                      >это поле обязательное</span
+                    >
+                    <span
+                      v-if="
+                        $v.city.$dirty && !citiesArr.length && !$v.city.$error
+                      "
+                      class="error-alert"
+                      >введите верный адресс</span
+                    >
                   </div>
                   <div class="filter">
                     <input
                       type="text"
-                      name="warehouse"
-                      id="warehouse"
+                      name="city"
+                      id="city"
                       autocomplete="off"
-                      v-model="warehouse"
-                      @blur="$v.warehouse.$touch()"
-                      @focus="getWarehouse(); warehouseListOpen = true"
-                      @input="warehouseFilter"
-                      :disabled="!city.length"
-                      :class="{'invalid': $v.warehouse.$error, 'dirty': $v.warehouse.$dirty}"
+                      v-model="city"
+                      @blur="$v.city.$touch()"
+                      @input="getCity"
+                      @focus="focusCity"
+                      :class="{
+                        invalid:
+                          $v.city.$error ||
+                          ($v.city.$dirty && !citiesArr.length),
+                        dirty: $v.city.$dirty,
+                      }"
                     />
-                    <label for="warehouse" class="placeholder-label">Отделение*</label>
-                    <div class="filter__list" v-show="warehouseListOpen">
+                    <label for="city" class="placeholder-label">Город*</label>
+                    <div class="filter__list" v-show="cityListOpen">
                       <label
-                        v-for="(item, index) in warehouseFilter()"
-                        :key="item.Ref"
-                        :title="item.Description.replace('на одне місце', '')"
+                        v-for="(item, index) in citiesArr"
+                        :key="index"
+                        :title="item.Present"
                       >
                         <input
                           type="radio"
                           :value="index"
-                          v-model="checkedWarehouseIndex"
-                          @click="checkWarehouse(item.Ref)"
+                          v-model="checkedCityIndex"
+                          @click="checkCity(index)"
                         />
-                        {{item.Description.replace('на одне місце', '')}}
+                        {{ item.Present }}
                       </label>
                     </div>
                   </div>
-                </div>
-                <!-- адресс -->
-                <div class="address" v-if="deliveryValue === 'deliveryboy'">
-                  <div class="address__col address__col--width">
+                  <!-- способ доставки -->
+                  <div class="error-block">
+                    <span
+                      v-if="deliveryListOpen && !deliveryName.length"
+                      class="error-alert"
+                      >выберите доставку</span
+                    >
+                  </div>
+                  <div class="filter">
+                    <div
+                      class="filter-name"
+                      :class="{
+                        dirty: deliveryListOpen || deliveryName.length,
+                      }"
+                      @click="deliveryListOpen = !deliveryListOpen"
+                    >
+                      {{ deliveryName }}
+                    </div>
+                    <label
+                      class="placeholder-label"
+                      @click="deliveryListOpen = true"
+                      >Способ доставки*</label
+                    >
+                    <div class="filter__list" v-show="deliveryListOpen">
+                      <label v-if="checkedCity.Warehouses">
+                        <input
+                          type="radio"
+                          value="warehouse"
+                          v-model="deliveryValue"
+                          @change="deliveryChecked"
+                          @click="deliveryListOpen = false"
+                        />
+                        Доставка в отделение (Новая Почта)
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          value="deliveryboy"
+                          v-model="deliveryValue"
+                          @change="deliveryChecked"
+                          @click="deliveryListOpen = false"
+                        />
+                        Доставка курьером (Новая Почта)
+                      </label>
+                    </div>
+                  </div>
+                  <!-- отделение -->
+                  <div v-if="deliveryValue === 'warehouse'">
                     <div class="error-block">
                       <span
                         class="error-alert"
-                        v-if="!$v.street.required && $v.street.$error"
-                      >это поле обязательное</span>
+                        v-if="!$v.warehouse.required && $v.warehouse.$error"
+                        >это поле обязательное</span
+                      >
                       <span
-                        v-if="!$v.street.minLength || !$v.street.maxLength"
+                        v-if="!$v.warehouse.uniq && $v.warehouse.$error"
                         class="error-alert"
-                      >введите верный адресс</span>
+                        >введите верный адресс</span
+                      >
                     </div>
-                    <input
-                      type="text"
-                      name="street"
-                      id="street"
-                      autocomplete="off"
-                      v-model="street"
-                      @blur="$v.street.$touch()"
-                      :class="{'invalid': $v.street.$error, 'dirty': $v.street.$dirty}"
-                    />
-                    <label for="street" class="placeholder-label">Улица*</label>
-                  </div>
-                  <div class="address__col">
-                    <div class="error-block">
-                      <span
-                        class="error-alert"
-                        v-if="!$v.house.required && $v.house.$error"
-                      >это поле обязательное</span>
-                      <span v-if="!$v.house.maxLength" class="error-alert">не больше 10 символов</span>
-                    </div>
-                    <input
-                      type="text"
-                      name="house"
-                      id="house"
-                      autocomplete="off"
-                      v-model="house"
-                      @blur="$v.house.$touch()"
-                      :class="{'invalid': $v.house.$error, 'dirty': $v.house.$dirty}"
-                    />
-                    <label for="house" class="placeholder-label">Дом*</label>
-                  </div>
-                  <div class="address__col">
-                    <div class="error-block">
-                      <span v-if="!$v.flat.maxLength" class="error-alert">не больше 10 символов</span>
-                    </div>
-                    <input
-                      type="text"
-                      name="flat"
-                      id="flat"
-                      autocomplete="off"
-                      v-model="flat"
-                      @blur="$v.flat.$touch()"
-                      :class="{'invalid': $v.flat.$error, 'dirty': $v.flat.$dirty}"
-                    />
-                    <label for="flat" class="placeholder-label">Кв</label>
-                  </div>
-                </div>
-                <!-- способ оплаты -->
-                <div class="error-block">
-                  <span v-if="payListOpen && !payName.length" class="error-alert">выберите оплату</span>
-                </div>
-                <div class="filter">
-                  <div
-                    class="filter-name"
-                    :class="{'dirty': payListOpen || payName.length}"
-                    @click="payListOpen = !payListOpen"
-                  >{{payName}}</div>
-                  <label class="placeholder-label" @click="payListOpen = true">Способ оплаты*</label>
-                  <div class="filter__list" v-show="payListOpen">
-                    <label>
+                    <div class="filter">
                       <input
-                        type="radio"
-                        value="cod"
-                        v-model="payValue"
-                        @change="payChecked"
-                        @click="payListOpen = false"
+                        type="text"
+                        name="warehouse"
+                        id="warehouse"
+                        autocomplete="off"
+                        v-model="warehouse"
+                        @blur="$v.warehouse.$touch()"
+                        @focus="
+                          getWarehouse();
+                          warehouseListOpen = true;
+                        "
+                        @input="warehouseFilter"
+                        :disabled="!city.length"
+                        :class="{
+                          invalid: $v.warehouse.$error,
+                          dirty: $v.warehouse.$dirty,
+                        }"
                       />
-                      Наложенный платеж
-                    </label>
-                    <label>
-                      <input
-                        type="radio"
-                        value="visa"
-                        v-model="payValue"
-                        @change="payChecked"
-                        @click="payListOpen = false"
-                      />
-                      Оплатить на карту Visa/Mastercard
-                    </label>
+                      <label for="warehouse" class="placeholder-label"
+                        >Отделение*</label
+                      >
+                      <div class="filter__list" v-show="warehouseListOpen">
+                        <label
+                          v-for="(item, index) in warehouseFilter()"
+                          :key="item.Ref"
+                          :title="item.Description.replace('на одне місце', '')"
+                        >
+                          <input
+                            type="radio"
+                            :value="index"
+                            v-model="checkedWarehouseIndex"
+                            @click="checkWarehouse(item.Ref)"
+                          />
+                          {{ item.Description.replace("на одне місце", "") }}
+                        </label>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <!-- комментарий -->
-                <div class="error-block">
-                  <span
-                    v-if="!$v.comment.maxLength"
-                    class="error-alert"
-                  >количество символов {{comment.length}}/70</span>
-                </div>
-                <div class="filter">
-                  <textarea
-                    name="comment"
-                    class="comment-textarea"
-                    placeholder="Напишите комментарий..."
-                    rows="1"
-                    maxlength="71"
-                    v-if="commentOpen"
-                    v-model="comment"
-                    @blur="$v.comment.$touch()"
-                    :class="{'invalid': $v.comment.$error}"
-                  ></textarea>
+                  <!-- адресс -->
+                  <div class="address" v-if="deliveryValue === 'deliveryboy'">
+                    <div class="address__col address__col--width">
+                      <div class="error-block">
+                        <span
+                          class="error-alert"
+                          v-if="!$v.street.required && $v.street.$error"
+                          >это поле обязательное</span
+                        >
+                        <span
+                          v-if="!$v.street.minLength || !$v.street.maxLength"
+                          class="error-alert"
+                          >введите верный адресс</span
+                        >
+                      </div>
+                      <input
+                        type="text"
+                        name="street"
+                        id="street"
+                        autocomplete="off"
+                        v-model="street"
+                        @blur="$v.street.$touch()"
+                        :class="{
+                          invalid: $v.street.$error,
+                          dirty: $v.street.$dirty,
+                        }"
+                      />
+                      <label for="street" class="placeholder-label"
+                        >Улица*</label
+                      >
+                    </div>
+                    <div class="address__col">
+                      <div class="error-block">
+                        <span
+                          class="error-alert"
+                          v-if="!$v.house.required && $v.house.$error"
+                          >это поле обязательное</span
+                        >
+                        <span v-if="!$v.house.maxLength" class="error-alert"
+                          >не больше 10 символов</span
+                        >
+                      </div>
+                      <input
+                        type="text"
+                        name="house"
+                        id="house"
+                        autocomplete="off"
+                        v-model="house"
+                        @blur="$v.house.$touch()"
+                        :class="{
+                          invalid: $v.house.$error,
+                          dirty: $v.house.$dirty,
+                        }"
+                      />
+                      <label for="house" class="placeholder-label">Дом*</label>
+                    </div>
+                    <div class="address__col">
+                      <div class="error-block">
+                        <span v-if="!$v.flat.maxLength" class="error-alert"
+                          >не больше 10 символов</span
+                        >
+                      </div>
+                      <input
+                        type="text"
+                        name="flat"
+                        id="flat"
+                        autocomplete="off"
+                        v-model="flat"
+                        @blur="$v.flat.$touch()"
+                        :class="{
+                          invalid: $v.flat.$error,
+                          dirty: $v.flat.$dirty,
+                        }"
+                      />
+                      <label for="flat" class="placeholder-label">Кв</label>
+                    </div>
+                  </div>
+                  <!-- способ оплаты -->
+                  <div class="error-block">
+                    <span
+                      v-if="payListOpen && !payName.length"
+                      class="error-alert"
+                      >выберите оплату</span
+                    >
+                  </div>
+                  <div class="filter">
+                    <div
+                      class="filter-name"
+                      :class="{ dirty: payListOpen || payName.length }"
+                      @click="payListOpen = !payListOpen"
+                    >
+                      {{ payName }}
+                    </div>
+                    <label class="placeholder-label" @click="payListOpen = true"
+                      >Способ оплаты*</label
+                    >
+                    <div class="filter__list" v-show="payListOpen">
+                      <label>
+                        <input
+                          type="radio"
+                          value="cod"
+                          v-model="payValue"
+                          @change="payChecked"
+                          @click="payListOpen = false"
+                        />
+                        Наложенный платеж
+                      </label>
+                      <label>
+                        <input
+                          type="radio"
+                          value="visa"
+                          v-model="payValue"
+                          @change="payChecked"
+                          @click="payListOpen = false"
+                        />
+                        Оплатить на карту Visa/Mastercard
+                      </label>
+                    </div>
+                  </div>
+                  <!-- комментарий -->
+                  <div class="error-block">
+                    <span v-if="!$v.comment.maxLength" class="error-alert"
+                      >количество символов {{ comment.length }}/70</span
+                    >
+                  </div>
+                  <div class="filter">
+                    <textarea
+                      name="comment"
+                      class="comment-textarea"
+                      placeholder="Напишите комментарий..."
+                      rows="1"
+                      maxlength="71"
+                      v-if="commentOpen"
+                      v-model="comment"
+                      @blur="$v.comment.$touch()"
+                      :class="{ invalid: $v.comment.$error }"
+                    ></textarea>
+                    <button
+                      v-else
+                      type="button"
+                      class="comment-btn"
+                      @click="commentOpen = true"
+                    >
+                      Добавить комментарий к заказу
+                    </button>
+                  </div>
+                  <button
+                    v-if="deliveryValue === 'warehouse'"
+                    type="submit"
+                    class="btn btn--width"
+                    :disabled="
+                      $v.city.$invalid ||
+                      $v.warehouse.$invalid ||
+                      !payName.length ||
+                      !cartList.length
+                    "
+                  >
+                    Оформить заказ
+                  </button>
                   <button
                     v-else
-                    type="button"
-                    class="comment-btn"
-                    @click="commentOpen = true"
-                  >Добавить комментарий к заказу</button>
-                </div>
-                <button
-                  v-if="deliveryValue === 'warehouse'"
-                  type="submit"
-                  class="btn btn--width"
-                  :disabled="$v.city.$invalid || $v.warehouse.$invalid || !payName.length || !cartList.length"
-                >Оформить заказ</button>
-                <button
-                  v-else
-                  type="submit"
-                  class="btn btn--width"
-                  :disabled="$v.city.$invalid || $v.street.$invalid || $v.house.$invalid || !payName.length || !cartList.length"
-                >Оформить заказ</button>
-              </form>
+                    type="submit"
+                    class="btn btn--width"
+                    :disabled="
+                      $v.city.$invalid ||
+                      $v.street.$invalid ||
+                      $v.house.$invalid ||
+                      !payName.length ||
+                      !cartList.length
+                    "
+                  >
+                    Оформить заказ
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="col">
-          <h4 class="title">
-            <span>Ваш заказ</span>
-            <router-link to="/shop" tag="a" class="link">Продолжить покупки</router-link>
-          </h4>
-          <div class="cart-content">
-            <div class="cart-products">
-              <ul class="cart">
-                <li class="cart__item" v-for="item in cartList" :key="item.id">
-                  <div class="photo-block">
-                    <img class="photo" :src="item.urlPoster" :alt="item.name" />
-                  </div>
-                  <div class="controls">
-                    <h3 class="name">{{item.name}}</h3>
-                    <div class="counter">
-                      <button
-                        type="button"
-                        class="counter__btn"
-                        @click="item.count--"
-                        :disabled="item.count === 1"
-                      >-</button>
-                      <span class="counter__number">{{item.count}}</span>
-                      <button
-                        type="button"
-                        class="counter__btn"
-                        @click="item.count++"
-                        :disabled="item.count >= 5"
-                      >+</button>
+          <div class="col">
+            <h4 class="title">
+              <span>Ваш заказ</span>
+              <router-link to="/shop" tag="a" class="link"
+                >Продолжить покупки</router-link
+              >
+            </h4>
+            <div class="cart-content">
+              <div class="cart-products">
+                <ul class="cart">
+                  <li
+                    class="cart__item"
+                    v-for="item in cartList"
+                    :key="item.id"
+                  >
+                    <div class="photo-block">
+                      <img
+                        class="photo"
+                        :src="item.urlPoster"
+                        :alt="item.name"
+                      />
                     </div>
-                    <button
-                      type="button"
-                      class="remove-item"
-                      @click="removeFromCart(item.id)"
-                    >Удалить</button>
-                  </div>
-                  <div class="summ">{{item.price * item.count}} $</div>
-                </li>
-              </ul>
-            </div>
-            <div class="total">
-              <span class="total__name">Общая стоимость товаров</span>
-              <span class="total__amount">{{amount}} $</span>
-            </div>
-            <div class="notice">
-              Доставка осуществляется за счет покупателя согласно тарифов компании "Новая Почта".
-              Доставка оплачивается при получении заказа.
+                    <div class="controls">
+                      <h3 class="name">{{ item.name }}</h3>
+                      <div class="counter">
+                        <button
+                          type="button"
+                          class="counter__btn"
+                          @click="item.count--"
+                          :disabled="item.count === 1"
+                        >
+                          -
+                        </button>
+                        <span class="counter__number">{{ item.count }}</span>
+                        <button
+                          type="button"
+                          class="counter__btn"
+                          @click="item.count++"
+                          :disabled="item.count >= 5"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        class="remove-item"
+                        @click="removeFromCart(item.id)"
+                      >
+                        Удалить
+                      </button>
+                    </div>
+                    <div class="summ">{{ item.price * item.count }} $</div>
+                  </li>
+                </ul>
+              </div>
+              <div class="total">
+                <span class="total__name">Общая стоимость товаров</span>
+                <span class="total__amount">{{ amount }} $</span>
+              </div>
+              <div class="notice">
+                Доставка осуществляется за счет покупателя согласно тарифов
+                компании "Новая Почта". Доставка оплачивается при получении
+                заказа.
+              </div>
             </div>
           </div>
         </div>
@@ -445,8 +589,13 @@ import {
 
 export default {
   name: "Order",
+  metaInfo: {
+    title: "Заказ",
+  },
   data() {
     return {
+      orderDone: false,
+
       yourName: "",
       yourLastName: "",
       tel: "",
@@ -525,7 +674,11 @@ export default {
       };
       this.$store
         .dispatch("sendOrder", orderData)
-        .then(() => this.$router.push("/shop"))
+        .then(() => {
+          this.$refs["customerForm"].reset();
+          this.$refs["deliveryForm"].reset();
+          this.orderDone = true;
+        })
         .catch(() => {});
     },
     async getCity() {
@@ -648,6 +801,10 @@ export default {
       }
       this.payListOpen = false;
     },
+    leavePage() {
+      this.orderDone = false;
+      this.$router.push("/shop");
+    }
   },
   validations: {
     yourName: {
@@ -707,6 +864,9 @@ export default {
 
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
+}
+.btn--center {
+  margin: 0 auto;
 }
 .row {
   display: flex;

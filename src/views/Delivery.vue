@@ -184,6 +184,9 @@ import Aside from "../components/aside";
 export default {
   name: "Delivery",
   components: { Aside },
+  metaInfo: {
+    title: "Доставка",
+  },
 };
 </script>
 

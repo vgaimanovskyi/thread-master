@@ -194,6 +194,9 @@ export default new Vuex.Store({
     noProducts(state) {
       return state.products.length === 0;
     },
+    getAllProducts(state) {
+      return state.products;
+    },
     sliceProducts: state => start => {
       return state.byCat.slice(start, start + 9);
     },

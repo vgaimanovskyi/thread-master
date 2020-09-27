@@ -4,7 +4,7 @@
     <router-view />
     <template v-if="error">
       <div class="error-window">
-        {{error}}
+        {{ error }}
         <button type="button" class="btn-remove" @click="closeError">
           <svg class="svg-remove">
             <use xlink:href="./images/svg/sprite.svg#remove" />
@@ -31,6 +31,10 @@ export default {
     closeError() {
       this.$store.dispatch("clearError");
     },
+  },
+  async created() {
+    await this.$store.dispatch("fetchAllProducts");
+    this.$store.dispatch("getMyFavourites");
   },
 };
 </script>

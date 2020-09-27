@@ -93,6 +93,9 @@ import Loader from "../components/loader";
 
 export default {
   components: { Stack, StackItem, Aside, Modal, Video, Loader },
+  metaInfo: {
+    title: "Галерея",
+  },
   data() {
     return {
       products: [],
@@ -145,10 +148,6 @@ export default {
     },
   },
   async created() {
-    if (this.$store.getters.noProducts) {
-      await this.$store.dispatch("fetchAllProducts");
-      console.log("fetch");
-    }
     await this.$store.dispatch("fetchAllVideos");
     this.changeCategory(this.categories[0].id);
   },
