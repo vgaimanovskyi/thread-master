@@ -24,7 +24,12 @@
         </div>
         <div class="col" v-else>
           <h1 class="page__caption">Форма обратной связи</h1>
-          <form ref="form" class="contact-form" @submit.prevent="addToDb" autocomplete="off">
+          <form
+            ref="form"
+            class="contact-form"
+            @submit.prevent="addToDb"
+            autocomplete="off"
+          >
             <div class="error-block">
               <span
                 v-if="!$v.email.required && $v.email.$error"
@@ -85,7 +90,7 @@
               name="tel"
               id="tel"
               v-model="tel"
-              v-mask="'+38(###)-##-##-###'"
+              v-mask="'+38(###)-###-##-##'"
               @focus="tel = 0"
               @blur="$v.tel.$touch()"
               :class="{ invalid: $v.tel.$error, dirty: $v.tel.$dirty }"
@@ -122,7 +127,9 @@
                 v-model="checkbox"
                 :class="{ invalid: !checkbox }"
               />
-              <label for="checkbox"></label>
+              <label for="checkbox"
+                ><div class="checkbox" v-if="!checkbox"></div
+              ></label>
               Я соглашаюсь на обработку
               <u>персональных данных</u>
             </div>
@@ -226,7 +233,7 @@ export default {
       yourname: "",
       tel: "",
       comment: "",
-      checkbox: true,
+      checkbox: false,
       file: null,
       fileSrc: "",
       modalOpen: false,
@@ -364,6 +371,12 @@ export default {
   width: 50%;
   padding: 0 10px;
   box-sizing: border-box;
+}
+.checkbox {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  background-color: $colorBrend;
+  margin: 2px;
 }
 p,
 td,
