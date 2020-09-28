@@ -125,11 +125,8 @@
                 id="checkbox"
                 class="custom-checkbox"
                 v-model="checkbox"
-                :class="{ invalid: !checkbox }"
               />
-              <label for="checkbox"
-                ><div class="checkbox" v-if="!checkbox"></div
-              ></label>
+              <label for="checkbox"><div class="checked"></div></label>
               Я соглашаюсь на обработку
               <u>персональных данных</u>
             </div>
@@ -372,12 +369,6 @@ export default {
   padding: 0 10px;
   box-sizing: border-box;
 }
-.checkbox {
-  width: calc(100% - 4px);
-  height: calc(100% - 4px);
-  background-color: $colorBrend;
-  margin: 2px;
-}
 p,
 td,
 .form-block,
@@ -447,15 +438,14 @@ table {
     &:focus + label {
       border-color: $colorBrend;
     }
-    &:checked + label {
-      background-color: $colorBrend;
-      background-image: url(../images/svg/yes.svg);
-      background-repeat: no-repeat;
-      background-position-y: -2px;
-      border-color: $colorTextMain;
-    }
     &.invalid + label {
       border-color: $colorImportant;
+    }
+    &:checked + label > .checked {
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      background-color: $colorBrend;
+      margin: 2px;
     }
   }
   input:not([type="checkbox"]),

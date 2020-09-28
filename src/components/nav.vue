@@ -19,7 +19,7 @@
       </router-link>
     </ul>
     <ul class="options header--width">
-      <li>
+      <!-- <li>
         <div class="filter">
           <div class="filter__name">
             {{ filterName }}
@@ -57,7 +57,7 @@
             <label for="en">English</label>
           </div>
         </div>
-      </li>
+      </li> -->
       <li>
         <button type="button" class="options-icons" @click="favModalOpen">
           <svg class="svg svg--favourite">
