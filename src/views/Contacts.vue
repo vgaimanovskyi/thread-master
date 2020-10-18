@@ -20,7 +20,7 @@
           </table>
         </div>
         <div class="col" v-if="success">
-          <h1 class="page__caption">Ваш отзыв успешно доставлен!</h1>
+          <h1 class="page__caption">Ваше сообщение успешно отправлено!</h1>
         </div>
         <div class="col" v-else>
           <h1 class="page__caption">Форма обратной связи</h1>
@@ -121,7 +121,7 @@
             <div class="form-block">
               <input
                 type="checkbox"
-                mane="checkbox"
+                name="checkbox"
                 id="checkbox"
                 class="custom-checkbox"
                 v-model="checkbox"
@@ -428,12 +428,16 @@ table {
 
     & + label {
       display: inline-block;
-      width: 16px;
-      height: 16px;
       border: 1px solid $colorTextMain;
       box-sizing: border-box;
       margin-right: 10px;
       cursor: pointer;
+
+      & > .checked {
+        width: 10px;
+        height: 10px;
+        margin: 2px;
+      }
     }
     &:focus + label {
       border-color: $colorBrend;
@@ -442,10 +446,7 @@ table {
       border-color: $colorImportant;
     }
     &:checked + label > .checked {
-      width: calc(100% - 4px);
-      height: calc(100% - 4px);
       background-color: $colorBrend;
-      margin: 2px;
     }
   }
   input:not([type="checkbox"]),

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/thread-master/precache-manifest.51159072823e6687d1f712c5c4d52d3b.js"
+  "/thread-master/precache-manifest.1c9634c62aaffb373d77571948597e69.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "thread-master"});

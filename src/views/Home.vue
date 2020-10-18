@@ -16,11 +16,6 @@
             Наслаждайтесь, вдохновляйтесь, вдумывайтесь глядя на эти работы.
             Интересного просмотра!
           </p>
-          <p class="hello-text__description">
-            Приглашаю вас посетить мой магазин. В магазине можно приобрести
-            картины в Чернигове напрямую по самым выгодным ценам. Или заказать
-            индивидуально картину по своему желанию.
-          </p>
           <router-link to="/shop" tag="a" class="btn btn--width"
             >Перейти в магазин</router-link
           >
@@ -49,7 +44,7 @@ export default {
   name: "Home",
   metaInfo: {
     title: "Thread Master",
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

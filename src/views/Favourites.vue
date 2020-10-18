@@ -98,7 +98,6 @@ export default {
         count: 1,
       };
       this.$store.dispatch("addToCart", cart);
-      this.removeFromFavourites(prodId);
     },
   },
 };

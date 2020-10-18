@@ -1,15 +1,23 @@
 <template>
   <div class="modal" @click.self="closeModal">
+    <Share
+      v-if="share"
+      :link="link"
+      :description="product.description"
+      :name="product.name"
+      :media="media"
+      @closeShare="share = false"
+    />
     <div class="mainer">
       <div class="modal-body" ref="modal">
-        <h2 class="name">{{product.name}}</h2>
+        <h2 class="name">{{ product.name }}</h2>
         <div class="parameters">
           <b>Размер:</b>
-          {{product.size}}
+          {{ product.size }}
         </div>
         <div class="parameters">
           <b>Материал:</b>
-          {{product.material}}
+          {{ product.material }}
         </div>
         <carousel
           class="carousel"
@@ -28,23 +36,39 @@
               <div class="btn-conteiner">
                 <svg
                   class="svg-btn svg-btn--share"
-                  title="копировать в буфер"
-                  @click="sharePhoto(img)"
+                  title="Поделиться"
+                  @click="openShare(img)"
                 >
+                  <!-- @click="sharePhoto(img)" -->
                   <use xlink:href="../images/svg/sprite.svg#share" />
                 </svg>
-                <svg class="svg-btn" title="включить автопрокрутку" @click="autoplay = !autoplay">
-                  <use v-if="!autoplay" xlink:href="../images/svg/sprite.svg#play" />
+                <svg
+                  class="svg-btn"
+                  title="включить автопрокрутку"
+                  @click="autoplay = !autoplay"
+                >
+                  <use
+                    v-if="!autoplay"
+                    xlink:href="../images/svg/sprite.svg#play"
+                  />
                   <use v-else xlink:href="../images/svg/sprite.svg#pause" />
                 </svg>
               </div>
-              <div class="btn-conteiner btn-conteiner--remove" title="закрыть" @click="closeModal">
+              <div
+                class="btn-conteiner btn-conteiner--remove"
+                title="закрыть"
+                @click="closeModal"
+              >
                 <svg class="svg-btn">
                   <use xlink:href="../images/svg/sprite.svg#remove" />
                 </svg>
               </div>
               <div class="img-block">
-                <img class="img-block__photo" :ref="`${product.id}`-`${index+1}`" :src="img" />
+                <img
+                  class="img-block__photo"
+                  :ref="`${product.id}` - `${index + 1}`"
+                  :src="img"
+                />
               </div>
             </div>
           </slide>
@@ -58,13 +82,18 @@
 import { Carousel, Slide } from "vue-carousel";
 import btnNext from "../images/svg/btnNext.svg";
 import btnPrev from "../images/svg/btnPrev.svg";
+import Share from "../components/share";
 
 export default {
   name: "modal",
-  components: { Carousel, Slide },
-  props: ["product"],
+  components: { Carousel, Slide, Share },
+  /*   props: ["product"], */
   data() {
     return {
+      id: this.$route.params["id"],
+      share: false,
+      media: "",
+      link: window.location.href,
       autoplay: false,
     };
   },
@@ -78,13 +107,20 @@ export default {
     prevBtn() {
       return `<img src="${btnPrev}"/>`;
     },
+    product() {
+      return this.$store.getters.getProductById;
+    },
   },
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.$router.push("/gallery");
       this.$emit("modalHeight", "auto");
     },
-    sharePhoto(link) {
+    openShare(img) {
+      this.media = img;
+      this.share = true;
+    },
+    /* sharePhoto(link) {
       navigator.clipboard
         .writeText(link)
         .then(() => {
@@ -93,7 +129,26 @@ export default {
         .catch((err) => {
           console.log("Something went wrong", err);
         });
-    },
+      /* if (navigator.share) {
+        console.log("Congrats! Your browser supports Web Share API");
+
+        // navigator.share принимает объект с URL, title или text
+        navigator
+          .share({
+            title: "Bits and pieces: Web Share APприI article",
+            text: "Web Share API feature is awesome. You must check it",
+            url: link,
+          })
+          .then(function () {
+            console.log("Shareing successfull");
+          })
+          .catch(function () {
+            console.log("Sharing failed");
+          });
+      } else {
+        console.log("Sorry! Your browser does not support Web Share API");
+      }
+    }, */
     scrollTop() {
       window.scrollTo({
         top: 0,
@@ -102,6 +157,7 @@ export default {
     },
   },
   created() {
+    this.$store.dispatch("getProductById", this.id);
     setTimeout(() => {
       this.$emit("modalHeight", this.modalHeight);
     }, 1000);

@@ -8,6 +8,7 @@ import scrollTo from './scrollTo';
 import VueCarousel from 'vue-carousel';
 import VueMask from 'v-mask';
 import VueMeta from 'vue-meta';
+import VueSocialSharing from 'vue-social-sharing'
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -18,6 +19,7 @@ Vue.use(Vuelidate);
 Vue.use(VueCarousel);
 Vue.use(VueMask);
 Vue.use(VueMeta);
+Vue.use(VueSocialSharing);
 
 
 Vue.config.devtools = true;

@@ -4,12 +4,7 @@
     :style="{ height: modalHeight, 'overflow-y': 'hidden' }"
     v-if="!loading"
   >
-    <Modal
-      v-if="modal"
-      :product="product"
-      @closeModal="modal = !modal"
-      @modalHeight="changeHeight($event)"
-    />
+    <router-view @modalHeight="changeHeight($event)"></router-view>
     <Video v-if="video" :product="product" @closeModal="video = !video" />
     <div class="mainer">
       <ul class="categories">
@@ -87,12 +82,11 @@
 <script>
 import { Stack, StackItem } from "vue-stack-grid";
 import Aside from "../components/aside";
-import Modal from "../components/modal";
 import Video from "../components/video";
 import Loader from "../components/loader";
 
 export default {
-  components: { Stack, StackItem, Aside, Modal, Video, Loader },
+  components: { Stack, StackItem, Aside, Video, Loader },
   metaInfo: {
     title: "Галерея",
   },
@@ -100,7 +94,6 @@ export default {
     return {
       products: [],
       activeCatId: "",
-      modal: false,
       video: false,
       product: {},
       btnDisabled: false,
@@ -132,8 +125,7 @@ export default {
       this.btnDisabled = this.products.length === oldProducts.length;
     },
     openModal(mId) {
-      this.product = this.products.find((product) => product.id === mId);
-      this.modal = true;
+      this.$router.push("/gallery/" + mId);
     },
     openVideo(mId) {
       this.product = this.products.find((product) => product.id === mId);

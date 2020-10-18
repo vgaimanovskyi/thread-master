@@ -14,6 +14,11 @@ const routes = [
     path: '/gallery',
     name: 'Gallery',
     component: () => import('../views/Gallery.vue'),
+    children: [{
+      path: ':id',
+      name: 'Modal',
+      component: () => import('../components/modal.vue'),
+    }]
   },
   {
     path: '/shop',
