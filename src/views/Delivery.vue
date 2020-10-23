@@ -240,6 +240,18 @@ p {
   line-height: 29px;
   letter-spacing: 0.04em;
   color: $colorTextMain;
+
+  @media screen and (max-width: 991px) {
+    font-size: 17px;
+    line-height: 27px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 15px;
+    line-height: 18px;
+  }
+  @media screen and (max-width: 479px) {
+    font-size: 13px;
+  }
 }
 .faq {
   list-style: none;
@@ -254,6 +266,18 @@ p {
       font-size: 18px;
       letter-spacing: 0.04em;
       color: $colorTextMain;
+
+      @media screen and (max-width: 991px) {
+        font-size: 16px;
+        line-height: 20px;
+      }
+      @media screen and (max-width: 767px) {
+        font-size: 15px;
+        line-height: 18px;
+      }
+      @media screen and (max-width: 479px) {
+        font-size: 13px;
+      }
     }
     &:last-child {
       margin-bottom: 0;
@@ -264,12 +288,27 @@ p {
   position: relative;
   margin-bottom: 60px;
 
+  @media screen and (max-width: 991px) {
+    margin-bottom: 45px;
+  }
+  @media screen and (max-width: 767px) {
+    margin-bottom: 35px;
+  }
   &__caption {
     font-family: "Montserrat", sans-serif;
     font-size: 24px;
     line-height: 29px;
     color: $colorBrend;
     margin-bottom: 35px;
+
+    @media screen and (max-width: 767px) {
+      font-size: 18px;
+      line-height: 21px;
+      margin-bottom: 20px;
+    }
+    @media screen and (max-width: 479px) {
+      font-size: 16px;
+    }
   }
   &__list {
     list-style-type: "- ";
@@ -285,6 +324,15 @@ p {
       line-height: 29px;
       color: $colorTextMain;
       letter-spacing: 0.04em;
+
+      @media screen and (max-width: 767px) {
+        font-size: 15px;
+        line-height: 21px;
+        margin-bottom: 15px;
+      }
+      @media screen and (max-width: 479px) {
+        font-size: 13px;
+      }
     }
     & div {
       font-weight: normal;

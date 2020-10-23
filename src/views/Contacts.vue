@@ -126,11 +126,11 @@
                 class="custom-checkbox"
                 v-model="checkbox"
               />
-              <label for="checkbox"><div class="checked"></div></label>
+              <label for="checkbox"><span class="checked"></span></label>
               Я соглашаюсь на обработку
-              <u>персональных данных</u>
+              <u @click="privacy = true">персональных данных</u>
             </div>
-            <div v-if="!loading">
+            <div v-if="!loading" class="btn-container">
               <button
                 type="submit"
                 class="btn btn--width"
@@ -196,6 +196,7 @@
         </svg>
       </div>
     </div>
+    <Policy v-if="privacy" @closeModal="privacy = false" />
     <svg class="svg svg--hands">
       <use xlink:href="../images/svg/sprite.svg#hands" />
     </svg>
@@ -216,10 +217,11 @@ import {
   minLength,
 } from "vuelidate/lib/validators";
 import Loader from "../components/loader";
+import Policy from "../components/policy";
 
 export default {
   name: "Contacts",
-  components: { Loader },
+  components: { Loader, Policy },
   metaInfo: {
     title: "Контакты",
   },
@@ -237,6 +239,7 @@ export default {
       inputText: "Выберите файл размером до 2 МВ",
       fileError: false,
       fileValid: false,
+      privacy: false,
     };
   },
   computed: {
@@ -357,17 +360,33 @@ export default {
   &__caption {
     text-align: left;
     margin-bottom: 25px;
+
+    @media screen and (max-width: 767px) {
+      text-align: center;
+    }
   }
 }
 .grid {
   display: flex;
   min-height: calc(100vh - 110px - 84px - 83px);
   margin: 0 -10px;
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 84px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 64px - 53px);
+    flex-direction: column;
+  }
 }
 .col {
   width: 50%;
   padding: 0 10px;
   box-sizing: border-box;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+  }
 }
 p,
 td,
@@ -380,12 +399,43 @@ textarea {
   line-height: 22px;
   color: $colorTextMain;
   letter-spacing: 0.04em;
+
+  @media screen and (max-width: 991px) {
+    font-size: 16px;
+    line-height: 22px;
+  }
+  @media screen and (max-width: 767px) {
+    font-size: 15px;
+    line-height: 21px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
+    line-height: 18px;
+  }
 }
 td {
   padding: 0 20px 25px 0;
+
+  @media screen and (max-width: 991px) {
+    padding: 0 15px 25px 0;
+  }
+  @media screen and (max-width: 767px) {
+    padding: 0 10px 20px 0;
+  }
+  @media screen and (max-width: 374px) {
+    padding: 0 3px 20px 0;
+  }
 }
 table {
   margin-top: 34px;
+
+  @media screen and (max-width: 991px) {
+    margin-top: 25px;
+  }
+  @media screen and (max-width: 767px) {
+    margin-top: 20px;
+    margin-bottom: 30px;
+  }
 }
 .contact-form {
   .error-block {
@@ -413,12 +463,21 @@ table {
   .form-block {
     margin-bottom: 25px;
 
+    @media screen and (min-width: 768px) and (max-width: 1100px) {
+      font-size: 15px;
+    }
+    @media screen and (max-width: 479px) {
+      font-size: 11px;
+      letter-spacing: -0.2px;
+      margin-bottom: 10px;
+    }
     &:last-of-type {
       margin-bottom: 50px;
     }
   }
   u {
     font-weight: 500;
+    cursor: pointer;
   }
   .custom-checkbox {
     position: absolute;
@@ -427,16 +486,24 @@ table {
     // transform: translateX(-30px);
 
     & + label {
-      display: inline-block;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 16px;
+      height: 16px;
       border: 1px solid $colorTextMain;
       box-sizing: border-box;
       margin-right: 10px;
+      vertical-align: middle;
       cursor: pointer;
 
+      @media screen and (max-width: 479px) {
+        margin-right: 5px;
+      }
       & > .checked {
+        display: block;
         width: 10px;
         height: 10px;
-        margin: 2px;
       }
     }
     &:focus + label {
@@ -468,6 +535,22 @@ table {
       font-size: 15px;
       color: $colorBrend;
       margin-left: 5px;
+
+      @media screen and (min-width: 768px) and (max-width: 1100px) {
+        font-size: 14px;
+        line-height: 21px;
+      }
+      @media screen and (max-width: 767px) {
+        font-size: 15px;
+        line-height: 21px;
+      }
+      @media screen and (max-width: 479px) {
+        font-size: 14px;
+      }
+      @media screen and (max-width: 374px) {
+        font-size: 12px;
+        transform: translateY(-50px);
+      }
     }
     &.invalid {
       border-bottom: 1px solid $colorImportant;
@@ -481,27 +564,56 @@ table {
     height: 165px;
     resize: none;
 
+    @media screen and (max-width: 575px) {
+      height: 65px;
+    }
     & + .placeholder-label {
       transform: translateY(-165px);
+
+      @media screen and (max-width: 575px) {
+        transform: translateY(-65px);
+      }
     }
     &:focus + .placeholder-label,
     &.invalid + .placeholder-label,
     &.dirty + .placeholder-label {
       transform: translateY(-192px);
-    }
-  }
-  .btn {
-    display: inline-block;
-    vertical-align: middle;
 
-    &--width {
-      margin-right: 10px;
+      @media screen and (min-width: 768px) and (max-width: 1100px) {
+        transform: translateY(-203px);
+      }
+      @media screen and (max-width: 575px) {
+        transform: translateY(-103px);
+      }
     }
   }
-  .svg-btn {
-    width: 8px;
-    height: 17px;
-    fill: $colorBackground;
+  .btn-container {
+    @media screen and (max-width: 767px) {
+      margin: 53px 0 20px 0;
+    }
+    @media screen and (max-width: 575px) {
+      text-align: center;
+    }
+
+    & .btn {
+      display: inline-block;
+      vertical-align: middle;
+
+      &--width {
+        margin-right: 10px;
+
+        @media screen and (max-width: 575px) {
+          margin-right: 20px;
+        }
+      }
+    }
+    & .svg-btn {
+      display: block;
+      width: 8px;
+      height: 17px;
+      fill: $colorBackground;
+      margin: 0 auto;
+    }
   }
 }
 .modal {
@@ -517,7 +629,8 @@ table {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 803px;
+  max-width: 803px;
+  width: 100%;
   min-height: 194px;
   background-color: $colorBrend;
   text-align: center;
@@ -525,6 +638,15 @@ table {
   box-sizing: border-box;
   overflow: hidden;
 
+  @media screen and (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 375px;
+    max-height: 812px;
+    height: 100%;
+  }
   &__file-label {
     font-size: 25px;
     font-weight: 600;
@@ -539,6 +661,10 @@ table {
     box-sizing: border-box;
     margin-bottom: 13px;
 
+    @media screen and (max-width: 767px) {
+      font-size: 18px;
+      word-wrap: break-word;
+    }
     &.error {
       background-color: rgba($colorImportant, 0.7);
       border-color: $colorImportant;
@@ -555,6 +681,10 @@ table {
     color: $colorBrend;
     background-color: $colorBackground;
     margin: 0 20px;
+
+    @media screen and (max-width: 767px) {
+      margin: 10px 0;
+    }
   }
   input[type="file"] {
     z-index: -1;
@@ -595,9 +725,15 @@ table {
   &--whale {
     left: -25px;
     bottom: 0;
-    fill: $colorBackground;
+    stroke: $colorBackground;
     width: 269px;
     height: 97px;
+
+    @media screen and (max-width: 767px) {
+      top: 20px;
+      left: -25px;
+      bottom: auto;
+    }
   }
   &--pineapple {
     right: -8px;
@@ -615,6 +751,12 @@ table {
     stroke-dasharray: 1500;
     stroke-dashoffset: 1600;
     animation: svgShow 15s linear 2s infinite alternate;
+
+    @media screen and (max-width: 575px) {
+      left: 50%;
+      bottom: -20px;
+      transform: translateX(-50%);
+    }
   }
   &--bgheart {
     top: 155px;
@@ -633,6 +775,10 @@ table {
     width: 218px;
     height: 112px;
     transform: rotate(-20deg);
+
+    @media screen and (max-width: 991px) {
+      display: none;
+    }
   }
 }
 @keyframes svgShow {

@@ -8,7 +8,7 @@
       :media="media"
       @closeShare="share = false"
     />
-    <div class="mainer">
+    <div class="mainer mainer--padding">
       <div class="modal-body" ref="modal">
         <h2 class="name">{{ product.name }}</h2>
         <div class="parameters">
@@ -20,12 +20,12 @@
           {{ product.material }}
         </div>
         <carousel
-          class="carousel"
+          class="carousel carousel--order"
           :perPage="1"
           :loop="true"
           :adjustableHeight="true"
           :paginationEnabled="false"
-          :navigationEnabled="true"
+          :navigationEnabled="carouselBtn"
           :autoplay="autoplay"
           :navigationClickTargetSize="11"
           :navigationPrevLabel="prevBtn"
@@ -43,7 +43,7 @@
                   <use xlink:href="../images/svg/sprite.svg#share" />
                 </svg>
                 <svg
-                  class="svg-btn"
+                  class="svg-btn svg-btn--autoplay"
                   title="включить автопрокрутку"
                   @click="autoplay = !autoplay"
                 >
@@ -110,6 +110,12 @@ export default {
     product() {
       return this.$store.getters.getProductById;
     },
+    carouselBtn() {
+      if (window.innerWidth < 768) {
+        return false;
+      }
+      return true;
+    },
   },
   methods: {
     closeModal() {
@@ -169,6 +175,11 @@ export default {
 <style lang="scss" scoped>
 @import "../scss/_variables.scss";
 
+@media screen and (min-width: 768px) {
+  .mainer--padding {
+    padding: 0 50px;
+  }
+}
 .modal {
   position: absolute;
   top: 0;
@@ -181,6 +192,8 @@ export default {
 .modal-body {
   max-width: 1145px;
   margin: 95px auto;
+  display: flex;
+  flex-direction: column;
 }
 .name {
   font-family: "Montserrat", sans-serif;
@@ -188,6 +201,11 @@ export default {
   font-weight: 500;
   color: $colorTextMain;
   margin-bottom: 11px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
 }
 .parameters {
   font-family: "Montserrat", sans-serif;
@@ -195,9 +213,21 @@ export default {
   font-weight: 500;
   line-height: 29px;
   color: $colorTextMain;
+
+  @media screen and (max-width: 767px) {
+    font-size: 15px;
+  }
 }
 .carousel {
   margin-top: 15px;
+
+  &--order {
+    @media screen and (max-width: 767px) {
+      order: -1;
+      margin-top: 0;
+      margin-bottom: 40px;
+    }
+  }
 }
 .slide-block {
   position: relative;
@@ -227,6 +257,9 @@ export default {
       transition-duration: 0.3s;
       cursor: pointer;
 
+      @media screen and (max-width: 767px) {
+        padding: 12px;
+      }
       &:hover,
       &:focus {
         stroke: $colorBrend;
@@ -241,6 +274,11 @@ export default {
         &:focus {
           stroke: inherit;
           fill: $colorBrend;
+        }
+      }
+      &--autoplay {
+        @media screen and (max-width: 767px) {
+          display: none;
         }
       }
     }

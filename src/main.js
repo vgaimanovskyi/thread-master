@@ -9,6 +9,7 @@ import VueCarousel from 'vue-carousel';
 import VueMask from 'v-mask';
 import VueMeta from 'vue-meta';
 import VueSocialSharing from 'vue-social-sharing'
+import Vue2TouchEvents from 'vue2-touch-events'
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -20,6 +21,7 @@ Vue.use(VueCarousel);
 Vue.use(VueMask);
 Vue.use(VueMeta);
 Vue.use(VueSocialSharing);
+Vue.use(Vue2TouchEvents);
 
 
 Vue.config.devtools = true;

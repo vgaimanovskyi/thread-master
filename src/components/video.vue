@@ -3,8 +3,7 @@
     <div class="mainer">
       <div class="modal-body">
         <iframe
-          width="882"
-          height="501"
+          class="iframe"
           :src="'https://www.youtube.com/embed/' + product.video"
           frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
@@ -53,7 +52,25 @@ export default {
   max-width: 1145px;
   margin: 0 auto;
 }
-iframe {
+.iframe {
   display: block;
+  width: 882px;
+  height: 501px;
+
+  @media screen and (max-width: 991px) {
+    width: 640px;
+    height: 360px;
+  }
+  @media screen and (max-width: 767px) {
+    width: 560px;
+    height: 315px;
+  }
+  @media screen and (max-width: 575px) {
+    width: 426px;
+    height: 240px;
+  }
+  @media screen and (max-width: 479px) {
+    width: 320px;
+  }
 }
 </style>

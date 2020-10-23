@@ -20,8 +20,7 @@
       </ul>
       <stack
         class="stack"
-        style="transition: height 0.5s"
-        :column-min-width="320"
+        :column-min-width="stackWidth"
         :gutter-width="20"
         :gutter-height="20"
         monitor-images-loaded
@@ -107,6 +106,15 @@ export default {
     loading() {
       return this.$store.getters.getLoading;
     },
+    stackWidth() {
+      if (window.innerWidth < 700 && window.innerWidth >= 480) {
+        return 210;
+      }
+      if (window.innerWidth < 480) {
+        return 150;
+      }
+      return 310;
+    },
   },
   methods: {
     async changeCategory(catId) {
@@ -151,22 +159,36 @@ export default {
 
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 84px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 64px - 53px);
+  }
 }
 .stack {
+  transition: height 0.5s;
   margin-bottom: 50px;
 }
 .categories {
   list-style: none;
   padding: 0;
-  margin: 0 0 90px 0;
+  margin-bottom: 90px;
   display: flex;
   justify-content: center;
 
+  @media screen and (max-width: 991px) {
+    justify-content: flex-start;
+    margin-bottom: 40px;
+    overflow-y: scroll;
+  }
   &__block {
     font-family: "Montserrat", sans-serif;
     font-size: 18px;
     color: $colorTextMain;
     margin: 0 8px;
+    white-space: nowrap;
     cursor: pointer;
 
     &::first-letter {
@@ -231,6 +253,17 @@ export default {
     stroke-dasharray: 600;
     stroke-dashoffset: 620;
     animation: svgShow 15s linear 2s infinite alternate;
+
+    @media screen and (max-width: 1100px) {
+      top: 100px;
+      left: auto;
+      right: 10px;
+    }
+    @media screen and (max-width: 767px) {
+      top: 60px;
+      width: 178px;
+      height: 93px;
+    }
   }
   &--bgheart {
     left: 62px;
@@ -241,6 +274,17 @@ export default {
     stroke-dasharray: 140;
     stroke-dashoffset: 160;
     animation: svgShow 10s linear 4s infinite alternate;
+
+    @media screen and (max-width: 767px) {
+      width: 150px;
+      height: 150px;
+    }
+    @media screen and (max-width: 575px) {
+      left: 0;
+      bottom: 0;
+      width: 90px;
+      height: 90px;
+    }
   }
   &--pineapple {
     right: -28px;
@@ -251,6 +295,10 @@ export default {
     stroke-dasharray: 400;
     stroke-dashoffset: 420;
     animation: svgShow 10s linear 6s infinite alternate;
+
+    @media screen and (max-width: 1100px) {
+      display: none;
+    }
   }
 }
 @keyframes svgShow {

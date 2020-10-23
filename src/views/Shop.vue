@@ -178,10 +178,6 @@ export default {
       this.products = this.allProducts.slice(0, 9);
     },
   },
-  /* created() {
-    this.useFilter();
-    console.log("use filter");
-  }, */
 };
 </script>
 
@@ -190,11 +186,22 @@ export default {
 
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 84px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 64px - 53px);
+  }
 }
 .filter-block {
   position: relative;
   width: 213px;
   height: 35px;
+
+  @media screen and (max-width: 479px) {
+    width: 100%;
+  }
 }
 .filter {
   position: relative;
@@ -258,13 +265,23 @@ export default {
   margin: 50px auto 0 auto;
 
   .col {
-    max-width: 330px;
+    // max-width: 330px;
+    width: 33.33333%;
     flex-grow: 1;
     padding: 0 10px;
     margin-bottom: 50px;
+    box-sizing: border-box;
 
+    @media screen and (max-width: 767px) {
+      width: 50%;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 374px) {
+      width: 100%;
+    }
     &.empty {
       padding: 0;
+      margin: 0;
     }
   }
 }
@@ -280,6 +297,26 @@ export default {
   transition-duration: 0.3s;
   cursor: pointer;
 
+  @media screen and (max-width: 991px) {
+    height: 280px;
+  }
+  @media screen and (max-width: 767px) {
+    height: 330px;
+    margin-bottom: 15px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 250px;
+    margin-bottom: 10px;
+  }
+  @media screen and (max-width: 479px) {
+    height: 200px;
+  }
+  @media screen and (max-width: 399px) {
+    height: 158px;
+  }
+  @media screen and (max-width: 374px) {
+    height: 260px;
+  }
   &:hover {
     transform: scale(1.05);
   }
@@ -322,6 +359,17 @@ export default {
   white-space: nowrap;
   overflow: hidden;
 
+  @media screen and (max-width: 767px) {
+    font-size: 16px;
+    line-height: 21px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 13px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 16px;
+    line-height: 21px;
+  }
   span {
     min-width: 100%;
     position: absolute;
@@ -340,6 +388,19 @@ export default {
   line-height: 24px;
   color: $colorTextSecondary;
   margin-bottom: 5px;
+
+  @media screen and (max-width: 767px) {
+    font-size: 13px;
+    line-height: 21px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 12px;
+    line-height: 19px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
+    line-height: 21px;
+  }
 }
 .price {
   font-family: "Montserrat", sans-serif;
@@ -347,15 +408,39 @@ export default {
   font-weight: 600;
   line-height: 29px;
   color: $colorBrend;
+
+  @media screen and (max-width: 767px) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 18px;
+    line-height: 22px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 20px;
+    line-height: 26px;
+  }
 }
 .old-price {
   font-size: 18px;
   color: $colorTextSecondary;
   margin-left: 8px;
   vertical-align: bottom;
+
+  @media screen and (max-width: 767px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 16px;
+  }
 }
 .btn {
   margin: 9px auto 70px auto;
+
+  @media screen and (max-width: 767px) {
+    margin-top: 0;
+    margin-bottom: 30px;
+  }
 }
 .svg {
   position: absolute;
@@ -370,6 +455,10 @@ export default {
     stroke-dasharray: 200;
     stroke-dashoffset: 220;
     animation: svgShow 15s linear 0.5s infinite alternate;
+
+    @media screen and (max-width: 991px) {
+      display: none;
+    }
   }
   &--whale {
     top: 580px;
@@ -381,6 +470,18 @@ export default {
     stroke-dasharray: 360;
     stroke-dashoffset: 370;
     animation: svgShow 10s linear 2s infinite alternate;
+
+    @media screen and (max-width: 991px) {
+      top: 84px;
+      left: auto;
+      right: 0;
+      transform: rotate(0deg);
+    }
+    @media screen and (max-width: 479px) {
+      top: 120px;
+      width: 160px;
+      height: 58px;
+    }
   }
   &--turtle {
     left: 34px;
@@ -391,6 +492,13 @@ export default {
     stroke-dasharray: 600;
     stroke-dashoffset: 620;
     animation: svgShow 15s linear 4s infinite alternate;
+
+    @media screen and (max-width: 479px) {
+      width: 195px;
+      height: 98px;
+      left: 10px;
+      bottom: 21px;
+    }
   }
 }
 @keyframes svgShow {

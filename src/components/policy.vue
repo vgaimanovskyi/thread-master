@@ -1,21 +1,22 @@
 <template>
-  <div class="modal" @click.self="toShop">
+  <div class="modal" @click.self="closeModal">
     <div class="modal-body">
-      <button type="button" class="btn-remove" @click="toShop">
+      <button type="button" class="btn-remove" @click="closeModal">
         <svg class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
       </button>
       <div class="text">
-        <h2 class="text__caption">Статус заказа</h2>
-        Ваш заказ успешно создан. <br />
-        Скоро наш менеджер свяжется с вами для подтверждения заказа.
+        <h2 class="text__caption">Политика конфиденциальности</h2>
+        Эта политика охватывает то, как мы используем вашу личную информацию. Мы
+        серьезно относимся к вашей конфиденциальности и принимаем все меры для
+        защиты вашей личной информации. <br />
+        Любая полученная личная информация будет использоваться только для
+        выполнения вашего заказа. Мы не будем продавать или распространять вашу
+        информацию третьим лицам.
       </div>
-      <button type="button" class="btn btn--width" @click="toShop">
-        Вернуться в магазин
-      </button>
-      <svg class="svg svg--crab">
-        <use xlink:href="../images/svg/sprite.svg#crab" />
+      <svg class="svg svg--deer">
+        <use xlink:href="../images/svg/sprite.svg#deer" />
       </svg>
       <svg class="svg svg--owl">
         <use xlink:href="../images/svg/sprite.svg#owl" />
@@ -27,8 +28,8 @@
 <script>
 export default {
   methods: {
-    toShop() {
-      this.$router.push("/shop");
+    closeModal() {
+      this.$emit("closeModal");
     },
   },
 };
@@ -51,12 +52,11 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  max-width: 700px;
+  max-width: 992px;
   width: 100%;
   min-height: 194px;
   background-color: $colorBrend;
-  text-align: center;
-  padding: 20px 30px;
+  padding: 20px 45px;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
@@ -64,25 +64,33 @@ export default {
   align-items: center;
   justify-content: center;
 
+  @media screen and (max-width: 767px) {
+    padding: 20px;
+  }
   @media screen and (max-width: 575px) {
     max-width: 375px;
     height: 100%;
-    padding: 20px 35px;
   }
   .text {
     font-family: "Montserrat", sans-serif;
-    font-size: 20px;
-    line-height: 32px;
+    font-size: 15px;
+    line-height: 21px;
     color: $colorBackground;
-    text-align: center;
-    margin-bottom: 30px;
 
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+    }
     &__caption {
       font-family: inherit;
       font-size: 24px;
       font-weight: 500;
       color: inherit;
+      text-align: center;
       margin: 10px 0 30px 0;
+
+      @media screen and (max-width: 575px) {
+        font-size: 20px;
+      }
     }
   }
   .btn-remove {
@@ -113,20 +121,24 @@ export default {
   position: absolute;
   z-index: -1;
 
-  &--crab {
+  &--deer {
     top: 8px;
-    right: 12px;
+    left: 12px;
     stroke: $colorBackground;
-    width: 168px;
-    height: 117px;
-    stroke-dasharray: 170;
-    stroke-dashoffset: 180;
+    width: 77px;
+    height: 90px;
+    stroke-dasharray: 45;
+    stroke-dashoffset: 50;
     animation: svgShow 5s linear 1s infinite alternate;
+
+    @media screen and (max-width: 575px) {
+      width: 109px;
+      height: 127px;
+    }
   }
   &--owl {
-    left: 0;
+    right: 0;
     bottom: 0;
-    transform: scaleX(-1);
     stroke: $colorBackground;
     width: 70px;
     height: 86px;
@@ -135,19 +147,7 @@ export default {
     animation: svgShow 5s linear 2s infinite alternate;
   }
 }
-.btn {
-  color: $colorTextMain;
-  background-color: $colorBackground;
-  margin: 0 auto 10px auto;
 
-  &:not(:disabled):hover,
-  &:not(:disabled):focus {
-    box-shadow: 0 0 15px $colorBackground;
-  }
-  &:active {
-    background-color: lighten($colorBackground, 5);
-  }
-}
 @keyframes svgShow {
   to {
     stroke-dashoffset: 0;

@@ -2,6 +2,7 @@ export default {
     state: {
         loading: false,
         error: null,
+        overflow: false
     },
     mutations: {
         SET_LOADING(state, payload) {
@@ -13,6 +14,9 @@ export default {
         CLEAR_ERROR(state) {
             state.error = null;
         },
+        PAGE_OVERFLOW(state, payload) {
+            state.overflow = payload;
+        }
     },
     actions: {
         loading({ commit }, payload) {
@@ -32,5 +36,8 @@ export default {
         getError(state) {
             return state.error;
         },
+        getOverflow(state) {
+            return state.overflow;
+        }
     },
 };

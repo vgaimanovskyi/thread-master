@@ -7,37 +7,49 @@
         </svg>
       </button>
       <h1 class="caption">Корзина</h1>
-      <div class="cart-products">
-        <ul class="cart">
-          <li class="cart__item" v-for="item in cartList" :key="item.id">
-            <div class="photo-block">
-              <img class="photo" :src="item.urlPoster" :alt="item.name" />
+      <ul class="cart">
+        <li class="cart__item" v-for="item in cartList" :key="item.id">
+          <div class="photo-block">
+            <img class="photo" :src="item.urlPoster" :alt="item.name" />
+          </div>
+          <div class="controls">
+            <h3 class="name">{{ item.name }}</h3>
+            <div class="counter">
+              <button
+                type="button"
+                class="counter__btn"
+                @click="item.count--"
+                :disabled="item.count === 1"
+              >
+                -
+              </button>
+              <span class="counter__number">{{ item.count }}</span>
+              <button
+                type="button"
+                class="counter__btn"
+                @click="item.count++"
+                :disabled="item.count >= 5"
+              >
+                +
+              </button>
             </div>
-            <div class="controls">
-              <h3 class="name">{{item.name}}</h3>
-              <div class="counter">
-                <button
-                  type="button"
-                  class="counter__btn"
-                  @click="item.count--"
-                  :disabled="item.count === 1"
-                >-</button>
-                <span class="counter__number">{{item.count}}</span>
-                <button
-                  type="button"
-                  class="counter__btn"
-                  @click="item.count++"
-                  :disabled="item.count >= 5"
-                >+</button>
-              </div>
-              <button type="button" class="remove-item" @click="removeFromCart(item.id)">Удалить</button>
-            </div>
-            <div class="summ">{{item.price * item.count}} $</div>
-          </li>
-        </ul>
-        <div class="total">
-          <span class="total__name">Общая стоимость</span>
-          <span class="total__amount">{{amount}} $</span>
+            <button
+              type="button"
+              class="remove-item"
+              @click="removeFromCart(item.id)"
+            >
+              Удалить
+            </button>
+          </div>
+          <div class="summ">{{ item.price * item.count }} $</div>
+        </li>
+      </ul>
+      <div class="total">
+        <span class="total__name">Общая стоимость</span>
+        <span class="total__amount">{{ amount }} $</span>
+        <div class="total__text">
+          Доставка осуществляется за счет покупателя согласно тарифов компании
+          "Новая Почта". Доставка оплачивается при получении заказа.
         </div>
       </div>
       <div class="buttons">
@@ -45,8 +57,16 @@
           type="button"
           class="btn btn--width btn--transparent"
           @click="toShop"
-        >Продолжить покупки</button>
-        <button type="button" class="btn btn--width btn--color" @click="toOrder">Оформить заказ</button>
+        >
+          Продолжить покупки
+        </button>
+        <button
+          type="button"
+          class="btn btn--width btn--color"
+          @click="toOrder"
+        >
+          Оформить заказ
+        </button>
       </div>
 
       <svg class="svg svg--hands">
@@ -113,12 +133,18 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1000px;
+  max-width: 1000px;
+  width: 100%;
   min-height: 194px;
   background-color: $colorBrend;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
+  @media screen and (max-width: 767px) {
+    height: 100vh;
+  }
   .caption {
     font-family: "Montserrat", sans-serif;
     font-size: 36px;
@@ -127,13 +153,15 @@ export default {
     text-align: center;
     padding: 0 50px;
     margin: 50px 0;
-  }
-  .cart-products {
-    max-height: 480px;
-    padding: 50px 40px 20px 50px;
-    border-top: 2px solid $colorBackground;
-    border-bottom: 2px solid $colorBackground;
-    overflow-y: auto;
+
+    @media screen and (max-width: 767px) {
+      font-size: 25px;
+      margin: 40px 0;
+    }
+    @media screen and (max-width: 374px) {
+      font-size: 22px;
+      margin: 20px 0;
+    }
   }
   .buttons {
     display: flex;
@@ -167,11 +195,30 @@ export default {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-height: 320px;
+  padding: 50px 40px 20px 50px;
+  border-top: 2px solid $colorBackground;
+  border-bottom: 2px solid $colorBackground;
+  overflow-y: auto;
+  box-sizing: border-box;
 
+  @media screen and (max-width: 767px) {
+    flex-grow: 1;
+    max-height: 100%;
+  }
+  @media screen and (max-width: 575px) {
+    padding: 40px 20px 20px 20px;
+  }
+  @media screen and (max-width: 374px) {
+    padding: 20px 10px 10px 10px;
+  }
   &__item {
     display: flex;
     margin-bottom: 50px;
 
+    @media screen and (max-width: 767px) {
+      margin-bottom: 40px;
+    }
     &:last-child {
       margin-bottom: 35px;
     }
@@ -185,6 +232,12 @@ export default {
   overflow: hidden;
   margin-right: 30px;
 
+  @media screen and (max-width: 575px) {
+    margin-right: 24px;
+  }
+  @media screen and (max-width: 374px) {
+    margin-right: 10px;
+  }
   & .photo {
     display: block;
     width: 100%;
@@ -204,6 +257,15 @@ export default {
   font-weight: 500;
   line-height: 29px;
   color: inherit;
+
+  @media screen and (max-width: 575px) {
+    font-size: 15px;
+    line-height: 21px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
+    line-height: 18px;
+  }
 }
 .counter {
   display: flex;
@@ -218,6 +280,9 @@ export default {
     outline: none;
     cursor: pointer;
 
+    @media screen and (max-width: 575px) {
+      width: 24px;
+    }
     &:hover,
     &:focus {
       border-color: $colorTextMain;
@@ -235,6 +300,11 @@ export default {
     font-size: 24px;
     color: inherit;
     text-align: center;
+
+    @media screen and (max-width: 575px) {
+      font-size: 20px;
+      line-height: 24px;
+    }
   }
   &__number {
     margin: 0 12px;
@@ -253,6 +323,9 @@ export default {
   outline: none;
   cursor: pointer;
 
+  @media screen and (max-width: 374px) {
+    font-size: 12px;
+  }
   &:hover,
   &:focus {
     border-bottom-color: $colorBackground;
@@ -265,14 +338,24 @@ export default {
   font-size: 18px;
   font-weight: 500;
   color: $colorBackground;
+
+  @media screen and (max-width: 575px) {
+    font-size: 15px;
+    line-height: 21px;
+  }
 }
 .total {
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
   color: $colorBackground;
+  padding: 30px 40px 20px 50px;
 
+  @media screen and (max-width: 767px) {
+    padding: 30px 20px 20px 20px;
+  }
   &__name {
     font-size: 18px;
     flex-grow: 1;
@@ -280,6 +363,18 @@ export default {
   &__amount {
     font-size: 22px;
     min-width: 15%;
+  }
+  &__text {
+    margin-top: 20px;
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 17px;
+    color: inherit;
+
+    @media screen and (max-width: 374px) {
+      font-size: 11px;
+    }
   }
 }
 .svg {
@@ -308,9 +403,18 @@ export default {
   }
 }
 .btn {
-  margin: 50px;
+  margin: 30px;
   line-height: 1;
 
+  @media screen and (max-width: 991px) {
+    margin: 20px;
+  }
+  @media screen and (max-width: 479px) {
+    margin: 5px;
+  }
+  @media screen and (max-width: 374px) {
+    font-size: 13px;
+  }
   &:active {
     background-color: lighten($colorBackground, 5);
   }

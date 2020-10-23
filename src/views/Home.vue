@@ -1,7 +1,8 @@
 <template>
   <div class="mainer">
+    <Swipe v-if="swipe" class="swipe-modal" @closeModal="swipe = false" />
     <div class="grid">
-      <div class="col">
+      <div class="col col--order">
         <div class="hello-text">
           <h2 class="hello-text__caption">
             Приветствую тебя, мой гость!
@@ -40,10 +41,27 @@
 </template>
 
 <script>
+import Swipe from "../components/swipe";
+
 export default {
   name: "Home",
   metaInfo: {
     title: "Thread Master",
+  },
+  components: { Swipe },
+  data() {
+    return {
+      swipe: false,
+    };
+  },
+  created() {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+      )
+    ) {
+      this.swipe = true;
+    }
   },
 };
 </script>
@@ -52,8 +70,14 @@ export default {
 
 .grid {
   display: flex;
+  flex-wrap: wrap;
   margin: 0 -10px;
   min-height: calc(100vh - 84px - 83px);
+
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 64px - 53px);
+    flex-direction: column;
+  }
 }
 .col {
   width: 50%;
@@ -61,19 +85,37 @@ export default {
   box-sizing: border-box;
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+
+    &--order {
+      order: 1;
+    }
+  }
 }
 .logo-svg {
-  display: block;
   width: 100%;
   height: 100%;
   transform: scale(0);
   stroke-dasharray: 100;
   animation: logoShow 0.5s linear 1s forwards,
     logoAnimate 30s linear 1s infinite;
+
+  @media screen and (max-width: 767px) {
+    height: 300px;
+    margin: 30px 0 60px 0;
+  }
+  @media screen and (max-width: 575px) {
+    height: 150px;
+  }
 }
 .hello-text {
   padding-right: 15px;
 
+  @media screen and (max-width: 991px) {
+    padding-right: 0;
+  }
   &__caption {
     font-family: "Montserrat", sans-serif;
     font-size: 30px;
@@ -83,6 +125,20 @@ export default {
     margin-bottom: 45px;
     transform: translateX(-200%);
     animation: textShow 0.3s linear forwards;
+
+    @media screen and (max-width: 991px) {
+      font-size: 24px;
+      line-height: 36px;
+    }
+    @media screen and (max-width: 767px) {
+      font-size: 20px;
+      line-height: 30px;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 575px) {
+      font-size: 15px;
+      line-height: 24px;
+    }
   }
   &__description {
     font-family: "Montserrat", sans-serif;
@@ -93,6 +149,9 @@ export default {
     transform: translateX(-200%);
     animation: textShow 0.3s linear forwards;
 
+    @media screen and (max-width: 767px) {
+      margin-bottom: 30px;
+    }
     &:first-of-type {
       animation-delay: 0.2s;
     }
@@ -108,6 +167,14 @@ export default {
 .btn {
   transform: translateX(-300%);
   animation: textShow 0.3s linear 0.8s forwards;
+
+  @media screen and (max-width: 767px) {
+    margin: 0 auto;
+  }
+  @media screen and (max-width: 399px) {
+    width: 100%;
+    margin-bottom: 25px;
+  }
 }
 .svg {
   position: absolute;
@@ -122,6 +189,10 @@ export default {
     stroke-dasharray: 450;
     stroke-dashoffset: 500;
     animation: svgShow 10s linear 2s infinite alternate;
+
+    @media screen and (max-width: 575px) {
+      display: none;
+    }
   }
   &--fox {
     right: -17px;
@@ -142,6 +213,10 @@ export default {
     stroke-dasharray: 350;
     stroke-dashoffset: 360;
     animation: svgShow 15s linear 4s infinite alternate;
+
+    @media screen and (max-width: 575px) {
+      display: none;
+    }
   }
 }
 @keyframes logoShow {

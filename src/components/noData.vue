@@ -6,8 +6,10 @@
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
       </button>
-      <div class="text">{{text}}</div>
-      <button type="button" class="btn btn--width" @click="toShop">Вернуться в магазин</button>
+      <div class="text">{{ text }}</div>
+      <button type="button" class="btn btn--width" @click="toShop">
+        Вернуться в магазин
+      </button>
       <svg class="svg svg--deer">
         <use xlink:href="../images/svg/sprite.svg#deer" />
       </svg>
@@ -52,14 +54,24 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 700px;
+  max-width: 700px;
+  width: 100%;
   min-height: 194px;
   background-color: $colorBrend;
   text-align: center;
   padding: 20px 45px;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
+  @media screen and (max-width: 575px) {
+    max-width: 375px;
+    height: 100%;
+    padding: 20px 35px;
+  }
   .text {
     font-family: "Montserrat", sans-serif;
     font-size: 24px;

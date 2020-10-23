@@ -1,5 +1,19 @@
 <template>
   <header class="header">
+    <div class="hamburger" @click="toggleMobMenu">
+      <div
+        class="hamburger__line"
+        :class="{ 'hamburger__line--open': burgerOpen }"
+      ></div>
+      <div
+        class="hamburger__line"
+        :class="{ 'hamburger__line--open': burgerOpen }"
+      ></div>
+      <div
+        class="hamburger__line"
+        :class="{ 'hamburger__line--open': burgerOpen }"
+      ></div>
+    </div>
     <router-link to="/" class="logo header--width">Thread Master</router-link>
     <ul class="nav">
       <router-link to="/" tag="li" exact active-class="active">
@@ -58,9 +72,9 @@
           </div>
         </div>
       </li> -->
-      <li>
+      <li class="options-favourite">
         <button type="button" class="options-icons" @click="favModalOpen">
-          <svg class="svg svg--favourite">
+          <svg class="svg-nav svg-nav--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
           <span class="options-icons__number" v-if="favouriteList.length">{{
@@ -68,7 +82,7 @@
           }}</span>
         </button>
       </li>
-      <li>
+      <li class="options-search">
         <form class="search" @submit.prevent="useSearch">
           <input
             type="search"
@@ -78,15 +92,15 @@
             v-model="search"
           />
           <button type="submit" class="search__btn">
-            <svg class="svg svg--search">
+            <svg class="svg-nav svg-nav--search">
               <use xlink:href="../images/svg/sprite.svg#search" />
             </svg>
           </button>
         </form>
       </li>
-      <li>
+      <li class="options-cart">
         <button type="button" class="options-icons" @click="cartModalOpen">
-          <svg class="svg svg--cart">
+          <svg class="svg-nav svg-nav--cart">
             <use xlink:href="../images/svg/sprite.svg#cart" />
           </svg>
           <span class="options-icons__number" v-if="cartList.length">{{
@@ -95,6 +109,82 @@
         </button>
       </li>
     </ul>
+    <template v-if="burgerOpen">
+      <div class="mobile">
+        <ul class="mobile-nav">
+          <router-link to="/" tag="li" exact active-class="active">
+            <svg class="svg-icon svg-icon--home">
+              <use xlink:href="../images/svg/sprite.svg#home" />
+            </svg>
+            <a @click="toggleMobMenu">Главная</a>
+          </router-link>
+          <router-link to="/gallery" tag="li" exact active-class="active">
+            <svg class="svg-icon svg-icon--gallery">
+              <use xlink:href="../images/svg/sprite.svg#gallery" />
+            </svg>
+            <a @click="toggleMobMenu">Галерея</a>
+          </router-link>
+          <router-link to="/shop" tag="li" exact active-class="active">
+            <svg class="svg-icon svg-icon--shop">
+              <use xlink:href="../images/svg/sprite.svg#shop" />
+            </svg>
+            <a @click="toggleMobMenu">Магазин</a>
+          </router-link>
+          <router-link to="/contacts" tag="li" exact active-class="active">
+            <svg class="svg-icon svg-icon--contacts">
+              <use xlink:href="../images/svg/sprite.svg#contacts" />
+            </svg>
+            <a @click="toggleMobMenu">Контакты</a>
+          </router-link>
+          <router-link to="/delivery" tag="li" exact active-class="active">
+            <svg class="svg-icon svg-icon--delivery">
+              <use xlink:href="../images/svg/sprite.svg#delivery" />
+            </svg>
+            <a @click="toggleMobMenu">Оплата и Доставка</a>
+          </router-link>
+          <li :class="{ active: favActive }">
+            <div class="svg-container">
+              <svg class="svg-icon svg-icon--favourite">
+                <use xlink:href="../images/svg/sprite.svg#heart" />
+              </svg>
+              <span class="options-icons__number" v-if="favouriteList.length">
+                {{ favouriteList.length }}
+              </span>
+            </div>
+            <a @click="favModalOpen">Избранное</a>
+          </li>
+          <li>
+            <svg class="svg-icon svg-icon--search">
+              <use xlink:href="../images/svg/sprite.svg#search" />
+            </svg>
+            <form
+              class="mob-search"
+              @submit.prevent="useSearch"
+              v-if="searchOpen"
+            >
+              <input
+                type="search"
+                class="mob-search__input"
+                placeholder="Поиск"
+                minlength="3"
+                v-model="search"
+              />
+              <button type="submit" class="mob-search__btn" @click="useSearch">
+                Искать
+              </button>
+            </form>
+            <a @click="searchOpen = true" v-show="!searchOpen">Поиск</a>
+          </li>
+        </ul>
+        <svg class="svg svg--mountains">
+          <use xlink:href="../images/svg/sprite.svg#mountains" />
+        </svg>
+        <svg class="svg svg--body">
+          <use xlink:href="../images/svg/sprite.svg#body" />
+        </svg>
+        <Footer />
+      </div>
+    </template>
     <noData
       v-if="noFavData"
       @closeModal="noFavData = false"
@@ -112,9 +202,10 @@
 <script>
 import noData from "../components/noData";
 import Cart from "../components/cart";
+import Footer from "../components/footer";
 
 export default {
-  components: { noData, Cart },
+  components: { noData, Cart, Footer },
   data() {
     return {
       filterName: "Русский",
@@ -124,6 +215,8 @@ export default {
       noFavData: false,
       cart: false,
       search: "",
+      burgerOpen: false,
+      searchOpen: false,
     };
   },
   computed: {
@@ -132,6 +225,9 @@ export default {
     },
     cartList() {
       return this.$store.getters.getCartList;
+    },
+    favActive() {
+      return this.$route.path === "/favourites";
     },
   },
   methods: {
@@ -159,6 +255,7 @@ export default {
         if (this.$route.path !== "/search") {
           this.$router.push("/search");
         }
+        this.burgerOpen = false;
       }
     },
     cartModalOpen() {
@@ -176,6 +273,12 @@ export default {
       } else {
         this.noFavData = true;
       }
+      this.burgerOpen = false;
+    },
+    toggleMobMenu() {
+      this.burgerOpen = !this.burgerOpen;
+      this.searchOpen = false;
+      this.$store.commit("PAGE_OVERFLOW", this.burgerOpen);
     },
   },
 };
@@ -201,14 +304,65 @@ export default {
   box-sizing: border-box;
 
   &--width {
-    width: 25%;
+    width: 20%;
+  }
+  @media screen and (max-width: 767px) {
+    padding: 20px;
+  }
+}
+.hamburger {
+  display: none;
+  position: relative;
+  width: 19px;
+  height: 12px;
+
+  @media screen and (max-width: 991px) {
+    display: block;
+  }
+  &__line {
+    position: absolute;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: $colorBrend;
+    transition-duration: 0.3s;
+
+    &:first-child {
+      top: 0;
+    }
+    &:nth-child(2) {
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    &:last-child {
+      bottom: 0;
+    }
+    &--open {
+      &:first-child {
+        top: 40%;
+        transform: translateY(-50%) rotate(-45deg);
+      }
+      &:nth-child(2) {
+        transform: translate(-50%, -50%);
+        opacity: 0;
+      }
+      &:last-child {
+        bottom: 40%;
+        transform: translateY(-50%) rotate(45deg);
+      }
+    }
   }
 }
 .logo {
-  font-family: "Rubik", sans-serif;
+  font-family: "Rubik Mono One", sans-serif;
   font-size: 20px;
   color: $colorBrend;
   text-decoration: none;
+
+  @media screen and (max-width: 991px) {
+    width: auto;
+    margin: 0 auto;
+  }
 }
 .nav {
   list-style: none;
@@ -218,9 +372,15 @@ export default {
   display: flex;
   justify-content: center;
 
+  @media screen and (max-width: 991px) {
+    display: none;
+  }
   & li {
     margin: 0 20px;
 
+    @media screen and (max-width: 1100px) {
+      margin: 0 15px;
+    }
     & a {
       font-family: "Open Sans", sans-serif;
       font-size: 14px;
@@ -244,6 +404,12 @@ export default {
       &:focus {
         @extend %navhover;
       }
+    }
+    & button {
+      font-family: "Open Sans", sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: $colorTextSecondary;
     }
     &.active {
       & a {
@@ -317,6 +483,14 @@ export default {
       margin-right: 0;
     }
   }
+  @media screen and (max-width: 991px) {
+    width: auto;
+
+    & .options-favourite,
+    & .options-search {
+      display: none;
+    }
+  }
 }
 .options-icons {
   display: block;
@@ -341,7 +515,7 @@ export default {
     border-radius: 50%;
   }
 }
-.svg {
+.svg-nav {
   display: block;
   fill: $colorTextSecondary;
   transition-duration: 0.3s;
@@ -362,6 +536,10 @@ export default {
     height: 19px;
     fill: none;
     stroke: $colorTextSecondary;
+
+    @media screen and (max-width: 991px) {
+      stroke: $colorBrend;
+    }
   }
 }
 .search {
@@ -409,6 +587,161 @@ export default {
     & .svg {
       transform: rotate(90deg);
     }
+  }
+}
+.mobile {
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+  height: calc(100vh - 60px);
+  padding-top: 20px;
+  z-index: 100;
+  background-color: $colorBackground;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  & .mobile-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    padding: 0 20px;
+
+    & li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+
+      & a {
+        font-family: "Open Sans", sans-serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: $colorTextSecondary;
+        text-decoration: none;
+      }
+      & .svg-container {
+        position: relative;
+        display: inline-block;
+        margin-right: 18px;
+      }
+      & .svg-icon {
+        display: inline-block;
+        margin-right: 18px;
+        width: 20px;
+        height: 20px;
+        fill: $colorTextSecondary;
+
+        /*
+        &--home {
+          width: 20px;
+          height: 20px;
+          fill: $colorTextSecondary;
+          stroke: $colorTextSecondary;
+        }
+        &--gallery {
+          width: 20px;
+          height: 18px;
+          fill: $colorTextSecondary;
+          stroke: $colorTextSecondary;
+        }
+        &--shop {
+          width: 20px;
+          height: 20px;
+          fill: $colorTextSecondary;
+        }
+        &--contacts {
+          width: 17px;
+          height: 19px;
+          fill: $colorTextSecondary;
+        }
+        &--delivery {
+          width: 20px;
+          height: 19px;
+          fill: $colorTextSecondary;
+        }
+        */
+        &--favourite {
+          fill: none;
+          stroke: $colorTextSecondary;
+          margin-right: 0;
+        }
+        &--search {
+          stroke: none;
+        }
+      }
+      &.active {
+        & a {
+          @extend %navhover;
+        }
+        & .svg-icon {
+          fill: $colorBrend;
+
+          &--favourite {
+            fill: none;
+            stroke: $colorBrend;
+          }
+        }
+      }
+    }
+  }
+  & .mob-search {
+    display: block;
+    border-bottom: 1px solid $colorTextSecondary;
+
+    &__input {
+      border: none;
+      background-color: transparent;
+      padding: 5px;
+      font-family: "Open Sans", sans-serif;
+      font-size: 14px;
+      color: $colorTextSecondary;
+    }
+    &__btn {
+      font-family: "Open Sans", sans-serif;
+      color: $colorBrend;
+      border: none;
+      background-color: transparent;
+      outline: none;
+
+      &:active {
+        color: $colorBackground;
+        background-color: $colorBrend;
+      }
+    }
+  }
+}
+.svg {
+  position: absolute;
+  z-index: -1;
+
+  &--body {
+    top: 0px;
+    right: -20px;
+    width: 142px;
+    height: 538px;
+    stroke: $colorTextMain;
+    transform: scaleX(-1);
+    stroke-dasharray: 450;
+    stroke-dashoffset: 500;
+    animation: svgShow 15s linear 2s infinite alternate;
+  }
+  &--mountains {
+    left: 50%;
+    bottom: -17px;
+    transform: translateX(-50%);
+    width: 609px;
+    height: 171px;
+    stroke: $colorTextMain;
+    stroke-dasharray: 350;
+    stroke-dashoffset: 360;
+    animation: svgShow 15s linear 4s infinite alternate;
+  }
+}
+@keyframes svgShow {
+  to {
+    stroke-dashoffset: 0;
   }
 }
 </style>

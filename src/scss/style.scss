@@ -4,19 +4,25 @@
 
     // font-family: 'Montserrat', sans-serif;
     // font-family: 'Open Sans', sans-serif;
-    // font-family: 'Rubik', sans-serif;
+    // font-family: 'Rubik Mono One', sans-serif;
 
 body {
     background-color: $colorBackground;
 }
 .mainer {
     max-width: 1260px;
-    padding: 0 10px;
+    padding: 0 20px;
     margin: 0 auto;
 }
 .page {
     margin-top: 110px;
 
+    @media screen and (max-width: 991px) {
+        margin-top: 20px;
+    }
+    &--overflow {
+        overflow-y: hidden;
+    } 
     &__caption {
         font-family: "Montserrat", sans-serif;
         font-size: 36px;
@@ -24,6 +30,19 @@ body {
         color: $colorBrend;
         text-align: center;
         margin-bottom: 55px;
+
+        @media screen and (max-width: 991px) {
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+        @media screen and (max-width: 767px) {
+            font-size: 25px;
+            line-height: 30px;
+            margin-bottom: 25px;
+        }
+        @media screen and (max-width: 374px) {
+            font-size: 22px;
+        }
     }
 }
 .hr-line {
@@ -32,6 +51,13 @@ body {
     height: 2px;
     background-color: $colorBrend;
     margin: 80px 0;
+
+    @media screen and (max-width: 991px) {
+        margin: 50px 0;
+    }
+    @media screen and (max-width: 767px) {
+        margin: 40px 0;
+    }
 }
 .btn {
     display: block;

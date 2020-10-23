@@ -13,6 +13,15 @@
               -{{ product.discount }}%
             </div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
+            <div class="btn-tag-conteiner">
+              <svg
+                class="svg-btn-tag favourite"
+                title="Нравится"
+                @click="removeFromFavourites(product.id)"
+              >
+                <use xlink:href="../images/svg/sprite.svg#heart" />
+              </svg>
+            </div>
             <img class="img" :src="product.urlPoster" :alt="product.name" />
           </router-link>
           <h3 class="name">
@@ -35,7 +44,7 @@
             </button>
             <button
               type="button"
-              class="btn"
+              class="btn btn--favourite"
               @click="removeFromFavourites(product.id)"
             >
               <svg class="svg-btn favourite">
@@ -108,6 +117,13 @@ export default {
 
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 84px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 64px - 53px);
+  }
 }
 .row {
   display: flex;
@@ -115,20 +131,34 @@ export default {
   max-width: 1050px;
   margin: 50px auto 0 auto;
 
+  @media screen and (max-width: 575px) {
+    flex-direction: column;
+    align-items: center;
+  }
   .col {
-    max-width: 330px;
+    width: 33.33333%;
     flex-grow: 1;
     padding: 0 10px;
     margin-bottom: 50px;
+    box-sizing: border-box;
 
+    @media screen and (max-width: 767px) {
+      width: 50%;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 575px) {
+      width: auto;
+    }
     &.empty {
       padding: 0;
+      margin: 0;
     }
   }
 }
 .img-container {
   position: relative;
   width: 100%;
+  max-width: 330px;
   height: 330px;
   display: flex;
   align-items: center;
@@ -138,6 +168,19 @@ export default {
   transition-duration: 0.3s;
   cursor: pointer;
 
+  @media screen and (max-width: 991px) {
+    height: 280px;
+  }
+  @media screen and (max-width: 767px) {
+    height: 330px;
+    margin-bottom: 15px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 400px;
+  }
+  @media screen and (max-width: 374px) {
+    height: 300px;
+  }
   &:hover {
     transform: scale(1.05);
   }
@@ -165,6 +208,33 @@ export default {
     }
     &--new {
       background-color: #eb00ff;
+    }
+  }
+  .btn-tag-conteiner {
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 0 8px;
+    z-index: 1000;
+
+    @media screen and (max-width: 767px) {
+      display: block;
+    }
+    .svg-btn-tag {
+      display: block;
+      width: 20px;
+      height: 20px;
+      stroke: $colorTextMain;
+      padding: 10px;
+      transition-duration: 0.3s;
+      cursor: pointer;
+
+      &.favourite {
+        fill: $colorTextMain;
+      }
     }
   }
 }
@@ -231,8 +301,21 @@ export default {
       fill: $colorBackground;
     }
   }
+  &--favourite {
+    @media screen and (max-width: 767px) {
+      display: none;
+    }
+  }
   &--width {
     margin-right: 10px;
+
+    @media screen and (max-width: 991px) and (min-width: 768px) {
+      width: 175px;
+      margin-right: 7px;
+    }
+    @media screen and (max-width: 767px) {
+      margin-right: 0;
+    }
   }
 }
 .svg {

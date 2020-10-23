@@ -1,9 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <Confirm
-        v-if="orderDone"
-      />
+      <Confirm v-if="orderDone" />
       <h1 class="page__caption">Оформление товара</h1>
       <div class="row">
         <div class="col col--width">
@@ -782,6 +780,10 @@ export default {
       }
       this.payListOpen = false;
     },
+    removeFromCart(prodId) {
+      // console.log(this.cartList);
+      this.$store.dispatch("removeFromCart", prodId);
+    },
   },
   created() {
     this.orderDone = false;
@@ -844,6 +846,13 @@ export default {
 
 .page {
   min-height: calc(100vh - 110px - 84px - 83px);
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 84px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 64px - 53px);
+  }
 }
 .btn--center {
   margin: 0 auto;
@@ -852,13 +861,34 @@ export default {
   display: flex;
   margin: 40px -50px 0 -50px;
 
+  @media screen and (max-width: 1199px) {
+    margin-left: -20px;
+    margin-right: -20px;
+    flex-wrap: wrap;
+  }
   & > .col {
     max-width: 535px;
     flex-grow: 1;
     padding: 0 50px;
 
+    @media screen and (max-width: 1199px) {
+      max-width: 50%;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    @media screen and (max-width: 767px) {
+      max-width: 100%;
+      margin-bottom: 50px;
+    }
     &--width {
       max-width: 680px;
+
+      @media screen and (max-width: 1199px) {
+        max-width: 50%;
+      }
+      @media screen and (max-width: 767px) {
+        max-width: 100%;
+      }
     }
   }
 }
@@ -873,6 +903,11 @@ export default {
   padding-bottom: 10px;
   border-bottom: 4px solid $colorBrend;
   margin-bottom: 40px;
+
+  @media screen and (max-width: 575px) {
+    font-size: 16px;
+    line-height: 20px;
+  }
 }
 .link {
   font-family: "Montserrat", sans-serif;
@@ -882,6 +917,9 @@ export default {
   text-decoration: underline;
   transition-duration: 0.3s;
 
+  @media screen and (max-width: 575px) {
+    font-size: 14px;
+  }
   &:hover,
   &:focus {
     color: $colorBrend;
@@ -944,6 +982,13 @@ input,
   line-height: 22px;
   color: $colorTextMain;
   letter-spacing: 0.04em;
+
+  @media screen and (max-width: 1199px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 991px) and (min-width: 768px) {
+    font-size: 12px;
+  }
 }
 .filter-name {
   font-size: 14px;
@@ -1010,6 +1055,11 @@ input,
     margin-top: 15px;
     display: inline-block;
     vertical-align: middle;
+
+    @media screen and (max-width: 767px) {
+      display: block;
+      margin: 15px auto 0 auto;
+    }
   }
 }
 .filter {
@@ -1104,23 +1154,44 @@ input,
     &__item {
       display: flex;
       margin-bottom: 40px;
+
+      @media screen and (max-width: 991px) {
+        margin-bottom: 30px;
+      }
     }
   }
   .photo-block {
     display: flex;
     align-items: center;
-    width: 105px;
-    height: 105px;
+    max-width: 105px;
+    max-height: 105px;
     overflow: hidden;
     margin-right: 30px;
 
+    @media screen and (max-width: 991px) {
+      margin-right: 20px;
+    }
+    @media screen and (max-width: 767px) {
+      max-width: 90px;
+      max-height: 90px;
+      margin-right: 15px;
+    }
+    @media screen and (max-width: 575px) {
+      max-width: 80px;
+      max-height: 80px;
+    }
+    @media screen and (max-width: 374px) {
+      max-width: 70px;
+      max-height: 70px;
+      margin-right: 10px;
+    }
     & .photo {
       display: block;
       width: 100%;
     }
   }
   .controls {
-    flex-grow: 1;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1133,10 +1204,24 @@ input,
     font-weight: 500;
     line-height: 29px;
     color: inherit;
+
+    @media screen and (max-width: 991px) {
+      font-size: 16px;
+      line-height: 26px;
+    }
+    @media screen and (max-width: 575px) {
+      font-size: 14px;
+      line-height: 20px;
+    }
+    @media screen and (max-width: 374px) {
+      font-size: 12px;
+      line-height: 16px;
+    }
   }
   .counter {
     display: flex;
     align-items: center;
+    margin: 5px 0;
 
     &__btn {
       width: 19px;
@@ -1164,6 +1249,10 @@ input,
       font-size: 24px;
       color: $colorTextMain;
       text-align: center;
+
+      @media screen and (max-width: 575px) {
+        font-size: 20px;
+      }
     }
     &__number {
       margin: 0 12px;
@@ -1182,18 +1271,28 @@ input,
     outline: none;
     cursor: pointer;
 
+    @media screen and (max-width: 575px) {
+      font-size: 12px;
+    }
+    @media screen and (max-width: 374px) {
+      font-size: 11px;
+    }
     &:hover,
     &:focus {
       border-bottom-color: $colorBackground;
     }
   }
   .summ {
-    min-width: 15%;
+    min-width: 60px;
     align-self: center;
     font-family: "Montserrat", sans-serif;
     font-size: 18px;
     font-weight: 500;
     color: $colorTextMain;
+
+    @media screen and (max-width: 575px) {
+      font-size: 16px;
+    }
   }
 }
 .total {
@@ -1208,6 +1307,12 @@ input,
     font-size: 18px;
     flex-grow: 1;
 
+    @media screen and (max-width: 575px) {
+      font-size: 16px;
+    }
+    @media screen and (max-width: 374px) {
+      font-size: 14px;
+    }
     &--weight {
       font-weight: 500;
     }
@@ -1215,6 +1320,13 @@ input,
   &__amount {
     font-size: 24px;
     min-width: 15%;
+
+    @media screen and (max-width: 575px) {
+      font-size: 20px;
+    }
+    @media screen and (max-width: 374px) {
+      font-size: 18px;
+    }
   }
 }
 .notice {
@@ -1224,6 +1336,15 @@ input,
   font-size: 14px;
   line-height: 17px;
   color: $colorTextMain;
+
+  @media screen and (max-width: 991px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 575px) {
+    font-size: 10px;
+    margin-top: 15px;
+    max-width: 100%;
+  }
 }
 .svg {
   position: absolute;

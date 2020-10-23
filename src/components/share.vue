@@ -171,24 +171,28 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 375px;
-  height: calc(100vh - 100px);
+  max-width: 804px;
+  width: 100%;
   background-color: $colorBrend;
   text-align: center;
-  padding: 20px;
+  padding: 50px 20px;
   box-sizing: border-box;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  @media screen and (max-width: 575px) {
+    max-width: 375px;
+    max-height: 812px;
+    height: 100%;
+  }
   .social-block {
     font-family: "Montserrat", sans-serif;
     font-size: 20px;
     line-height: 30px;
     color: $colorBackground;
     text-align: center;
-    margin-bottom: 30px;
 
     &__caption {
       font-family: inherit;
@@ -204,7 +208,7 @@ export default {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      margin-bottom: 43px;
+      margin-bottom: 33px;
     }
     &__list-item {
       width: 60px;
@@ -339,8 +343,8 @@ export default {
     top: 0;
     left: -34px;
     stroke: $colorBackground;
-    width: 309px;
-    height: 131px;
+    width: 264px;
+    height: 112px;
     stroke-dasharray: 3000;
     stroke-dashoffset: 3200;
     animation: svgShow 15s linear infinite alternate;

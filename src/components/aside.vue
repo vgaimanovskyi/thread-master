@@ -5,7 +5,9 @@
         <use xlink:href="../images/svg/sprite.svg#arrowTop" />
       </svg>
     </button>
-    <router-link to="/contacts" tag="a" class="btn btn--toContacts">Напишите нам, мы онлайн!</router-link>
+    <router-link to="/contacts" tag="a" class="btn btn--toContacts"
+      >Напишите нам, мы онлайн!</router-link
+    >
   </div>
 </template>
 
@@ -32,6 +34,13 @@ export default {
   transform: rotate(-90deg);
   transform-origin: 80% 50%;
 
+  @media screen and (max-width: 1199px) {
+    right: -26px;
+  }
+  @media screen and (max-width: 575px) {
+    right: 15px;
+    bottom: 180px;
+  }
   & .btn {
     display: inline-block;
     width: 40px;
@@ -55,6 +64,10 @@ export default {
       width: 240px;
       border-radius: 8px 31px 0 0;
       margin-left: 50px;
+
+      @media screen and (max-width: 575px) {
+        display: none;
+      }
     }
     & .svg-btn {
       width: 12px;

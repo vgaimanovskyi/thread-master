@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'app-overflow': overflow }">
     <Nav />
     <router-view />
     <template v-if="error">
@@ -26,6 +26,9 @@ export default {
     error() {
       return this.$store.getters.getError;
     },
+    overflow() {
+      return this.$store.getters.getOverflow;
+    },
   },
   methods: {
     closeError() {
@@ -45,6 +48,9 @@ export default {
   position: relative;
   overflow: hidden;
   overflow-anchor: none;
+}
+.app-overflow {
+  height: 100vh;
 }
 .error-window {
   position: fixed;

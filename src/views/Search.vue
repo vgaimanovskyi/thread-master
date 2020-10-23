@@ -4,27 +4,34 @@
       <h1 class="page__caption">Результат поиска</h1>
       <div class="row" v-if="searchResults.length">
         <div class="col" v-for="product in searchResults" :key="product.id">
-          <router-link tag="div" :to="'/product/' + product.id" class="img-container">
-            <div class="tag tag--discount" v-if="product.discount > 0">-{{product.discount}}%</div>
+          <router-link
+            tag="div"
+            :to="'/product/' + product.id"
+            class="img-container"
+          >
+            <div class="tag tag--discount" v-if="product.discount > 0">
+              -{{ product.discount }}%
+            </div>
             <div class="tag tag--new" v-if="product.new">Новинка</div>
             <img class="img" :src="product.urlPoster" :alt="product.name" />
           </router-link>
           <h3 class="name">
-            <span>{{product.name}}</span>
+            <span>{{ product.name }}</span>
           </h3>
-          <div class="size">Размер: {{product.size}}</div>
+          <div class="size">Размер: {{ product.size }}</div>
           <div class="price">
-            {{product.price - (product.price*product.discount/100)}} $
-            <s
-              class="old-price"
-              v-if="product.discount > 0"
-            >{{product.price}} $</s>
+            {{ product.price - (product.price * product.discount) / 100 }} $
+            <s class="old-price" v-if="product.discount > 0"
+              >{{ product.price }} $</s
+            >
           </div>
         </div>
         <div class="col empty"></div>
         <div class="col empty"></div>
       </div>
-      <div v-else class="name">К сожалению, по Вашему запросу ничего не удалось найти.</div>
+      <div v-else class="name">
+        К сожалению, по Вашему запросу ничего не удалось найти.
+      </div>
     </div>
     <Aside />
     <svg class="svg svg--balloon">
@@ -64,20 +71,34 @@ export default {
   max-width: 1050px;
   margin: 50px auto 0 auto;
 
+  @media screen and (max-width: 575px) {
+    flex-direction: column;
+    align-items: center;
+  }
   .col {
-    max-width: 330px;
+    width: 33.33333%;
     flex-grow: 1;
     padding: 0 10px;
     margin-bottom: 50px;
+    box-sizing: border-box;
 
+    @media screen and (max-width: 767px) {
+      width: 50%;
+      margin-bottom: 30px;
+    }
+    @media screen and (max-width: 575px) {
+      width: auto;
+    }
     &.empty {
       padding: 0;
+      margin: 0;
     }
   }
 }
 .img-container {
   position: relative;
   width: 100%;
+  max-width: 330px;
   height: 330px;
   display: flex;
   align-items: center;
@@ -87,6 +108,19 @@ export default {
   transition-duration: 0.3s;
   cursor: pointer;
 
+  @media screen and (max-width: 991px) {
+    height: 280px;
+  }
+  @media screen and (max-width: 767px) {
+    height: 330px;
+    margin-bottom: 15px;
+  }
+  @media screen and (max-width: 575px) {
+    height: 400px;
+  }
+  @media screen and (max-width: 374px) {
+    height: 300px;
+  }
   &:hover {
     transform: scale(1.05);
   }
