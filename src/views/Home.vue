@@ -72,10 +72,10 @@ export default {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -10px;
-  min-height: calc(100vh - 84px - 83px);
+  min-height: calc(100vh - 85px - 83px);
 
   @media screen and (max-width: 767px) {
-    min-height: calc(100vh - 64px - 53px);
+    min-height: calc(100vh - 65px - 53px);
     flex-direction: column;
   }
 }

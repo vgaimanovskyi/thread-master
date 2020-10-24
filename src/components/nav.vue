@@ -110,15 +110,27 @@
       </li>
     </ul>
     <template v-if="burgerOpen">
-      <div class="mobile">
+      <div class="mobile" @click.self="searchOpen = false">
         <ul class="mobile-nav">
-          <router-link to="/" tag="li" exact active-class="active">
+          <router-link
+            to="/"
+            tag="li"
+            exact
+            active-class="active"
+            :class="{ hide: searchOpen }"
+          >
             <svg class="svg-icon svg-icon--home">
               <use xlink:href="../images/svg/sprite.svg#home" />
             </svg>
             <a @click="toggleMobMenu">Главная</a>
           </router-link>
-          <router-link to="/gallery" tag="li" exact active-class="active">
+          <router-link
+            to="/gallery"
+            tag="li"
+            exact
+            active-class="active"
+            :class="{ hide: searchOpen }"
+          >
             <svg class="svg-icon svg-icon--gallery">
               <use xlink:href="../images/svg/sprite.svg#gallery" />
             </svg>
@@ -130,19 +142,31 @@
             </svg>
             <a @click="toggleMobMenu">Магазин</a>
           </router-link>
-          <router-link to="/contacts" tag="li" exact active-class="active">
+          <router-link
+            to="/contacts"
+            tag="li"
+            exact
+            active-class="active"
+            :class="{ hide: searchOpen }"
+          >
             <svg class="svg-icon svg-icon--contacts">
               <use xlink:href="../images/svg/sprite.svg#contacts" />
             </svg>
             <a @click="toggleMobMenu">Контакты</a>
           </router-link>
-          <router-link to="/delivery" tag="li" exact active-class="active">
+          <router-link
+            to="/delivery"
+            tag="li"
+            exact
+            active-class="active"
+            :class="{ hide: searchOpen }"
+          >
             <svg class="svg-icon svg-icon--delivery">
               <use xlink:href="../images/svg/sprite.svg#delivery" />
             </svg>
             <a @click="toggleMobMenu">Оплата и Доставка</a>
           </router-link>
-          <li :class="{ active: favActive }">
+          <li :class="{ active: favActive, hide: searchOpen }">
             <div class="svg-container">
               <svg class="svg-icon svg-icon--favourite">
                 <use xlink:href="../images/svg/sprite.svg#heart" />
@@ -168,12 +192,11 @@
                 placeholder="Поиск"
                 minlength="3"
                 v-model="search"
+                ref="search-input"
               />
-              <button type="submit" class="mob-search__btn" @click="useSearch">
-                Искать
-              </button>
+              <button type="submit" class="mob-search__btn">Искать</button>
             </form>
-            <a @click="searchOpen = true" v-show="!searchOpen">Поиск</a>
+            <a @click="openSearch" v-show="!searchOpen">Поиск</a>
           </li>
         </ul>
         <svg class="svg svg--mountains">
@@ -255,7 +278,9 @@ export default {
         if (this.$route.path !== "/search") {
           this.$router.push("/search");
         }
-        this.burgerOpen = false;
+        if (this.burgerOpen) {
+          this.toggleMobMenu();
+        }
       }
     },
     cartModalOpen() {
@@ -273,12 +298,20 @@ export default {
       } else {
         this.noFavData = true;
       }
-      this.burgerOpen = false;
+      if (this.burgerOpen) {
+        this.toggleMobMenu();
+      }
     },
     toggleMobMenu() {
       this.burgerOpen = !this.burgerOpen;
       this.searchOpen = false;
       this.$store.commit("PAGE_OVERFLOW", this.burgerOpen);
+    },
+    openSearch() {
+      this.searchOpen = true;
+      setTimeout(() => {
+        this.$refs["search-input"].focus();
+      }, 500);
     },
   },
 };
@@ -596,7 +629,7 @@ export default {
   width: 100%;
   height: calc(100vh - 60px);
   padding-top: 20px;
-  z-index: 100;
+  z-index: 9999;
   background-color: $colorBackground;
   box-sizing: border-box;
   display: flex;
@@ -614,6 +647,12 @@ export default {
       align-items: center;
       margin-bottom: 40px;
 
+      @media screen and (max-width: 767px) {
+        margin-bottom: 20px;
+      }
+      &.hide {
+        display: none;
+      }
       & a {
         font-family: "Open Sans", sans-serif;
         font-size: 20px;
@@ -693,10 +732,11 @@ export default {
     &__input {
       border: none;
       background-color: transparent;
-      padding: 5px;
+      padding: 2px 5px;
       font-family: "Open Sans", sans-serif;
       font-size: 14px;
       color: $colorTextSecondary;
+      height: 27px;
     }
     &__btn {
       font-family: "Open Sans", sans-serif;
@@ -737,6 +777,10 @@ export default {
     stroke-dasharray: 350;
     stroke-dashoffset: 360;
     animation: svgShow 15s linear 4s infinite alternate;
+
+    @media screen and (max-width: 575px) {
+      display: none;
+    }
   }
 }
 @keyframes svgShow {

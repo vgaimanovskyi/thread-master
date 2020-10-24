@@ -29,7 +29,7 @@
         <div class="col empty"></div>
         <div class="col empty"></div>
       </div>
-      <div v-else class="name">
+      <div v-else class="text">
         К сожалению, по Вашему запросу ничего не удалось найти.
       </div>
     </div>
@@ -63,7 +63,14 @@ export default {
 @import "../scss/_variables.scss";
 
 .page {
-  min-height: calc(100vh - 110px - 84px - 83px);
+  min-height: calc(100vh - 110px - 85px - 83px);
+
+  @media screen and (max-width: 991px) {
+    min-height: calc(100vh - 20px - 85px - 83px);
+  }
+  @media screen and (max-width: 767px) {
+    min-height: calc(100vh - 20px - 65px - 53px);
+  }
 }
 .row {
   display: flex;
@@ -151,6 +158,13 @@ export default {
     }
   }
 }
+.text {
+  font-family: "Montserrat", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 29px;
+  color: $colorTextSecondary;
+}
 .name {
   position: relative;
   height: 29px;
@@ -221,6 +235,10 @@ export default {
     stroke-dasharray: 470;
     stroke-dashoffset: 480;
     animation: svgShow 10s linear 3s infinite alternate;
+
+    @media screen and (max-width: 479px) {
+      display: none;
+    }
   }
 }
 @keyframes svgShow {

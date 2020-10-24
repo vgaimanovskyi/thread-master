@@ -28,7 +28,7 @@
                 type="button"
                 class="counter__btn"
                 @click="item.count++"
-                :disabled="item.count >= 5"
+                :disabled="item.count >= 9"
               >
                 +
               </button>
@@ -289,8 +289,6 @@ export default {
       color: $colorTextMain;
     }
     &:disabled {
-      border-color: $colorTextSecondary;
-      color: $colorTextSecondary;
       cursor: default;
     }
   }

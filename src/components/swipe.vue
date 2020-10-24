@@ -68,7 +68,7 @@ export default {
   width: 100%;
   height: 100%;
   stroke-dasharray: 100;
-  animation: logoAnimate 30s linear 1s infinite;
+  animation: logoAnimate 30s linear infinite;
   margin: 50px;
 }
 .swipe-block {

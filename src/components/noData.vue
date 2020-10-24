@@ -93,6 +93,10 @@ export default {
     outline: none;
     cursor: pointer;
 
+    @media screen and (max-width: 575px) {
+      top: 20px;
+      right: 20px;
+    }
     & .svg-remove {
       width: 18px;
       height: 18px;

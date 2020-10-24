@@ -156,8 +156,8 @@
         </div>
       </div>
     </div>
-    <div class="modal" v-if="modalOpen" @click.self="modalOpen = false">
-      <div class="modal-body">
+    <div class="modal-file" v-if="modalOpen" @click.self="modalOpen = false">
+      <div class="modal-file-body">
         <button type="button" class="btn-remove" @click="modalOpen = false">
           <svg class="svg-remove">
             <use xlink:href="../images/svg/sprite.svg#remove" />
@@ -368,14 +368,14 @@ export default {
 }
 .grid {
   display: flex;
-  min-height: calc(100vh - 110px - 84px - 83px);
+  min-height: calc(100vh - 110px - 85px - 83px);
   margin: 0 -10px;
 
   @media screen and (max-width: 991px) {
-    min-height: calc(100vh - 20px - 84px - 83px);
+    min-height: calc(100vh - 20px - 85px - 83px);
   }
   @media screen and (max-width: 767px) {
-    min-height: calc(100vh - 20px - 64px - 53px);
+    min-height: calc(100vh - 20px - 65px - 53px);
     flex-direction: column;
   }
 }
@@ -616,15 +616,15 @@ table {
     }
   }
 }
-.modal {
-  position: absolute;
+.modal-file {
+  position: fixed;
   top: 0;
   left: 0;
   height: 100vh;
   width: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.modal-body {
+.modal-file-body {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -705,6 +705,10 @@ table {
     background-color: transparent;
     cursor: pointer;
 
+    @media screen and (max-width: 575px) {
+      top: 20px;
+      right: 20px;
+    }
     & .svg-remove {
       width: 18px;
       height: 18px;

@@ -27,18 +27,11 @@
             :paginationColor="'rgba(255, 193, 32, 0.3)'"
             :paginationSize="15"
             :paginationPadding="5"
+            :adjustableHeight="true"
           >
             <slide v-for="(img, index) in product.urlShop" :key="index">
               <div class="slide-block">
                 <div class="btn-conteiner">
-                  <router-link
-                    tag="svg"
-                    class="svg-btn svg-btn--back"
-                    title="Назад"
-                    to="/shop"
-                  >
-                    <use xlink:href="../images/svg/sprite.svg#arrowTop" />
-                  </router-link>
                   <svg
                     class="svg-btn"
                     title="Поделиться"
@@ -48,12 +41,20 @@
                   </svg>
                 </div>
 
-                <div
-                  class="btn-conteiner btn-conteiner--right"
-                  title="Увеличить"
-                  @click="resizePhoto(index)"
-                >
-                  <svg class="svg-btn">
+                <div class="btn-conteiner btn-conteiner--right">
+                  <router-link
+                    tag="svg"
+                    class="svg-btn svg-btn--back"
+                    title="Назад"
+                    to="/shop"
+                  >
+                    <use xlink:href="../images/svg/sprite.svg#remove" />
+                  </router-link>
+                  <svg
+                    class="svg-btn svg-btn--zoom"
+                    title="Увеличить"
+                    @click="resizePhoto(index)"
+                  >
                     <use xlink:href="../images/svg/sprite.svg#resize" />
                   </svg>
                 </div>
@@ -131,7 +132,7 @@
                   type="button"
                   class="counter__btn"
                   @click="counter++"
-                  :disabled="counter === 5"
+                  :disabled="counter === 9"
                 >
                   +
                 </button>
@@ -142,7 +143,7 @@
                 :disabled="counter === 0"
                 @click="addToCart"
               >
-                Добавить в корзину
+                {{ btnText }}
               </button>
               <button
                 type="button"
@@ -196,7 +197,7 @@
         </slide>
       </carousel>
     </div>
-    <Aside />
+    <Aside v-if="asideShow" />
     <Cart v-if="cart" @closeModal="cart = false" />
     <svg class="svg svg--bird">
       <use xlink:href="../images/svg/sprite.svg#bird" />
@@ -280,6 +281,18 @@ export default {
       }
       return 3;
     },
+    asideShow() {
+      if (window.innerWidth < 576) {
+        return false;
+      }
+      return true;
+    },
+    btnText() {
+      if (window.innerWidth < 375) {
+        return "В корзину";
+      }
+      return "Добавить в корзину";
+    },
   },
   methods: {
     resizePhoto(idx) {
@@ -320,7 +333,7 @@ export default {
     scrollTop() {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        // behavior: "smooth",
       });
     },
   },
@@ -475,13 +488,9 @@ export default {
       left: auto;
       right: 0;
       border-radius: 0 0 0 8px;
-
-      @media screen and (max-width: 767px) {
-        display: none;
-      }
     }
     .svg-btn {
-      display: inline-block;
+      display: block;
       width: 18px;
       height: 18px;
       fill: $colorTextMain;
@@ -489,12 +498,20 @@ export default {
       transition-duration: 0.3s;
       cursor: pointer;
 
+      @media screen and (max-width: 991px) {
+        padding: 15px;
+      }
+      &--zoom {
+        @media screen and (max-width: 767px) {
+          display: none;
+        }
+      }
       &--back {
         display: none;
-        transform: rotate(-90deg);
+        stroke: $colorTextMain;
 
         @media screen and (max-width: 767px) {
-          display: inline-block;
+          display: block;
         }
       }
       &:hover,
@@ -607,9 +624,6 @@ export default {
 .controls {
   display: flex;
 
-  @media screen and (max-width: 1199px) {
-    flex-wrap: wrap;
-  }
   @media screen and (max-width: 767px) {
     justify-content: center;
   }
@@ -617,13 +631,13 @@ export default {
     display: flex;
     align-items: center;
 
-    @media screen and (max-width: 1199px) {
+    /* @media screen and (max-width: 1199px) {
       width: 100%;
       margin-bottom: 40px;
     }
     @media screen and (max-width: 767px) {
       margin-bottom: 30px;
-    }
+    } */
     &__btn {
       width: 19px;
       line-height: 16px;
@@ -657,8 +671,6 @@ export default {
     }
   }
   .btn {
-    margin-left: 21px;
-
     .svg-btn {
       display: block;
       margin: 0 auto;
@@ -672,10 +684,14 @@ export default {
       }
     }
     &--width {
-      margin-left: 30px;
+      margin: 0 21px;
 
-      @media screen and (max-width: 1199px) {
-        margin-left: 0;
+      @media screen and (max-width: 479px) {
+        width: auto;
+        flex-grow: 1;
+      }
+      @media screen and (max-width: 374px) {
+        margin: 0 15px;
       }
     }
   }

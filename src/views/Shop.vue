@@ -185,13 +185,13 @@ export default {
 @import "../scss/_variables.scss";
 
 .page {
-  min-height: calc(100vh - 110px - 84px - 83px);
+  min-height: calc(100vh - 110px - 85px - 83px);
 
   @media screen and (max-width: 991px) {
-    min-height: calc(100vh - 20px - 84px - 83px);
+    min-height: calc(100vh - 20px - 85px - 83px);
   }
   @media screen and (max-width: 767px) {
-    min-height: calc(100vh - 20px - 64px - 53px);
+    min-height: calc(100vh - 20px - 65px - 53px);
   }
 }
 .filter-block {
