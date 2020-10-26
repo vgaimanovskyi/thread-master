@@ -436,11 +436,6 @@ export default {
 }
 .btn {
   margin: 9px auto 70px auto;
-
-  @media screen and (max-width: 767px) {
-    margin-top: 0;
-    margin-bottom: 30px;
-  }
 }
 .svg {
   position: absolute;

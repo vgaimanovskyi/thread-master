@@ -372,7 +372,7 @@ export default {
     }
     &--open {
       &:first-child {
-        top: 40%;
+        top: 50%;
         transform: translateY(-50%) rotate(-45deg);
       }
       &:nth-child(2) {
@@ -380,7 +380,8 @@ export default {
         opacity: 0;
       }
       &:last-child {
-        bottom: 40%;
+        top: 50%;
+        bottom: auto;
         transform: translateY(-50%) rotate(45deg);
       }
     }

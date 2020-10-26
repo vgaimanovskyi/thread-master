@@ -39,7 +39,7 @@ export default {
   }
   @media screen and (max-width: 575px) {
     right: 15px;
-    bottom: 180px;
+    bottom: 135px;
   }
   & .btn {
     display: inline-block;
