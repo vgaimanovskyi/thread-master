@@ -94,7 +94,7 @@ export default {
     cursor: pointer;
 
     @media screen and (max-width: 575px) {
-      top: 20px;
+      top: 25px;
       right: 20px;
     }
     & .svg-remove {

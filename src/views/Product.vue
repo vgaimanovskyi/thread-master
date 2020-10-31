@@ -718,8 +718,17 @@ export default {
   max-width: 1114px;
   margin: 0 auto 40px auto;
 
+  @media screen and (max-width: 1299px) {
+    max-width: 960px;
+  }
   @media screen and (max-width: 1199px) {
-    max-width: calc(100% - 25px - 25px);
+    max-width: 900px;
+  }
+  @media screen and (max-width: 1099px) {
+    max-width: 840px;
+  }
+  @media screen and (max-width: 1023px) {
+    max-width: 810px;
   }
   @media screen and (max-width: 991px) {
     max-width: 100%;
@@ -732,8 +741,17 @@ export default {
   max-width: 330px;
   margin: 0 auto;
 
+  @media screen and (max-width: 1299px) {
+    max-width: 300px;
+  }
   @media screen and (max-width: 1199px) {
+    max-width: 280px;
+  }
+  @media screen and (max-width: 1099px) {
     max-width: 260px;
+  }
+  @media screen and (max-width: 1023px) {
+    max-width: 250px;
   }
   @media screen and (max-width: 991px) {
     width: 225px;
@@ -756,8 +774,17 @@ export default {
     transition-duration: 0.3s;
     cursor: pointer;
 
+    @media screen and (max-width: 1299px) {
+      height: 300px;
+    }
+    @media screen and (max-width: 1199px) {
+      height: 280px;
+    }
     @media screen and (max-width: 1199px) {
       height: 260px;
+    }
+    @media screen and (max-width: 1023px) {
+      height: 250px;
     }
     @media screen and (max-width: 991px) {
       height: 225px;
@@ -923,7 +950,7 @@ export default {
     animation: svgShow 10s linear 2s infinite alternate;
 
     @media screen and (max-width: 767px) {
-      top: 42%;
+      top: 800px;
       right: 20%;
     }
   }

@@ -166,6 +166,10 @@ export default {
   .buttons {
     display: flex;
     justify-content: space-between;
+
+    @media screen and (max-width: 479px) {
+      margin-bottom: 20px;
+    }
   }
   .btn-remove {
     display: block;
@@ -173,7 +177,7 @@ export default {
     border: none;
     padding: 0;
     background-color: transparent;
-    top: 15px;
+    top: 25px;
     right: 15px;
     outline: none;
     cursor: pointer;

@@ -73,7 +73,7 @@
       <use xlink:href="../images/svg/sprite.svg#bgheart" />
     </svg>
   </div>
-  <div v-else class="page">
+  <div v-else class="page page--center">
     <Loader />
   </div>
 </template>

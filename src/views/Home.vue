@@ -1,6 +1,6 @@
 <template>
   <div class="mainer">
-    <Swipe v-if="swipe" class="swipe-modal" @closeModal="swipe = false" />
+    <Swipe v-if="swipe" @closeModal="swipe = false" />
     <div class="grid">
       <div class="col col--order">
         <div class="hello-text">

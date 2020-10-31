@@ -14,12 +14,10 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-.loading-block {
-  text-align: center;
+@import "../scss/_variables.scss";
 
-  /* .loader {
-    margin-top: 20px;
-  } */
+.loading-block {
+  padding-top: 150px;
 }
 .cssload-loader {
   position: relative;
@@ -61,7 +59,7 @@ export default {};
     -ms-animation: cssload-rotate-two 1.15s linear infinite;
     -webkit-animation: cssload-rotate-two 1.15s linear infinite;
     -moz-animation: cssload-rotate-two 1.15s linear infinite;
-    border-right: 3px solid rgba(76, 70, 101, 0.99);
+    border-right: 3px solid $colorTextMain;
   }
   &.cssload-three {
     right: 0%;
@@ -71,7 +69,7 @@ export default {};
     -ms-animation: cssload-rotate-three 1.15s linear infinite;
     -webkit-animation: cssload-rotate-three 1.15s linear infinite;
     -moz-animation: cssload-rotate-three 1.15s linear infinite;
-    border-top: 3px solid rgb(233, 144, 138);
+    border-top: 3px solid $colorBrend;
   }
 }
 @keyframes cssload-rotate-one {

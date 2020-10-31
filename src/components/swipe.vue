@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" v-touch:swipe.right="closeModal">
+  <div class="modal" :class="{ swipe: swipe }" v-touch:swipe.left="closeModal">
     <svg class="logo-svg">
       <use xlink:href="../images/svg/sprite.svg#logo" />
     </svg>
@@ -38,9 +38,18 @@
 
 <script>
 export default {
+  data() {
+    return {
+      swipe: false,
+    };
+  },
   methods: {
     closeModal() {
-      this.$emit("closeModal");
+      this.swipe = true;
+
+      setTimeout(() => {
+        this.$emit("closeModal");
+      }, 600);
     },
   },
 };
@@ -63,6 +72,11 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  transition-duration: 0.5s;
+}
+.swipe {
+  opacity: 0;
+  transform: translateX(100%);
 }
 .logo-svg {
   width: 100%;

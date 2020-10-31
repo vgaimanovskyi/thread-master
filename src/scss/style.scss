@@ -20,6 +20,13 @@ body {
     @media screen and (max-width: 991px) {
         margin-top: 20px;
     }
+    &--center {
+        @media screen and (max-width: 991px) {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
     &--overflow {
         overflow-y: hidden;
     } 
@@ -103,4 +110,13 @@ body {
             background-color: darken($colorBackground, 20);
         }
     }
+}
+.VueCarousel-navigation-button {
+    outline: none !important;
+}
+.similar-carousel .VueCarousel-navigation-next {
+    transform: translate(100%, -100%) !important;
+}
+.similar-carousel .VueCarousel-navigation-prev {
+    transform: translate(-100%, -100%) !important;
 }

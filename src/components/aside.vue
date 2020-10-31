@@ -34,7 +34,7 @@ export default {
   transform: rotate(-90deg);
   transform-origin: 80% 50%;
 
-  @media screen and (max-width: 1199px) {
+  @media screen and (max-width: 1359px) {
     right: -26px;
   }
   @media screen and (max-width: 575px) {
