@@ -1,5 +1,5 @@
 <template>
-  <div class="page" v-if="loading">
+  <div class="page" v-if="!loading">
     <div class="mainer">
       <div class="filter-block">
         <div class="filter">
