@@ -2,10 +2,18 @@
   <div class="modal" @click.self="closeModal">
     <div class="mainer">
       <div class="slide-block">
-        <div class="btn-conteiner" title="Закрыть">
-          <svg class="svg-btn" @click="closeModal">
+        <div class="btn-conteiner">
+          <svg v-if="!ie" class="svg-btn" title="Закрыть" @click="closeModal">
             <use xlink:href="../images/svg/sprite.svg#remove" />
           </svg>
+          <img
+            v-else
+            class="svg-btn"
+            src="../images/png/remove.png"
+            alt="remove"
+            title="Закрыть"
+            @click="closeModal"
+          />
         </div>
         <img class="img" :src="resizePath" />
       </div>
@@ -17,6 +25,11 @@
 export default {
   name: "photo",
   props: ["resizePath"],
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
   methods: {
     closeModal() {
       this.$emit("closeModal");

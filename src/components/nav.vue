@@ -74,9 +74,15 @@
       </li> -->
       <li class="options-favourite">
         <button type="button" class="options-icons" @click="favModalOpen">
-          <svg class="svg-nav svg-nav--favourite">
+          <svg v-if="!ie" class="svg-nav svg-nav--favourite">
             <use xlink:href="../images/svg/sprite.svg#heart" />
           </svg>
+          <img
+            v-else
+            class="svg-nav svg-nav--favourite"
+            src="../images/png/heart.png"
+            alt="favourite"
+          />
           <span class="options-icons__number" v-if="favouriteList.length">{{
             favouriteList.length
           }}</span>
@@ -92,17 +98,29 @@
             v-model="search"
           />
           <button type="submit" class="search__btn">
-            <svg class="svg-nav svg-nav--search">
+            <svg v-if="!ie" class="svg-nav svg-nav--search">
               <use xlink:href="../images/svg/sprite.svg#search" />
             </svg>
+            <img
+              v-else
+              class="svg-nav svg-nav--search"
+              src="../images/png/search.png"
+              alt="search"
+            />
           </button>
         </form>
       </li>
       <li class="options-cart">
         <button type="button" class="options-icons" @click="cartModalOpen">
-          <svg class="svg-nav svg-nav--cart">
+          <svg v-if="!ie" class="svg-nav svg-nav--cart">
             <use xlink:href="../images/svg/sprite.svg#cart" />
           </svg>
+          <img
+            v-else
+            class="svg-nav svg-nav--cart"
+            src="../images/png/cart.png"
+            alt="cart"
+          />
           <span class="options-icons__number" v-if="cartList.length">{{
             cartList.length
           }}</span>
@@ -119,9 +137,15 @@
             active-class="active"
             :class="{ hide: searchOpen }"
           >
-            <svg class="svg-icon svg-icon--home">
+            <svg v-if="!ie" class="svg-icon svg-icon--home">
               <use xlink:href="../images/svg/sprite.svg#home" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--home"
+              src="../images/png/home.png"
+              alt="home"
+            />
             <a @click="toggleMobMenu">Главная</a>
           </router-link>
           <router-link
@@ -131,15 +155,27 @@
             active-class="active"
             :class="{ hide: searchOpen }"
           >
-            <svg class="svg-icon svg-icon--gallery">
+            <svg v-if="!ie" class="svg-icon svg-icon--gallery">
               <use xlink:href="../images/svg/sprite.svg#gallery" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--gallery"
+              src="../images/png/gallery.png"
+              alt="gallery"
+            />
             <a @click="toggleMobMenu">Галерея</a>
           </router-link>
           <router-link to="/shop" tag="li" exact active-class="active">
-            <svg class="svg-icon svg-icon--shop">
+            <svg v-if="!ie" class="svg-icon svg-icon--shop">
               <use xlink:href="../images/svg/sprite.svg#shop" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--shop"
+              src="../images/png/shop.png"
+              alt="shop"
+            />
             <a @click="toggleMobMenu">Магазин</a>
           </router-link>
           <router-link
@@ -149,9 +185,15 @@
             active-class="active"
             :class="{ hide: searchOpen }"
           >
-            <svg class="svg-icon svg-icon--contacts">
+            <svg v-if="!ie" class="svg-icon svg-icon--contacts">
               <use xlink:href="../images/svg/sprite.svg#contacts" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--contacts"
+              src="../images/png/contacts.png"
+              alt="contacts"
+            />
             <a @click="toggleMobMenu">Контакты</a>
           </router-link>
           <router-link
@@ -161,16 +203,28 @@
             active-class="active"
             :class="{ hide: searchOpen }"
           >
-            <svg class="svg-icon svg-icon--delivery">
+            <svg v-if="!ie" class="svg-icon svg-icon--delivery">
               <use xlink:href="../images/svg/sprite.svg#delivery" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--delivery"
+              src="../images/png/delivery.png"
+              alt="delivery"
+            />
             <a @click="toggleMobMenu">Оплата и Доставка</a>
           </router-link>
           <li :class="{ active: favActive, hide: searchOpen }">
             <div class="svg-container">
-              <svg class="svg-icon svg-icon--favourite">
+              <svg v-if="!ie" class="svg-icon svg-icon--favourite">
                 <use xlink:href="../images/svg/sprite.svg#heart" />
               </svg>
+              <img
+                v-else
+                class="svg-icon svg-icon--favourite"
+                src="../images/png/heart.png"
+                alt="favourite"
+              />
               <span class="options-icons__number" v-if="favouriteList.length">
                 {{ favouriteList.length }}
               </span>
@@ -178,9 +232,15 @@
             <a @click="favModalOpen">Избранное</a>
           </li>
           <li>
-            <svg class="svg-icon svg-icon--search">
+            <svg v-if="!ie" class="svg-icon svg-icon--search">
               <use xlink:href="../images/svg/sprite.svg#search" />
             </svg>
+            <img
+              v-else
+              class="svg-icon svg-icon--search"
+              src="../images/png/search.png"
+              alt="search"
+            />
             <form
               class="mob-search"
               @submit.prevent="useSearch"
@@ -251,6 +311,9 @@ export default {
     },
     favActive() {
       return this.$route.path === "/favourites";
+    },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
     },
   },
   methods: {
@@ -388,6 +451,8 @@ export default {
   }
 }
 .logo {
+  display: block;
+  width: 226px;
   font-family: "Rubik Mono One", sans-serif;
   font-size: 20px;
   color: $colorBrend;
@@ -412,10 +477,11 @@ export default {
   & li {
     margin: 0 20px;
 
-    @media screen and (max-width: 1100px) {
+    @media screen and (max-width: 1199px) {
       margin: 0 15px;
     }
     & a {
+      display: block;
       font-family: "Open Sans", sans-serif;
       font-size: 14px;
       font-weight: 600;
@@ -429,8 +495,9 @@ export default {
         position: absolute;
         left: 0;
         bottom: -2px;
-        height: 1px;
+        display: block;
         width: 0;
+        height: 1px;
         background-color: $colorBrend;
         transition-duration: 0.3s;
       }
@@ -533,6 +600,7 @@ export default {
   padding: 0;
   background-color: transparent;
   position: relative;
+  overflow: visible;
   cursor: pointer;
 
   &__number {

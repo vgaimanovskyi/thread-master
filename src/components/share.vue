@@ -2,9 +2,15 @@
   <div class="social-modal" @click.self="closeShare">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="closeShare">
-        <svg class="svg-remove">
+        <svg v-if="!ie" class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
+        <img
+          v-else
+          class="svg-remove"
+          src="../images/png/removeModal.png"
+          alt="remove"
+        />
       </button>
       <div class="social-block">
         <h2 class="social-block__caption">Поделиться с друзьями</h2>
@@ -98,6 +104,7 @@
             @click="copyLink(link)"
           >
             <svg
+              v-if="!ie"
               class="social-copy__svg"
               :class="{
                 'social-copy__svg--valid': copyValid,
@@ -106,6 +113,12 @@
             >
               <use xlink:href="../images/svg/sprite.svg#copy" />
             </svg>
+            <img
+              v-else
+              class="social-copy__svg"
+              src="../images/png/copy.png"
+              alt="copy"
+            />
           </button>
         </div>
       </div>
@@ -127,6 +140,11 @@ export default {
       copyValid: false,
       copyError: false,
     };
+  },
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   methods: {
     closeShare() {

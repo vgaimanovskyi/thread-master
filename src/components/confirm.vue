@@ -2,9 +2,15 @@
   <div class="modal" @click.self="toShop">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="toShop">
-        <svg class="svg-remove">
+        <svg v-if="!ie" class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
+        <img
+          v-else
+          class="svg-remove"
+          src="../images/png/removeModal.png"
+          alt="remove"
+        />
       </button>
       <div class="text">
         <h2 class="text__caption">Статус заказа</h2>
@@ -26,6 +32,11 @@
 
 <script>
 export default {
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
   methods: {
     toShop() {
       this.$router.push("/shop");
@@ -76,6 +87,7 @@ export default {
     color: $colorBackground;
     text-align: center;
     margin-bottom: 30px;
+    width: 100%;
 
     &__caption {
       font-family: inherit;

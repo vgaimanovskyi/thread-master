@@ -2,9 +2,17 @@
   <div class="modal" @click.self="closeModal">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="closeModal">
-        <svg class="svg-remove">
+        <svg v-if="!ie" class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
+        <img
+          v-else
+          class="svg-remove"
+          src="../images/png/removeModal.png"
+          alt="remove"
+          title="Закрыть"
+          @click="closeModal"
+        />
       </button>
       <h1 class="caption">Корзина</h1>
       <ul class="cart">
@@ -90,6 +98,9 @@ export default {
         (total, item) => total + item.price * item.count,
         0
       );
+    },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
     },
   },
   methods: {
@@ -287,8 +298,7 @@ export default {
     @media screen and (max-width: 575px) {
       width: 24px;
     }
-    &:hover,
-    &:focus {
+    &:hover {
       border-color: $colorTextMain;
       color: $colorTextMain;
     }

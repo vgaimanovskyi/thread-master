@@ -6,11 +6,19 @@
           <div class="filter__name" @click="filterListOpen = !filterListOpen">
             {{ filterName }}
             <svg
+              v-if="!ie"
               class="filter__svg"
               :class="{ 'filter__svg--rotate': filterListOpen }"
             >
               <use xlink:href="../images/svg/sprite.svg#arrowSelect" />
             </svg>
+            <img
+              v-else
+              class="filter__svg"
+              :class="{ 'filter__svg--rotate': filterListOpen }"
+              src="../images/png/arrowSelect.png"
+              alt="arrowSelect"
+            />
           </div>
           <div class="filter__list" v-show="filterListOpen">
             <input
@@ -78,6 +86,7 @@
       <button
         type="button"
         class="btn btn--width"
+        ref="moreProductsBtn"
         @click="moreProducts()"
         :disabled="btnDisabled"
       >
@@ -125,6 +134,9 @@ export default {
     allProducts() {
       return this.$store.getters.getAllProducts;
     },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   methods: {
     useFilter() {
@@ -168,6 +180,7 @@ export default {
       );
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === this.allProducts.length;
+      this.$refs["moreProductsBtn"].blur();
     },
   },
   created() {

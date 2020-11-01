@@ -2,9 +2,17 @@
   <div class="modal" @click.self="closeModal">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="closeModal">
-        <svg class="svg-remove">
+        <svg v-if="!ie" class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
+        <img
+          v-else
+          class="svg-remove"
+          src="../images/png/removeModal.png"
+          alt="remove"
+          title="Закрыть"
+          @click="closeModal"
+        />
       </button>
       <div class="text">{{ text }}</div>
       <button type="button" class="btn btn--width" @click="toShop">
@@ -23,6 +31,11 @@
 <script>
 export default {
   props: ["text"],
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
   methods: {
     closeModal() {
       this.$emit("closeModal");

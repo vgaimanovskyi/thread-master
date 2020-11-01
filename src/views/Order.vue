@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <Confirm v-if="orderDone" />
+      <Confirm v-if="!orderDone" />
       <h1 class="page__caption">Оформление товара</h1>
       <div class="row">
         <div class="col col--width">
@@ -13,13 +13,19 @@
                   class="icon"
                   :class="{ 'icon--active': !customerFormOpen }"
                 >
-                  <svg class="svg-icon">
+                  <svg v-if="!ie" class="svg-icon">
                     <use
                       xlink:href="../images/svg/sprite.svg#yes"
                       v-if="!customerFormOpen"
                     />
                     <use xlink:href="../images/svg/sprite.svg#pen" v-else />
                   </svg>
+                  <img
+                    v-else
+                    class="svg-icon"
+                    src="../images/png/pen.png"
+                    alt="pen"
+                  />
                 </div>
                 Личные данные
               </h4>
@@ -618,6 +624,9 @@ export default {
         (total, item) => total + item.price * item.count,
         0
       );
+    },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
     },
   },
   methods: {

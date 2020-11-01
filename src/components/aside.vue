@@ -1,9 +1,15 @@
 <template>
   <div class="aside-btn">
-    <button type="button" @click="scrollTop" class="btn">
-      <svg class="svg-btn">
+    <button type="button" @click="scrollTop" class="btn" ref="asideBtn">
+      <svg v-if="!ie" class="svg-btn">
         <use xlink:href="../images/svg/sprite.svg#arrowTop" />
       </svg>
+      <img
+        v-else
+        class="svg-btn"
+        src="../images/png/arrowTop.png"
+        alt="arrowTop"
+      />
     </button>
     <router-link to="/contacts" tag="a" class="btn btn--toContacts"
       >Напишите нам, мы онлайн!</router-link
@@ -13,12 +19,18 @@
 
 <script>
 export default {
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
   methods: {
     scrollTop() {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+      this.$refs["asideBtn"].blur();
     },
   },
 };

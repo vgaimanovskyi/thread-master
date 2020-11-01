@@ -144,9 +144,15 @@
                 @click="modalOpen = true"
                 :disabled="!checkbox || $v.$invalid"
               >
-                <svg class="svg-btn">
+                <svg v-if="!ie" class="svg-btn">
                   <use xlink:href="../images/svg/sprite.svg#clip" />
                 </svg>
+                <img
+                  v-else
+                  class="svg-btn"
+                  src="../images/png/clip.png"
+                  alt="clip"
+                />
               </button>
             </div>
             <div v-else class="col">
@@ -173,19 +179,22 @@
             @change="fileUpload"
           />
           <div
-            class="modal-body__file-label"
+            class="modal-file-body__file-label"
             :class="{ error: fileError, valid: fileValid }"
           >
             {{ inputText }}
           </div>
         </label>
         <button
-          class="btn btn--width modal-body__file-btn"
+          class="btn btn--width modal-file-body__file-btn"
           @click="triggerUpload"
         >
           Выбрать файл
         </button>
-        <button class="btn btn--width modal-body__file-btn" @click="clearFile">
+        <button
+          class="btn btn--width modal-file-body__file-btn"
+          @click="clearFile"
+        >
           Очистить
         </button>
         <svg class="svg svg--whale">
@@ -199,9 +208,6 @@
     <Policy v-if="privacy" @closeModal="privacy = false" />
     <svg class="svg svg--hands">
       <use xlink:href="../images/svg/sprite.svg#hands" />
-    </svg>
-    <svg class="svg svg--bgheart">
-      <use xlink:href="../images/svg/sprite.svg#bgheart" />
     </svg>
     <svg class="svg svg--paper-boat">
       <use xlink:href="../images/svg/sprite.svg#paper-boat" />
@@ -245,6 +251,9 @@ export default {
   computed: {
     loading() {
       return this.$store.getters.getLoading;
+    },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
     },
   },
   methods: {
@@ -762,27 +771,16 @@ table {
       transform: translateX(-50%);
     }
   }
-  &--bgheart {
-    top: 155px;
-    left: -12px;
-    stroke: $colorTextMain;
-    width: 185px;
-    height: 190px;
-    stroke-dasharray: 140;
-    stroke-dashoffset: 160;
-    animation: svgShow 10s linear 4s infinite alternate;
-  }
   &--paper-boat {
-    right: -28px;
-    bottom: 55px;
+    top: 155px;
+    right: -12px;
     stroke: $colorTextMain;
     width: 218px;
     height: 112px;
+    stroke-dasharray: 140;
+    stroke-dashoffset: 160;
     transform: rotate(-20deg);
-
-    @media screen and (max-width: 991px) {
-      display: none;
-    }
+    animation: svgShow 10s linear 4s infinite alternate;
   }
 }
 @keyframes svgShow {

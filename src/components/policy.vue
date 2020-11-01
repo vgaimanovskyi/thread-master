@@ -2,9 +2,15 @@
   <div class="modal" @click.self="closeModal">
     <div class="modal-body">
       <button type="button" class="btn-remove" @click="closeModal">
-        <svg class="svg-remove">
+        <svg v-if="!ie" class="svg-remove">
           <use xlink:href="../images/svg/sprite.svg#remove" />
         </svg>
+        <img
+          v-else
+          class="svg-remove"
+          src="../images/png/removeModal.png"
+          alt="remove"
+        />
       </button>
       <div class="text">
         <h2 class="text__caption">Политика конфиденциальности</h2>
@@ -26,6 +32,11 @@
 
 <script>
 export default {
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
   methods: {
     closeModal() {
       this.$emit("closeModal");
@@ -75,6 +86,7 @@ export default {
     font-size: 15px;
     line-height: 21px;
     color: $colorBackground;
+    width: 100%;
 
     @media screen and (max-width: 575px) {
       font-size: 14px;

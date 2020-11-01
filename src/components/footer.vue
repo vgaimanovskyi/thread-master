@@ -5,9 +5,15 @@
     <ul class="social">
       <li>
         <a href="https://pin.it/72NlAVF" target="_blank">
-          <svg class="svg">
+          <svg v-if="!ie" class="svg">
             <use xlink:href="../images/svg/sprite.svg#pinterest" />
           </svg>
+          <img
+            v-else
+            class="svg"
+            src="../images/png/pinterest.png"
+            alt="pinterest"
+          />
         </a>
       </li>
       <li>
@@ -15,16 +21,28 @@
           href="https://www.youtube.com/channel/UCZqgj7rBbaKMP1ZgxJCr-TQ?view_as=subscriber"
           target="_blank"
         >
-          <svg class="svg">
+          <svg v-if="!ie" class="svg">
             <use xlink:href="../images/svg/sprite.svg#youtube" />
           </svg>
+          <img
+            v-else
+            class="svg"
+            src="../images/png/youtube.png"
+            alt="youtube"
+          />
         </a>
       </li>
       <li>
         <a href="http://instagram.com/stringart.workshop" target="_blank">
-          <svg class="svg">
+          <svg v-if="!ie" class="svg">
             <use xlink:href="../images/svg/sprite.svg#instagram" />
           </svg>
+          <img
+            v-else
+            class="svg"
+            src="../images/png/instagram.png"
+            alt="instagram"
+          />
         </a>
       </li>
       <li>
@@ -32,9 +50,15 @@
           href="https://www.facebook.com/stringart.workshop2017"
           target="_blank"
         >
-          <svg class="svg">
+          <svg v-if="!ie" class="svg">
             <use xlink:href="../images/svg/sprite.svg#facebook" />
           </svg>
+          <img
+            v-else
+            class="svg"
+            src="../images/png/facebook.png"
+            alt="facebook"
+          />
         </a>
       </li>
     </ul>
@@ -42,7 +66,13 @@
 </template>
 
 <script>
-export default {};
+export default {
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -33,7 +33,15 @@
             :key="img.id"
           >
             <div class="video-block" v-if="img.catId[1] === '09'">
-              <div class="video-block__btn" @click="openVideo(img.id)"></div>
+              <div
+                class="video-block__btn"
+                :class="{ 'video-block__btn--animate': !ie }"
+                @click="openVideo(img.id)"
+              >
+                <svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <polygon points="0,0 20,10 0,20"></polygon>
+                </svg>
+              </div>
               <img
                 class="gallery-img"
                 :src="
@@ -56,6 +64,7 @@
       <button
         type="button"
         class="btn btn--width"
+        ref="morePhotosBtn"
         @click="morePhotos()"
         :disabled="btnDisabled"
       >
@@ -115,6 +124,9 @@ export default {
       }
       return 310;
     },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   methods: {
     async changeCategory(catId) {
@@ -131,6 +143,7 @@ export default {
       const newProducts = this.$store.getters.sliceProducts(oldProducts.length);
       this.products = oldProducts.concat(newProducts);
       this.btnDisabled = this.products.length === oldProducts.length;
+      this.$refs["morePhotosBtn"].blur();
     },
     openModal(mId) {
       this.$router.push("/gallery/" + mId);
@@ -222,17 +235,15 @@ export default {
     align-items: center;
     cursor: pointer;
 
-    &:before {
-      content: "";
+    & svg {
       display: block;
       width: 20px;
       height: 20px;
-      background-color: #fff;
-      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      fill: #fff;
     }
   }
   &:hover {
-    .video-block__btn {
+    .video-block__btn--animate {
       animation: youtubeBtn 0.7s linear infinite;
     }
   }

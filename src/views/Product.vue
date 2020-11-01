@@ -20,7 +20,7 @@
       <div class="row">
         <div class="col">
           <carousel
-            class="carousel"
+            class="product-carousel"
             :perPage="1"
             :paginationEnabled="true"
             :paginationActiveColor="'#FFC120'"
@@ -33,16 +33,26 @@
               <div class="slide-block">
                 <div class="btn-conteiner">
                   <svg
+                    v-if="!ie"
                     class="svg-btn"
                     title="Поделиться"
                     @click="openShare(img)"
                   >
                     <use xlink:href="../images/svg/sprite.svg#share" />
                   </svg>
+                  <img
+                    v-else
+                    class="svg-btn"
+                    src="../images/png/share.png"
+                    alt="share"
+                    title="Поделиться"
+                    @click="openShare(img)"
+                  />
                 </div>
 
                 <div class="btn-conteiner btn-conteiner--right">
                   <router-link
+                    v-if="!ie"
                     tag="svg"
                     class="svg-btn svg-btn--back"
                     title="Назад"
@@ -50,13 +60,32 @@
                   >
                     <use xlink:href="../images/svg/sprite.svg#remove" />
                   </router-link>
+                  <router-link
+                    v-else
+                    tag="img"
+                    class="svg-btn svg-btn--back"
+                    src="../images/png/remove.png"
+                    alt="remove"
+                    title="Назад"
+                    to="/shop"
+                  >
+                  </router-link>
                   <svg
+                    v-if="!ie"
                     class="svg-btn svg-btn--zoom"
                     title="Увеличить"
                     @click="resizePhoto(index)"
                   >
                     <use xlink:href="../images/svg/sprite.svg#resize" />
                   </svg>
+                  <img
+                    v-else
+                    class="svg-btn svg-btn--zoom"
+                    src="../images/png/zoom.png"
+                    alt="zoom"
+                    title="Увеличить"
+                    @click="resizePhoto(index)"
+                  />
                 </div>
                 <div class="img-block">
                   <img
@@ -148,11 +177,28 @@
               <button
                 type="button"
                 class="btn"
+                ref="favouriteBtn"
                 @click="toggleFavourites(product.id)"
               >
-                <svg class="svg-btn" :class="{ favourite: isFavourite > -1 }">
+                <svg
+                  v-if="!ie"
+                  class="svg-btn"
+                  :class="{ favourite: isFavourite > -1 }"
+                >
                   <use xlink:href="../images/svg/sprite.svg#heart" />
                 </svg>
+                <img
+                  v-else-if="isFavourite > -1"
+                  class="svg-btn"
+                  src="../images/png/isFav.png"
+                  alt="heart"
+                />
+                <img
+                  v-else
+                  class="svg-btn"
+                  src="../images/png/toFav.png"
+                  alt="heart"
+                />
               </button>
             </div>
           </div>
@@ -293,6 +339,9 @@ export default {
       }
       return "Добавить в корзину";
     },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   methods: {
     resizePhoto(idx) {
@@ -311,6 +360,7 @@ export default {
           this.$store.dispatch("toggleMyFavourite", [prodId]);
         }
       }
+      this.$refs["favouriteBtn"].blur();
     },
     addToCart() {
       const price =
@@ -333,7 +383,6 @@ export default {
     scrollTop() {
       window.scrollTo({
         top: 0,
-        // behavior: "smooth",
       });
     },
   },
@@ -350,6 +399,7 @@ export default {
     $route(toR) {
       this.id = toR.params["id"];
       this.$store.dispatch("getProductById", this.id);
+      this.counter = 1;
       this.scrollTop();
     },
   },
@@ -456,7 +506,9 @@ export default {
     }
   }
 }
-.carousel {
+.product-carousel {
+  max-height: 561px;
+
   @media screen and (max-width: 767px) {
     margin-bottom: 20px;
   }
@@ -464,6 +516,7 @@ export default {
 .slide-block {
   position: relative;
   height: 561px;
+  overflow: hidden;
 
   @media screen and (max-width: 1199px) {
     max-height: 450px;
@@ -530,7 +583,6 @@ export default {
   &__photo {
     display: block;
     width: 100%;
-    border-radius: 8px;
     cursor: grab;
   }
 }
@@ -544,6 +596,7 @@ export default {
     margin-bottom: 30px;
   }
   & .accordion-tabs {
+    display: flex;
     margin-bottom: 30px;
 
     @media screen and (max-width: 991px) {
@@ -631,13 +684,6 @@ export default {
     display: flex;
     align-items: center;
 
-    /* @media screen and (max-width: 1199px) {
-      width: 100%;
-      margin-bottom: 40px;
-    }
-    @media screen and (max-width: 767px) {
-      margin-bottom: 30px;
-    } */
     &__btn {
       width: 19px;
       line-height: 16px;
@@ -647,8 +693,7 @@ export default {
       outline: none;
       cursor: pointer;
 
-      &:hover,
-      &:focus {
+      &:hover {
         border-color: $colorBrend;
         color: $colorBrend;
       }

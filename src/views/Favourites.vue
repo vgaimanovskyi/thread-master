@@ -38,6 +38,7 @@
             <button
               type="button"
               class="btn btn--width"
+              ref="addToCartBtn"
               @click="addToCart(product.id)"
             >
               Добавить в корзину
@@ -47,9 +48,15 @@
               class="btn btn--favourite"
               @click="removeFromFavourites(product.id)"
             >
-              <svg class="svg-btn favourite">
+              <svg v-if="!ie" class="svg-btn favourite">
                 <use xlink:href="../images/svg/sprite.svg#heart" />
               </svg>
+              <img
+                v-else
+                class="svg-btn favourite"
+                src="../images/png/isFav.png"
+                alt="isFav"
+              />
             </button>
           </div>
         </div>
@@ -89,6 +96,9 @@ export default {
     loading() {
       return this.$store.getters.getLoading;
     },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   methods: {
     removeFromFavourites(prodId) {
@@ -107,6 +117,7 @@ export default {
         count: 1,
       };
       this.$store.dispatch("addToCart", cart);
+      this.$refs["addToCartBtn"].forEach((btn) => btn.blur());
     },
   },
 };

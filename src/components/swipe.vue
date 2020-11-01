@@ -26,11 +26,11 @@
         <li class="swipe-text__item">e</li>
       </ul>
       <ul class="swipe-text">
-        <li class="swipe-text__item">r</li>
-        <li class="swipe-text__item">i</li>
-        <li class="swipe-text__item">g</li>
-        <li class="swipe-text__item">h</li>
+        <li class="swipe-text__item">l</li>
+        <li class="swipe-text__item">e</li>
+        <li class="swipe-text__item">f</li>
         <li class="swipe-text__item">t</li>
+        <li class="swipe-text__item"></li>
       </ul>
     </div>
   </div>
@@ -76,7 +76,7 @@ export default {
 }
 .swipe {
   opacity: 0;
-  transform: translateX(100%);
+  transform: translateX(-100%);
 }
 .logo-svg {
   width: 100%;
@@ -95,6 +95,7 @@ export default {
     display: block;
     flex-grow: 1;
     margin-bottom: 8px;
+    transform: scaleX(-1);
 
     &__path {
       stroke: $colorTextMain;
@@ -136,16 +137,16 @@ export default {
       animation: swipe 1s ease-in-out infinite alternate;
 
       &:nth-child(2) {
-        animation-delay: 0.2s;
+        animation-delay: 0.8s;
       }
       &:nth-child(3) {
-        animation-delay: 0.4s;
-      }
-      &:nth-child(4) {
         animation-delay: 0.6s;
       }
+      &:nth-child(4) {
+        animation-delay: 0.4s;
+      }
       &:nth-child(5) {
-        animation-delay: 0.8s;
+        animation-delay: 0.2s;
       }
     }
   }

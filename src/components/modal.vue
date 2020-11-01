@@ -32,17 +32,26 @@
           :navigationNextLabel="nextBtn"
         >
           <slide v-for="(img, index) in product.urlGallery" :key="index">
-            <div class="slide-block">
+            <div class="slide-block" :class="{ 'slide-block--ie': ie }">
               <div class="btn-conteiner">
                 <svg
+                  v-if="!ie"
                   class="svg-btn svg-btn--share"
                   title="Поделиться"
                   @click="openShare(img)"
                 >
-                  <!-- @click="sharePhoto(img)" -->
                   <use xlink:href="../images/svg/sprite.svg#share" />
                 </svg>
+                <img
+                  v-else
+                  src="../images/png/share.png"
+                  alt="share"
+                  class="svg-btn svg-btn--share"
+                  title="Поделиться"
+                  @click="openShare(img)"
+                />
                 <svg
+                  v-if="!ie"
                   class="svg-btn svg-btn--autoplay"
                   title="включить автопрокрутку"
                   @click="autoplay = !autoplay"
@@ -59,9 +68,16 @@
                 title="закрыть"
                 @click="closeModal"
               >
-                <svg class="svg-btn">
+                <svg v-if="!ie" class="svg-btn">
                   <use xlink:href="../images/svg/sprite.svg#remove" />
                 </svg>
+                <img
+                  v-else
+                  src="../images/png/remove.png"
+                  alt="remove"
+                  class="svg-btn"
+                  title="Закрыть"
+                />
               </div>
               <div class="img-block">
                 <img
@@ -115,6 +131,9 @@ export default {
         return false;
       }
       return true;
+    },
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
     },
   },
   methods: {
@@ -233,6 +252,9 @@ export default {
   position: relative;
   height: 100%;
 
+  &--ie {
+    max-width: 1145px;
+  }
   .btn-conteiner {
     position: absolute;
     top: 0;

@@ -2,7 +2,7 @@
   <div class="mainer">
     <Swipe v-if="swipe" @closeModal="swipe = false" />
     <div class="grid">
-      <div class="col col--order">
+      <div class="col col--order" :class="{ 'col--ie': ie }">
         <div class="hello-text">
           <h2 class="hello-text__caption">
             Приветствую тебя, мой гость!
@@ -22,10 +22,11 @@
           >
         </div>
       </div>
-      <div class="col">
-        <svg class="logo-svg">
+      <div class="col" :class="{ 'col--ie': ie }">
+        <svg v-if="!ie" class="logo-svg">
           <use xlink:href="../images/svg/sprite.svg#logo" />
         </svg>
+        <img v-else class="logo-svg" src="../images/png/logo.png" alt="logo" />
       </div>
     </div>
     <svg class="svg svg--face">
@@ -53,6 +54,11 @@ export default {
     return {
       swipe: false,
     };
+  },
+  computed: {
+    ie() {
+      return !!window.MSInputMethodContext && !!document.documentMode;
+    },
   },
   created() {
     if (
@@ -86,6 +92,9 @@ export default {
   display: flex;
   align-items: center;
 
+  &--ie {
+    min-height: inherit;
+  }
   @media screen and (max-width: 767px) {
     width: 100%;
 
@@ -169,11 +178,10 @@ export default {
   animation: textShow 0.3s linear 0.8s forwards;
 
   @media screen and (max-width: 767px) {
-    margin: 0 auto;
+    margin: 0 auto 40px auto;
   }
   @media screen and (max-width: 399px) {
     width: 100%;
-    margin-bottom: 25px;
   }
 }
 .svg {
