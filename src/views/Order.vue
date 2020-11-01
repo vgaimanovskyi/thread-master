@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="mainer">
-      <Confirm v-if="!orderDone" />
+      <Confirm v-if="orderDone" />
       <h1 class="page__caption">Оформление товара</h1>
       <div class="row">
         <div class="col col--width">

@@ -18,8 +18,13 @@ export default {};
 
 .loading-block {
   padding-top: 150px;
+
+  @media screen and (max-width: 991px) {
+    padding-top: 0;
+  }
 }
 .cssload-loader {
+  margin-top: -20px;
   position: relative;
   left: calc(50% - 31px);
   width: 100px;
