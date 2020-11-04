@@ -86,12 +86,14 @@ export default {
       height: 18px;
       transform: translateY(3px) rotate(90deg);
     }
-    &:hover,
-    &:focus {
-      box-shadow: 0 0 25px $colorBrend;
-    }
-    &:active {
-      background-color: darken($colorBrend, 10);
+    @media screen and (min-width: 768px) {
+      &:hover,
+      &:focus {
+        box-shadow: 0 0 25px $colorBrend;
+      }
+      &:active {
+        background-color: darken($colorBrend, 10);
+      }
     }
   }
 }

@@ -47,7 +47,7 @@
       </li>
       <li>
         <a
-          href="https://www.facebook.com/stringart.workshop2017"
+          href="https://www.facebook.com/ThreadMaster.workshop"
           target="_blank"
         >
           <svg v-if="!ie" class="svg">
